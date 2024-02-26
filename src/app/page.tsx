@@ -1,4 +1,5 @@
 import Navbar from "@/app/lib/ui/home-page/navbar"
+import InfoDisplay from "@/app/lib/ui/home-page/info-display"
 import { poppins } from "@/app/lib/ui/fonts"
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +22,7 @@ export default function Home() {
           </div>
           
           <Image 
-            src="/hero-image.png"
+            src="/homepage/hero-image.png"
             alt="hero image"
             width={0}
             height={0}
@@ -29,9 +30,29 @@ export default function Home() {
             style={{ width: '25%', height: 'auto' }}
           />
         </div>
-        <hr className="w-4/5 mt-4 mx-auto"/>
       </div>
+
+      <hr className="w-4/5 mt-4 mx-auto"/>
       
+      <div className="flex w-full mt-10 mb-6">
+        <InfoDisplay  
+        imgSrc="/homepage/graph-icon.png" title="Analytics"
+        description="Breakdown your spending with graphs and analytics"
+        />
+
+        <InfoDisplay  
+        imgSrc="/homepage/automation-icon.png" title="Automation"
+        description="We do the tracking automatically, to save the hassle from you"
+        />
+
+        <InfoDisplay  
+        imgSrc="/homepage/folder-icon.png" title="All In One"
+        description="Have all your accounts in one place, and we do the work for all of them"
+        />
+      </div>
+
+      <hr className="w-4/5 mt-4 mx-auto"/>
+
     </main>
   );
 }
