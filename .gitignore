@@ -8,6 +8,7 @@
 
 # testing
 /coverage
+src/app/test
 
 # next.js
 /.next/
@@ -34,3 +35,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# .env
+.env
