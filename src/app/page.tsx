@@ -1,4 +1,6 @@
 import Navbar from "@/app/lib/ui/home-page/navbar"
+import Footer from "@/app/lib/ui/home-page/footer"
+import ContactForm from "@/app/lib/ui/home-page/contact-form"
 import InfoDisplay from "@/app/lib/ui/home-page/info-display"
 import { poppins } from "@/app/lib/ui/fonts"
 import Image from "next/image";
@@ -11,7 +13,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <div className="flex flex-col items-center"> {/* Added items-center class */}
-        <div className="flex gap-2 text-white items-center justify-evenly">
+        <div className="flex text-white items-center justify-evenly">
           <div className="w-1/2 text-wrap">
             <h1 className="text-3xl md:text-4xl xl:text-6xl mb-16 mt-6 lg:mt-0">
               Manage your <div className="mt-2"></div> 
@@ -53,6 +55,24 @@ export default function Home() {
 
       <hr className="w-4/5 mt-4 mx-auto"/>
 
+      <div className="flex mt-10 items-center justify-evenly">
+        <div className="text-white w-full md:w-1/2">
+          <ContactForm />
+        </div>
+
+        <Image 
+            src="/homepage/business-man.png"
+            alt="business man image"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: '20%', height: 'auto' }}
+            className="hidden md:block"
+          />
+      </div>
+
+      <hr className="w-4/5 mt-4 mx-auto"/>
+      <Footer />
     </main>
   );
 }
