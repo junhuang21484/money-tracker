@@ -7,15 +7,15 @@ import { cookies } from "next/headers";
 
 export default async function Login(prevState, formData) {
     try {
-        const user = fetchUserByEmail(formData.get("email"))
+        const user = await fetchUserByEmail(formData.get("email"))
         if (!user) {
-            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials", success: false })
+            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials:Username", success: false })
         }
 
-        //const pwdMatch = await (password, user.password)
-        if (formData.get("password") != user.password) {
-            console.log(formData.get("password"), user.password)
-            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials", success: false })
+        const pwdMatch = (formData.get("password"), user.password);
+        if (!pwdMatch) {
+            //console.log("Password does not match")
+            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials:Password", success: false })
         }
 
         const tokenData = {
@@ -24,8 +24,8 @@ export default async function Login(prevState, formData) {
 
         const token = jwt.sign(
             tokenData,
-            process.env.JWT_SECRET,
-        )
+            process.env.JWT_SECRET
+        );
 
         const oneDay = 24 * 60 * 60 * 1000
         cookies().set('token', token, { expires: Date.now() + oneDay })
