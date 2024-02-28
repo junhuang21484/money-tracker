@@ -2,10 +2,8 @@
 require("dotenv").config();
 import fetchUserByEmail from "@/app/lib/data/user";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 
-export default async function Register(formData) {
+export default async function Register(prevState, formData) {
   try {
     const existingUser = fetchUserByEmail(formData.get("email"));
 
@@ -20,22 +18,7 @@ export default async function Register(formData) {
       password: hashedPassword,
     });
 
-    const tokenData = {
-      user_id: newUser.user_id,
-    };
-
-    const token = jwt.sign(tokenData, process.env.JWT_SECRET);
-
-    const resp = {
-      msg: "User registered",
-      errorMsg: "",
-      success: true,
-    };
-
-    const oneDay = 24 * 60 * 60 * 1000;
-    cookies().set("token", token, { expires: Date.now() + oneDay });
-
-    return resp;
+    return {msg: "User registered", errorMsg: "", success: true};
   } catch (e) {
     console.error(e);
     return { msg: "", errorMsg: "Server error", success: false };
