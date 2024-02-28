@@ -24,18 +24,20 @@ export default function LoginPage() {
     >
       {/* Left Side: Image */}
       <div
-        className="w-1/2 h-screen relative"
+        className="w-1/2 h-screen relative hidden lg:block"
         style={{ backgroundImage: `url('/user-control/signin-left-img.png')` }}
       ></div>
 
       {/* Right Side: Login Form */}
-      <div className="w-1/2 flex flex-col items-center justify-center">
+      <div className="w-4/5 flex flex-col items-center justify-center lg:w-1/2">
         <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-md">
-          <h1 className="text-3xl font-extrabold text-center text-emerald-500">
-            Money Minder
-          </h1>
+          <div className="w-full justify-center flex">
+            <Link href="/" className="text-3xl font-extrabold text-center text-emerald-500 mx-auto">
+              Money Minder
+            </Link>
+          </div>
           <form className="mt-6" action={formAction}>
-            {state.msg && !state.success && (
+            {state.errorMsg && !state.success && (
               <p className="text-red-500 text-center">{state.msg}</p>
             )}
             <div className="mb-4">
