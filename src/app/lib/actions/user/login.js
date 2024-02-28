@@ -9,13 +9,13 @@ export default async function Login (prevstate, formData) {
     try {
         const user =  fetchUserByEmail(formData.get("email"))
         if (!user) {
-            return ({msg:"", errorMsg: "Invalid credentials:User", success: false})
+            return ({msg:"Invalid Credentials", errorMsg: "Invalid credentials:User", success: false})
         }
 
         //const pwdMatch = await (password, user.password)
         if (formData.get("password") != user.password) {
             console.log(formData.get("password") , user.password)
-            return ({msg:"", errorMsg: "Invalid credentials:PWD", success: false})
+            return ({msg:"Invalid Credentials", errorMsg: "Invalid credentials:PWD", success: false})
         }
 
         const tokenData = {

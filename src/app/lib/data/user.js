@@ -2,7 +2,7 @@ const users = [
     {
       "user_id": "019a21cf-0762-42af-94ae-d4d2f417883c",
       "email": "alice@example.com",
-      "password": "1234567",
+      "password": "123456",
       "role": "user",
       "created_at": "2024-02-27 21:52:54"
     },
