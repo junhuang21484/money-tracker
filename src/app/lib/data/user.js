@@ -1,3 +1,5 @@
+import connection from "./connector";
+
 const users = [
     {
       "user_id": "019a21cf-0762-42af-94ae-d4d2f417883c",
@@ -34,7 +36,12 @@ export default function fetchUserByEmail(email) {
     return users.find(user => user.email === email);
 }
 
-
-
-
-
+export function fetchUserByID( userID ) {
+    connection.query(`SELECT * FROM Users WHERE user_id='${userID}'`, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing query: ' + error);
+            return;
+        }
+        console.log('Query results:', results);
+    });
+}
