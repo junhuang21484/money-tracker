@@ -1,5 +1,5 @@
 "use client";
-import Register from "@/app/lib/actions/user/Register";
+import Register from "@/app/lib/actions/user/register";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -20,7 +20,7 @@ export default function RegisterPage() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden bg-gradient-to-b from-green-900 to-black-400">
       <div className="w-full p-6 rounded-lg shadow-md lg:max-w-xl bg-opacity-20 bg-black bg-blur-md border-1 border-opacity-10 md:p-8">
-        <h1 className="text-2xl  text-white">MoneyMinder</h1>
+        <h1 className="text-2xl  text-white">Money Minder</h1>
         <h1 className="text-3xl font-bold  text-white">Register</h1>
         <form className="mt-6" action={formAction}>
           <div className="mb-4">
