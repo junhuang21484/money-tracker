@@ -32,7 +32,6 @@ export default async function Login (prevstate, formData) {
         errorMsg : "",
         success: true
     })
-    
 
     const oneDay = 24 * 60 * 60 * 1000
     cookies().set('token', token, { expires: Date.now() + oneDay })
