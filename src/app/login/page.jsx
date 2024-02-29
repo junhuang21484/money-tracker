@@ -38,7 +38,7 @@ export default function LoginPage() {
           </div>
           <form className="mt-6" action={formAction}>
             {state.errorMsg && !state.success && (
-              <p className="text-red-500 text-center">{state.msg}</p>
+              <p className="text-red-500 text-center">{state.errorMsg}</p>
             )}
             <div className="mb-4">
               <label
