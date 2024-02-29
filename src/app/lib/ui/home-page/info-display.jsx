@@ -2,7 +2,7 @@ import Image from "next/image"
 
 export default function InfoDisplay( {imgSrc, title, description} ) {
     return (
-        <div className="flex flex-col items-center text-center text-white container">
+        <div className="flex flex-col gap-2 items-center text-center text-white container">
           <Image
             src={imgSrc}
             alt="icon"
