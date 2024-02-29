@@ -8,7 +8,7 @@ import clsx from 'clsx'
 
 export default function LoginPage() {
   const router = useRouter();
-  const [state, formAction] = useFormState(Login, { success: false, msg: "" });
+  const [state, formAction] = useFormState(Login, { success: false, msg: "", errorMsg: "" });
 
   useEffect(() => {
     console.log(state);

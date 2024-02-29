@@ -1,6 +1,6 @@
 'use server'
 require('dotenv').config()
-import fetchUserByEmail from "@/app/lib/data/user";
+import {fetchUserByEmail} from "@/app/lib/data/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -9,13 +9,12 @@ export default async function Login(prevState, formData) {
     try {
         const user = await fetchUserByEmail(formData.get("email"))
         if (!user) {
-            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials:Username", success: false })
+            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials", success: false })
         }
-
-        const pwdMatch = (formData.get("password"), user.password);
+        
+        const pwdMatch = await bcrypt.compare(formData.get("password"), user.password)
         if (!pwdMatch) {
-            //console.log("Password does not match")
-            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials:Password", success: false })
+            return ({ msg: "Invalid Credentials", errorMsg: "Invalid Credentials", success: false })
         }
 
         const tokenData = {
@@ -31,7 +30,7 @@ export default async function Login(prevState, formData) {
         cookies().set('token', token, { expires: Date.now() + oneDay })
         return { msg: "User login successful", errorMsg: "", success: true };
     } catch (e) {
-        console.error(e);
+        console.log(e.message);
         return ({ msg: "", errorMsg: "Server error", success: false })
     };
 }
