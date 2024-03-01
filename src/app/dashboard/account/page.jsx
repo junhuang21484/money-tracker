@@ -13,25 +13,25 @@ export default function AccountPage() {
         <AccountCard
           accName={"Bank of America OF ASD SOAD ASO  - Checking"}
           accType={"Checking"}
-          balance={"1088.88"}
+          balance={10000000}
           tracking={"auto"}
         />
         <AccountCard
           accName={"Robinhood"}
           accType={"Investment"}
-          balance={999.88}
+          balance={2000000}
           tracking={"manual"}
         />
         <AccountCard
           accName={"Cash"}
           accType={"Other"}
-          balance={666.66}
+          balance={-666.66}
           tracking={"manual"}
         />
         <AccountCard
           accName={"Chase - Checking"}
           accType={"Checking"}
-          balance={"1088.88"}
+          balance={15}
           tracking={"auto"}
         />
       </div>
