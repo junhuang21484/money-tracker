@@ -1,8 +1,8 @@
-import createNewAccount from "@/app/lib/actions/account/create-account"
+import createNewManualAccount from "@/app/lib/actions/account/create-account"
 import { useFormState } from "react-dom";
 
 export default function AddAccountForm({ accountTypes }) {
-  const [state, formAction] = useFormState(createNewAccount, {success: false, msg: ""})
+  const [state, formAction] = useFormState(createNewManualAccount, {success: false, msg: ""})
   return (
     <form className="mt-6" action={formAction}>
       <div className="mb-4">
