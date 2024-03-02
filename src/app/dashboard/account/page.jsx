@@ -1,7 +1,15 @@
 import AddAccountBtn from "@/app/lib/ui/dashboard/account/add-account-btn";
 import AccountCard from "@/app/lib/ui/dashboard/account/account-card";
+import { fetchAccTypeToUser } from "@/app/lib/data/accountType"
+import { getDataFromToken } from "@/app/lib/data/jwtToken"
+import { cookies } from "next/headers";
 
-export default function AccountPage() {
+export default async function AccountPage() {
+  const storedCookies = cookies()
+  const token = storedCookies.get("token")
+  const userID = getDataFromToken(token.value)
+  const accountTypeAvailable = await fetchAccTypeToUser(userID)
+  console.log(accountTypeAvailable)
   return (
     <main className="bg-gray-950 h-full min-h-screen">
       <div className="flex justify-between">
