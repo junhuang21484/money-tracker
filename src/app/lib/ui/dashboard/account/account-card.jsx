@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   UserIcon,
   WrenchIcon,
-  ChevronDoubleRightIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
 import { formatCurrency } from "../../../utils";
@@ -15,7 +14,7 @@ const trackingType = {
 export default function AccountCard({ accName, accType, balance, tracking }) {
   const { icon: TrackingIcon, text: trackingText } = trackingType[tracking];
   return (
-    <section className="bg-gradient-to-r w-96 h-[172px] from-purple-400 to-slate-200 shadow-md rounded-xl p-4 drop-shadow-lg">
+    <section className="bg-gradient-to-r w-96 h-[172px] from-purple-400 to-slate-200 shadow-md rounded-xl p-4 drop-shadow-lg hover:ring-4">
       <div className="flex justify-between items-center mb-4">
         <div>
           <h1 className="text-lg font-extrabold text-gray-800">{accName}</h1>

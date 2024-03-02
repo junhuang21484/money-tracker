@@ -8,13 +8,12 @@ export default async function AccountPage() {
   const storedCookies = cookies()
   const token = storedCookies.get("token")
   const userID = getDataFromToken(token.value)
-  const accountTypeAvailable = await fetchAccTypeToUser(userID)
-  console.log(accountTypeAvailable)
+  const accountTypesAvailable = await fetchAccTypeToUser(userID)
   return (
     <main className="bg-gray-950 h-full min-h-screen">
       <div className="flex justify-between">
         <h1 className="text-white text-3xl font-bold">Accounts</h1>
-        <AddAccountBtn />
+        <AddAccountBtn accountTypes={accountTypesAvailable}/>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4 px-2 justify-items-center">
