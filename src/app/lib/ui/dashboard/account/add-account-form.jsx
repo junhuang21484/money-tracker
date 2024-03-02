@@ -1,8 +1,16 @@
-import createNewManualAccount from "@/app/lib/actions/account/create-account"
+import createNewManualAccount from "@/app/lib/actions/account/create-account";
+import clsx from "clsx";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 
-export default function AddAccountForm({ accountTypes }) {
-  const [state, formAction] = useFormState(createNewManualAccount, {success: false, msg: ""})
+export default function AddAccountForm({ userID, accountTypes }) {
+  const [state, formAction] = useFormState(createNewManualAccount.bind(null, userID), {
+    success: false,
+    msg: "",
+  });
+
+  const formActionWithUserID = createNewManualAccount.bind(null, userID);
+  useEffect(() => {console.log(state)}, [state])
   return (
     <form className="mt-6" action={formAction}>
       <div className="mb-4">
@@ -60,7 +68,20 @@ export default function AddAccountForm({ accountTypes }) {
         </select>
       </div>
 
-      <button type="submit" className="p-2 bg-gray-500 rounded hover:bg-gray-700">Create Account</button>
+      <button
+        type="submit"
+        className="p-2 bg-emerald-500 rounded hover:bg-emerald-600"
+      >
+        Create Account
+      </button>
+
+      {state.msg && <p className={clsx(
+        'mt-4',
+        {'text-green-500': state.success},
+        {'text-red-500': !state.success}
+      )}>
+        {state.msg}
+      </p>}
     </form>
   );
 }

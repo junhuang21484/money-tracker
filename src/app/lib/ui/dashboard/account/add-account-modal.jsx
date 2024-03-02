@@ -1,7 +1,7 @@
 import AddAccountForm from "./add-account-form";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-export default function AddAccountModal({ accountTypes, closeModal }) {
+export default function AddAccountModal({ userID, accountTypes, closeModal }) {
   return (
     <dialog className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-50 z-50 overflow-auto backdrop-blur flex justify-center items-center">
         <div className="bg-white m-auto p-8 rounded-lg relative">
@@ -19,7 +19,7 @@ export default function AddAccountModal({ accountTypes, closeModal }) {
                     <div className="border-b border-gray-500 w-2/5"></div>
                 </div>
 
-            <AddAccountForm accountTypes={accountTypes} />
+            <AddAccountForm userID={userID} accountTypes={accountTypes} />
             </div>
         </div>
     </dialog>
