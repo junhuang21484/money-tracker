@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 export default async function Register(prevState, formData) {
   try {
-    const existingUser = await fetchUserByEmail(formData.get("email"));
+    const existingUser = await fetchUserByEmail(formData.get("email").toLowerCase());
     if (existingUser) {
       return { msg: "", errorMsg: "Email already in use", success: false };
     }
