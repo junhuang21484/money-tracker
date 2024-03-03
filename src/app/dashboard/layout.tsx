@@ -15,7 +15,7 @@ export default function Layout({
         <div className="w-full flex-none md:w-64">
           <Sidebar />
         </div>
-        <div className={`${poppins.className} grow p-6 md:overflow-y-auto md:p-12`}>{children}</div>
+        <div className={`${poppins.className} grow md:overflow-y-auto`}>{children}</div>
       </div>
     </div>
 
