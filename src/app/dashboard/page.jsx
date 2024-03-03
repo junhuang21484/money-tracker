@@ -1,10 +1,10 @@
 import React from 'react';
-import DashboardLayout from './dashboardLayout';
 
 const DashboardPage = () => {
   return (
-    <DashboardLayout>
-    </DashboardLayout>
+    <div className='w-full h-full'>
+      TEST
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Sidebar() {
   return (
-    <aside className="sidebar w-64 h-screen bg-black text-white fixed">
+    <aside className="sidebar w-64 h-screen bg-gray-950 text-white fixed">
       <nav className="mt-10">
         <Link href="/dashboard" passHref>
           <span className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">Overview</span>
