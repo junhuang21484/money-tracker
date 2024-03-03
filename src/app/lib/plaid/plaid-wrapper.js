@@ -15,3 +15,24 @@ export async function getBankName(accessToken){
         return null
     }
 }
+
+export async function getAccountLinked(accessToken) {
+  try {
+      const response = await PLAID_CLIENT.accountsGet({access_token: accessToken});
+      const accounts = response.data.accounts;
+      console.log(accounts)
+    } catch (error) {
+      // handle error
+    }
+}
+
+export async function getAccountLinkedUncached(accessToken) {
+    try {
+        const response = await PLAID_CLIENT.accountsBalanceGet({access_token: accessToken});
+        const accounts = response.data;
+        return accounts
+      } catch (error) {
+        // handle error
+      }
+}
+
