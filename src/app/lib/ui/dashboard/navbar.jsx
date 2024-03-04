@@ -10,7 +10,7 @@ export default async function Navbar() {
     const userName = await fetchFirstNameByUserID(userId);
 
     return (
-        <nav className="flex justify-around h-16 items-center bg-gray-950">
+        <nav className="flex justify-between items-center h-16 bg-gray-950 px-4 md:px-8">
             <Link href="/">
                 <span className="text-emerald-500 font-extrabold text-2xl lg:text-4xl w-1/2 cursor-pointer">
                     Money Minder

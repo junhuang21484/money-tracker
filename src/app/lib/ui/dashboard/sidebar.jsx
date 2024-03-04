@@ -2,16 +2,16 @@ import Link from 'next/link';
 
 export default function Sidebar() {
   return (
-    <aside className="sidebar w-64 h-screen bg-gray-950 text-white fixed">
+    <aside className="hidden md:block min-h-screen w-64 bg-gray-950 text-white absolute">
       <nav className="mt-10">
         <Link href="/dashboard" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">Overview</span>
+          <span className="block px-4 py-2 hover:bg-gray-700">Overview</span>
         </Link>
-        <Link href="/accounts" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">Accounts</span>
+        <Link href="/dashboard/accounts" passHref>
+          <span className="block px-4 py-2 hover:bg-gray-700">Accounts</span>
         </Link>
-        <Link href="/budgets" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">Budgets</span>
+        <Link href="/dashboard/budgets" passHref>
+          <span className="block px-4 py-2 hover:bg-gray-700">Budgets</span>
         </Link>
       </nav>
     </aside>
