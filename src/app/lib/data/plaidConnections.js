@@ -28,4 +28,4 @@ export function insertNewPlaidConnection(itemID, accessToken, userID, institutio
       resolve(results);
     });
   })
-} 
+}

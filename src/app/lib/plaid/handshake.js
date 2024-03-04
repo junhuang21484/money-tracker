@@ -87,5 +87,3 @@ export async function importLinkedAccount(userID, linkedAccounts, accountsItemID
 
   return addedAcc;
 }
-
-  

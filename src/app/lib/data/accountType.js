@@ -14,18 +14,3 @@ export function fetchAccTypeToUser(userID) {
         });
     });
 }
-
-export function fetchAccTypeToUserByName(userID, name) {
-    const sql = `SELECT * FROM accountTypes WHERE (user_id='DEFAULT' OR user_id=?) AND name=?`;
-    const values = [userID, name];
-
-    return new Promise((resolve, reject) => {
-        connection.query(sql, values, (error, results) => {
-            if (error) {
-                return reject(error);
-            }
-            
-            resolve(results[0]);
-        });
-    });
-}
