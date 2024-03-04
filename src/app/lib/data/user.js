@@ -21,7 +21,7 @@ export function fetchUserByID( userID ) {
     });
 }
 
-export function insertNewUser(email, password, firstName, lastName, role) {
+export function insertNewUser(email, password, firstName, lastName) {
   const sql = `INSERT INTO Users (user_id, email, password, first_name, last_name, role) VALUES (UUID(), ?, ?, ?, ?, ?)`;
   const values = [email, password, firstName, lastName, "unverified_user"];
 
