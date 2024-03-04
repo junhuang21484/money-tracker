@@ -12,7 +12,7 @@ export default async function AccountPage() {
   const userID = getDataFromToken(token.value).user_id;
   const accountTypesAvailable = await fetchAccTypeToUser(userID);
   const userAccounts = await fetchAccountByUserID(userID);
-
+ 
   return (
     <main className="bg-gray-950 h-full min-h-screen">
       <div className="flex justify-between">
