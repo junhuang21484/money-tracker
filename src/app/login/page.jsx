@@ -4,16 +4,20 @@ import { useFormState, useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
-import clsx from 'clsx'
+import clsx from "clsx";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [state, formAction] = useFormState(Login, { success: false, msg: "", errorMsg: "" });
+  const [state, formAction] = useFormState(Login, {
+    success: false,
+    msg: "",
+    errorMsg: "",
+  });
 
   useEffect(() => {
     console.log(state);
     if (state.success) {
-      router.push("/");
+      router.push("/dashboard");
     }
   }, [state, router]);
 
@@ -32,7 +36,10 @@ export default function LoginPage() {
       <div className="w-4/5 flex flex-col items-center justify-center lg:w-1/2">
         <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-md">
           <div className="w-full justify-center flex">
-            <Link href="/" className="text-3xl font-extrabold text-center text-emerald-500 mx-auto">
+            <Link
+              href="/"
+              className="text-3xl font-extrabold text-center text-emerald-500 mx-auto"
+            >
               Money Minder
             </Link>
           </div>
@@ -96,14 +103,14 @@ export default function LoginPage() {
 }
 
 function SubmitBtn() {
-  const { pending } = useFormStatus()
+  const { pending } = useFormStatus();
   return (
     <button
       type="submit"
       disabled={pending}
       className={clsx(
         "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600",
-        {"bg-gray-500 cursor-not-allowed hover:bg-gray-500": pending}
+        { "bg-gray-500 cursor-not-allowed hover:bg-gray-500": pending }
       )}
     >
       {!pending ? "Login" : "Processing..."}
