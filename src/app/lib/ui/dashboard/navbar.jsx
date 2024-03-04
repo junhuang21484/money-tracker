@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { cookies } from 'next/headers'; 
-import { fetchFirstNameByUserID } from "@/app/lib/data/dashboard";
+import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
 
 export default async function Navbar() {
