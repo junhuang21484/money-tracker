@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { cookies } from 'next/headers'; 
+import { fetchFirstNameByUserID } from "@/app/lib/data/dashboard";
+import { getDataFromToken } from "@/app/lib/data/jwtToken";
 
-export default function Navbar() {
-    const cookieStore = cookies();
-    const isLoggedIn = cookieStore.get("token");
-    const username = cookieStore.get("username");
+export default async function Navbar() {
+    const cookieStored = cookies();
+    const token = cookieStored.get("token");
+    const userId = getDataFromToken(token.value).user_id;
+    const userName = await fetchFirstNameByUserID(userId);
 
     return (
         <nav className="flex justify-around h-16 items-center bg-gray-950">
@@ -15,9 +18,9 @@ export default function Navbar() {
             </Link>
             
             <div className="flex gap-2">
-                {isLoggedIn ? (
+                {token ? (
                     <span className="text-emerald-500">
-                        Hello, {username}
+                        Hello, {userName}
                     </span>
                 ) : (
                     <Link href="/login">
