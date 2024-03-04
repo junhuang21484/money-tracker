@@ -16,9 +16,10 @@ export function fetchAccountByUserID(userID) {
     });
 }
 
-export async function fetchFilteredAccounts(userID, query) {
+export async function fetchFilteredAccounts(userID, query, orderBy, filterDirection) {
     noStore();
-    const sql = `
+    const acceptedOrderBy = ["Name", "Balance"]
+    let sql = `
     SELECT accounts.*, accountTypes.name AS account_type_name FROM accounts
     JOIN accountTypes ON accounts.account_type_id = accountTypes.account_type_id
     WHERE
@@ -28,6 +29,10 @@ export async function fetchFilteredAccounts(userID, query) {
         accountTypes.name LIKE ?)
     `;
     const values = [userID, `%${query}%`, `%${query}%`, `%${query}%`];
+
+    if (orderBy && acceptedOrderBy.includes(orderBy)) {
+        sql += `\nORDER BY accounts.${orderBy} ${filterDirection === "ASC" || filterDirection === "DESC" ? filterDirection : ""}`
+    }
 
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {

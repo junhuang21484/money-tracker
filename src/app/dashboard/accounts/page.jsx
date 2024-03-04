@@ -1,6 +1,7 @@
 import AddAccountBtn from "@/app/lib/ui/dashboard/account/add-account-btn";
 import AccountCard from "@/app/lib/ui/dashboard/account/account-card";
 import SearchBar from "@/app/lib/ui/util/searchBar"
+import OrderFilter from "@/app/lib/ui/util/orderFilter"
 import { fetchAccTypeToUser } from "@/app/lib/data/accountType";
 import { fetchFilteredAccounts } from "@/app/lib/data/accounts";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
@@ -12,7 +13,9 @@ export default async function AccountPage({ searchParams }) {
   const userID = getDataFromToken(token.value).user_id;
   const accountTypesAvailable = await fetchAccTypeToUser(userID);
   const query = searchParams?.query || ""
-  const filteredAccounts = await fetchFilteredAccounts(userID, query)
+  const orderBy = searchParams?.orderBy || ""
+  const filterDirection = searchParams?.filterDirection || ""
+  const filteredAccounts = await fetchFilteredAccounts(userID, query, orderBy, filterDirection)
  
   return (
     <main className="bg-gray-950 h-full">
@@ -21,9 +24,13 @@ export default async function AccountPage({ searchParams }) {
         <AddAccountBtn userID={userID} accountTypes={accountTypesAvailable} />
       </div>
 
-      <div className="flex w-full mt-2">
+      <div className="flex w-full mt-2 gap-2">
         <div className="w-4/5 ml-2">
           <SearchBar placeholder="Search accounts by name, balance, account type"/>
+        </div>
+
+        <div className="w-1/5">
+          <OrderFilter filterOption={["", "Name", "Balance"]}/>
         </div>
       </div>
       
