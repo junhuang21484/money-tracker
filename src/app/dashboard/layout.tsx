@@ -8,9 +8,9 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <div className="h-screen">
       <Navbar />
-      <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+      <div className="flex flex-col h-full md:flex-row md:overflow-hidden">
         
         <div className="w-full flex-none md:w-64">
           <Sidebar />
