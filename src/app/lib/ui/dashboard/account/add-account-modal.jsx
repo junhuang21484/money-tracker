@@ -25,3 +25,4 @@ export default function AddAccountModal({ userID, accountTypes, closeModal }) {
     </dialog>
   );
 }
+
