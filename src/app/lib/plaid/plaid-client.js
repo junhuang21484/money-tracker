@@ -21,4 +21,4 @@ const PLAID_CLIENT = new PlaidApi(configuration);
 export const PLAID_PRODUCTS = (process.env.PLAID_PRODUCTS || Products.Transactions).split(',',);
 export const PLAID_COUNTRY_CODES = (process.env.PLAID_COUNTRY_CODES || 'US').split(',',);
 export const PLAID_REDIRECT_URI = process.env.PLAID_REDIRECT_URI || '';
-export default PLAID_CLIENT
+export default PLAID_CLIENT 
