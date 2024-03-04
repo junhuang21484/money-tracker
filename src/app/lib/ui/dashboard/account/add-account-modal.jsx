@@ -1,4 +1,5 @@
 import AddAccountForm from "./add-account-form";
+import AddAccountPlaid from "./add-account-plaid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function AddAccountModal({ userID, accountTypes, closeModal }) {
@@ -13,6 +14,7 @@ export default function AddAccountModal({ userID, accountTypes, closeModal }) {
                 <XMarkIcon className="w-6 h-6 text-red-500" />
                 </button>
                 <h3 className="font-bold text-4xl">Add Account</h3>
+                <AddAccountPlaid userID={userID} />
                 <div className="flex items-center w-full justify-center">
                     <div className="border-b border-gray-500 w-2/5"></div>
                     <div className="mx-4 text-gray-500">OR</div>
