@@ -4,7 +4,7 @@ import { fetchAccTypeToUser } from "@/app/lib/data/accountType";
 import { fetchAccountByUserID } from "@/app/lib/data/accounts";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
 import { cookies } from "next/headers";
-import { findFieldGivenArrObj } from "@/app/lib/utils"
+import { findFieldGivenArrObj } from "@/app/lib/utils";
 
 export default async function AccountPage() {
   const storedCookies = cookies();
@@ -26,11 +26,16 @@ export default async function AccountPage() {
             <AccountCard
               key={account.account_id}
               accName={account.name}
-              accType={findFieldGivenArrObj(accountTypesAvailable, "account_type_id", account.account_type_id, "name")}
+              accType={findFieldGivenArrObj(
+                accountTypesAvailable,
+                "account_type_id",
+                account.account_type_id,
+                "name"
+              )}
               balance={account.balance}
               tracking={account.plaid_persistent_acc_id ? "auto" : "manual"}
             />
-          )
+          );
         })}
       </div>
     </main>

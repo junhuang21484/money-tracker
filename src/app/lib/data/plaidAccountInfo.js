@@ -28,4 +28,4 @@ export function insertNewPlaidAccountInfo(plaidPersistentAccID, accountID, itemI
       resolve(results);
     });
   })
-}
+} 
