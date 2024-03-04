@@ -28,7 +28,7 @@ export default async function AccountPage() {
               accName={account.name}
               accType={findFieldGivenArrObj(accountTypesAvailable, "account_type_id", account.account_type_id, "name")}
               balance={account.balance}
-              tracking={account.plaid_persistent_acc_id ? "auto" : "manual"}
+              tracking={account.plaid_account_id ? "auto" : "manual"}
             />
           )
         })}
