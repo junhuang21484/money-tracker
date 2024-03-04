@@ -8,3 +8,4 @@ export function getDataFromToken(tokenVal) {
         console.log(error.message)
     }
 }
+
