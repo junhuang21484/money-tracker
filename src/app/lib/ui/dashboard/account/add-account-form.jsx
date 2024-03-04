@@ -9,8 +9,6 @@ export default function AddAccountForm({ userID, accountTypes }) {
     msg: "",
   });
 
-  const formActionWithUserID = createNewManualAccount.bind(null, userID);
-  useEffect(() => {console.log(state)}, [state])
   return (
     <form className="mt-6" action={formAction}>
       <div className="mb-4">
