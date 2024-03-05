@@ -25,11 +25,11 @@ export default async function AccountPage({ searchParams }) {
       </div>
 
       <div className="flex w-full mt-2 gap-2">
-        <div className="w-4/5 ml-2">
+        <div className="md:w-4/5 ml-2">
           <SearchBar placeholder="Search accounts by name, balance, account type"/>
         </div>
 
-        <div className="w-1/5">
+        <div className="md:w-1/5">
           <OrderFilter filterOption={["", "Name", "Balance"]}/>
         </div>
       </div>
