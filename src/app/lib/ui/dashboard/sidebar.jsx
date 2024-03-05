@@ -1,19 +1,18 @@
 import Link from 'next/link';
 
 export default function Sidebar() {
+  const btnStyling = "px-4 py-2 hover:bg-gray-700 cursor-pointer"
   return (
-    <aside className="hidden md:block md:w-64 bg-gray-950 text-white">
-      <nav className="mt-10">
-        <Link href="/dashboard" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-700">Overview</span>
+    <aside className = "w-64 h-full bg-gray-900 text-white flex flex-col gap-2">
+        <Link href="/dashboard" className = {btnStyling}>
+          Overview
         </Link>
-        <Link href="/dashboard/accounts" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-700">Accounts</span>
+        <Link href="/dashboard/accounts" className = {btnStyling}>
+          Accounts
         </Link>
-        <Link href="/dashboard/budgets" passHref>
-          <span className="block px-4 py-2 hover:bg-gray-700">Budgets</span>
+        <Link href="/dashboard/budgets" className = {btnStyling}>
+          Budget
         </Link>
-      </nav>
     </aside>
   );
 }

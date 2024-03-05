@@ -14,8 +14,8 @@ export default async function AccountPage() {
   const userAccounts = await fetchAccountByUserID(userID);
  
   return (
-    <main className="bg-gray-950 h-full min-h-screen">
-      <div className="flex justify-between">
+    <main className="bg-gray-950 h-full">
+      <div className="flex justify-between mx-2">
         <h1 className="text-white text-3xl font-bold">Accounts</h1>
         <AddAccountBtn userID={userID} accountTypes={accountTypesAvailable} />
       </div>
