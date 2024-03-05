@@ -1,6 +1,6 @@
-import { poppins } from "@/app/lib/ui/fonts"
-import Sidebar from "@/app/lib/ui/dashboard/sidebar"
-import Navbar from "@/app/lib/ui/dashboard/navbar"
+import { poppins } from "@/app/lib/ui/fonts";
+import Sidebar from "@/app/lib/ui/dashboard/sidebar";
+import Navbar from "@/app/lib/ui/dashboard/navbar";
 
 export default function Layout({
   children,
@@ -8,16 +8,16 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Navbar />
-      <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-        
-        <div className="w-full flex-none md:w-64">
-          <Sidebar />
-        </div>
-        <div className={`${poppins.className} grow md:overflow-y-auto`}>{children}</div>
+      <div className="flex flex-grow">
+        <Sidebar />
+        <main className={`${poppins.className} flex-grow overflow-y-auto w-0`}>
+          {children}
+        </main>
       </div>
     </div>
-
   );
 }
+
+

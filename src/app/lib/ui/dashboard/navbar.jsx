@@ -16,7 +16,6 @@ export default async function Navbar() {
                     Money Minder
                 </span>
             </Link>
-            
             <div className="flex gap-2">
                 {token ? (
                     <span className="text-emerald-500">
