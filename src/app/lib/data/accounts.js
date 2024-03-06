@@ -1,9 +1,15 @@
 import connection from "./connector";
 import { unstable_noStore as noStore } from 'next/cache';
 
-export function fetchAccountByUserID(userID) {
-    const sql = `SELECT * FROM accounts WHERE user_id = ?`;
-    const values = [userID];
+export function fetchAccountByID(accountID) {
+    const sql = `
+    SELECT accounts.*, accType.name as account_type_name
+    FROM accounts
+    JOIN accountTypes as accType
+    ON accounts.account_type_id = accType.account_type_id
+    WHERE account_id = ?
+    `;
+    const values = [accountID];
 
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {
@@ -11,7 +17,7 @@ export function fetchAccountByUserID(userID) {
                 return reject(error);
             }
 
-            resolve(results);
+            resolve(results[0]);
         });
     });
 }

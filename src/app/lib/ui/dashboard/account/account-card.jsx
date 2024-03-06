@@ -8,7 +8,7 @@ const trackingType = {
   auto: { icon: WrenchIcon, text: "AUTO TRACKING" },
 };
 
-export default function AccountCard({ accName, accType, balance, tracking }) {
+export default function AccountCard({ accID, accName, accType, balance, tracking }) {
   const { icon: TrackingIcon, text: trackingText } = trackingType[tracking];
   return (
     <section className="bg-gradient-to-r w-full max-w-96 h-[172px] from-purple-400 to-slate-200 shadow-md rounded-xl p-4 drop-shadow-lg hover:ring-4">
@@ -29,7 +29,7 @@ export default function AccountCard({ accName, accType, balance, tracking }) {
         <div className="flex  space-between w-full">
           <Link
             className="text-indigo-500 hover:text-blue-600 font-bold flex items-center gap-1 w-1/2"
-            href="/"
+            href={`/dashboard/accounts/details/${accID}`}
           >
             View Details <ArrowRightCircleIcon className="w-5 h-5" />
           </Link>

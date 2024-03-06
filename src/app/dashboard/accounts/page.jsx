@@ -47,6 +47,7 @@ export default async function AccountPage({ searchParams }) {
             return (
               <AccountCard
                 key={account.account_id}
+                accID={account.account_id}
                 accName={account.name}
                 accType={account.account_type_name}
                 balance={account.balance}
