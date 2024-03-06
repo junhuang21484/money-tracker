@@ -8,15 +8,15 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className = "h-full min-h-screen flex flex-col">
+    <div className="h-full min-h-screen flex flex-col">
       <Navbar />
-      <div className = "flex flex-1 md:overflow-hidden">
-        
-        <div className = "w-full md:w-64 hidden md:block">
+      <div className="flex flex-1 md:overflow-hidden">
+
+        <div className="w-full md:w-64 hidden md:block">
           <Sidebar />
+        </div>
+        <div className={`${poppins.className} grow md:overflow-y-auto`}>{children}</div>
       </div>
-      <div className = {`${poppins.className} grow md:overflow-y-auto`}>{children}</div>
     </div>
-  </div>
   );
 }

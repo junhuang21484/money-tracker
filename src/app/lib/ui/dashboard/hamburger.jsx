@@ -32,7 +32,7 @@ export default function HamburgerMenu() {
                 </Link>
             </div>
 
-            <div className="md:hidden flex items-center">
+            <div className="flex items-center">
                 <button onClick = {() => setIsOpen(!isOpen)}>
                     <svg className="w-6 h-6" fill="none" stroke="#ffffff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         {isOpen ? (
