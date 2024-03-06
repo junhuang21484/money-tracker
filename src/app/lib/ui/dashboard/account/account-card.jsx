@@ -1,8 +1,5 @@
 import Link from "next/link";
-import {
-  UserIcon,
-  WrenchIcon,
-} from "@heroicons/react/24/outline";
+import { UserIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
 import { formatCurrency } from "../../../utils";
 
@@ -28,17 +25,19 @@ export default function AccountCard({ accName, accType, balance, tracking }) {
         </div>
       </div>
 
-      <div className="flex fixed bottom-2 space-between w-full">
-        <Link
-          className="text-indigo-500 hover:text-blue-600 font-bold flex items-center gap-1 w-1/2"
-          href="/"
-        >
-          Transactions <ArrowRightCircleIcon className="w-5 h-5" />
-        </Link>
+      <div className="absolute bottom-0 left-0 w-full p-2">
+        <div className="flex  space-between w-full">
+          <Link
+            className="text-indigo-500 hover:text-blue-600 font-bold flex items-center gap-1 w-1/2"
+            href="/"
+          >
+            View Details <ArrowRightCircleIcon className="w-5 h-5" />
+          </Link>
 
-        <div className="flex justify-end gap-2 items-center font-bold text-gray-500">
-          <TrackingIcon className="w-4 h-4" />
-          <p className="text-sm">{trackingText}</p>
+          <div className="flex justify-end gap-2 items-center font-bold text-gray-500 w-1/2">
+            <TrackingIcon className="w-4 h-4" />
+            <p className="text-sm">{trackingText}</p>
+          </div>
         </div>
       </div>
     </section>

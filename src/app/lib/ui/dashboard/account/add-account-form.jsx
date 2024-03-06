@@ -70,7 +70,7 @@ export default function AddAccountForm({ userID, accountTypes }) {
 
       <button
         type="submit"
-        className="p-2 bg-emerald-500 rounded hover:bg-emerald-600"
+        className="p-2 bg-emerald-500 rounded-md hover:bg-emerald-400"
       >
         Create Account
       </button>
