@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers'; 
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
+import HamburgerMenu from './hamburger';
 
 export default async function Navbar() {
     const cookieStored = cookies();
@@ -16,7 +17,7 @@ export default async function Navbar() {
                     Money Minder
                 </span>
             </Link>
-            <div className="flex gap-2">
+            <div className="flex gap-2 ml-auto">
                 {token ? (
                     <span className="text-emerald-500">
                         Hello, {userName}
@@ -29,8 +30,8 @@ export default async function Navbar() {
                     </Link>
                 )}
             </div>
+            <HamburgerMenu />
         </nav>
     );
 }
-
 
