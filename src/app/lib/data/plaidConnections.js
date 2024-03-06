@@ -9,8 +9,7 @@ export function getPlaidConnectionByInstitutionName(userID, institutionName) {
       if (error) {
         return reject(error);
       }
-
-      resolve(results);
+      resolve(results[0]);
     });
   })
 }

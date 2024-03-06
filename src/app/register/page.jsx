@@ -15,7 +15,6 @@ export default function RegisterPage() {
   });
 
   useEffect(() => {
-    console.log(state);
     if (state.success) router.push("/login");
   }, [state]);
 

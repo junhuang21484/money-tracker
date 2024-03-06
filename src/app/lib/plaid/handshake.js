@@ -2,10 +2,10 @@
 
 import PLAID_CLIENT from "./plaid-client";
 import { PLAID_PRODUCTS, PLAID_COUNTRY_CODES, PLAID_REDIRECT_URI } from "./plaid-client"
-import { insertNewPlaidConnection } from "@/app/lib/data/plaidConnections"
+import { getPlaidConnectionByInstitutionName, insertNewPlaidConnection } from "@/app/lib/data/plaidConnections"
 import { fetchAccTypeToUserByName } from "@/app/lib/data/accountType";
-import { insertNewAccount } from "@/app/lib/data/accounts";
-import { getPlaidAccountInfoByID, insertNewPlaidAccountInfo } from "@/app/lib/data/plaidAccountInfo"
+import { insertNewAccount, fetchAccountByUserAndPlaidID } from "@/app/lib/data/accounts";
+import { insertNewPlaidAccountInfo } from "@/app/lib/data/plaidAccountInfo"
 import { getAccountLinkedUncached } from "./plaid-wrapper"
 import { revalidatePath } from "next/cache";
 
@@ -39,11 +39,11 @@ export async function exchangePublicToken(userID, publicToken, institutionName) 
 
     const accessToken = response.data.access_token;
     const itemID = response.data.item_id;
+    const existingPlaidConnection = await getPlaidConnectionByInstitutionName(userID, institutionName)
     const data = await getAccountLinkedUncached(accessToken)
     const linkedAccounts = data.accounts
     const accountsItemID = data.item.item_id
-    const addedAcc = await importLinkedAccount(userID, linkedAccounts, accountsItemID, institutionName) // Import all connected account into the database
-
+    const addedAcc = await importLinkedAccount(userID, existingPlaidConnection, linkedAccounts, accountsItemID, institutionName) // Import all connected account into the database
     // If at least one account is imported then save this connection otherwise this connection will not be saved
     if (addedAcc > 0) { 
       await insertNewPlaidConnection(itemID, accessToken, userID, institutionName) // Save connection to database
@@ -57,7 +57,7 @@ export async function exchangePublicToken(userID, publicToken, institutionName) 
   }
 }
 
-export async function importLinkedAccount(userID, linkedAccounts, accountsItemID, institutionName) {
+export async function importLinkedAccount(userID, existingPlaidConnection, linkedAccounts, accountsItemID, institutionName) {
   let addedAcc = 0;
   await Promise.all(linkedAccounts.map(async (account) => {
     const accountID = account.account_id;
@@ -67,8 +67,8 @@ export async function importLinkedAccount(userID, linkedAccounts, accountsItemID
 
     const accountSubtype = account.subtype;
 
-    const existingAcc = await getPlaidAccountInfoByID(plaidPersistentAccID);
-    if (existingAcc) return; // Skip since current already imported
+    const existingAcc = await fetchAccountByUserAndPlaidID(userID, plaidPersistentAccID);
+    if (existingPlaidConnection && existingAcc) return; // Skip since current already imported
 
     // If this is not a pre-define account type then it will get introduced to other category
     let accountTypeData = await fetchAccTypeToUserByName(userID, accountSubtype);

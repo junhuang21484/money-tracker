@@ -19,7 +19,8 @@
     "plaid": "^21.0.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-plaid-link": "^3.5.1"
+    "react-plaid-link": "^3.5.1",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
