@@ -20,7 +20,7 @@ export default function AddAccountPlaid({ userID }) {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center text-center">
       {!linkToken ? (
         <button className={PLAID_BTN_STYLING} disabled>
           <Image 
