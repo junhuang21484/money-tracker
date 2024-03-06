@@ -16,6 +16,21 @@ export function fetchAccountByUserID(userID) {
     });
 }
 
+export function fetchAccountByUserAndPlaidID(userID, plaidPersistentAccID) {
+    const sql = `SELECT * FROM accounts WHERE user_id = ? AND plaid_persistent_acc_id = ?`;
+    const values = [userID, plaidPersistentAccID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results[0]);
+        });
+    });
+}
+
 export async function fetchFilteredAccounts(userID, query, orderBy, filterDirection) {
     noStore();
     const acceptedOrderBy = ["Name", "Balance"]
