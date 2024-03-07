@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
 import {HamburgerMenu, Logout} from './hamburger';
-import LogOut from '@/app/lib/actions/user/logout'
 
 export default async function Navbar( ) {
     const cookieStored = cookies();
