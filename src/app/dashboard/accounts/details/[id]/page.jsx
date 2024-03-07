@@ -1,7 +1,7 @@
 'use server'
 
 import { fetchAccountByID } from "@/app/lib/data/accounts";
-import DetailCard from "@/app/lib/ui/dashboard/account/details/detail-card"
+import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card"
 import { formatCurrency } from "@/app/lib/utils";
 
 export default async function AccountDetails({ params }) {
@@ -14,10 +14,10 @@ export default async function AccountDetails({ params }) {
             <h1 className="text-2xl">{accountData.name}</h1>
 
             <div className="grid grid-cols-2 xl:grid-cols-4 w-full gap-4 mt-4">
-                <DetailCard title="Current Balance" value={accountBalance} type="balance" />
-                <DetailCard title="Account Type" value={accountData.account_type_name} type="accType"/>
-                <DetailCard title="Total Income" value={"TBD"} type="income" />
-                <DetailCard title="Total Expense" value={"TBD"} type="expense" />
+                <OverviewCard title="Current Balance" value={accountBalance} type="balance" />
+                <OverviewCard title="Account Type" value={accountData.account_type_name} type="accType"/>
+                <OverviewCard title="Total Income" value={"TBD"} type="income" />
+                <OverviewCard title="Total Expense" value={"TBD"} type="expense" />
             </div>
             
         </main>

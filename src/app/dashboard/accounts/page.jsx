@@ -1,5 +1,5 @@
-import AddAccountBtn from "@/app/lib/ui/dashboard/account/add-account-btn";
-import AccountCard from "@/app/lib/ui/dashboard/account/account-card";
+import AddAccountBtn from "@/app/lib/ui/dashboard-account/add-account-btn";
+import AccountCard from "@/app/lib/ui/dashboard-account/account-card";
 import SearchBar from "@/app/lib/ui/util/searchBar";
 import OrderFilter from "@/app/lib/ui/util/orderFilter";
 import { fetchAccTypeToUser } from "@/app/lib/data/accountType";

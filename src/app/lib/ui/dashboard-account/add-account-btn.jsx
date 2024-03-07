@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AddAccountModal from "@/app/lib/ui/dashboard/account/add-account-modal";
+import AddAccountModal from "@/app/lib/ui/dashboard-account/add-account-modal";
 
 export default function AddAccountBtn( {userID, accountTypes} ) {
   const [modalOpen, setModalOpen] = useState(false);
