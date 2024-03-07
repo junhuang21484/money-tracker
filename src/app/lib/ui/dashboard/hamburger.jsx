@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-export default function HamburgerMenu() {
+export function HamburgerMenu() {
     const [isOpen, setIsOpen] = useState(false);
 
     const closeMenu = () => {
@@ -19,7 +19,7 @@ export default function HamburgerMenu() {
     }
 
     return (
-        <nav className="flex justify-between items-center h-16 bg-gray-950 px-4 md:px-8 w-8">
+        <nav className="flex justify-between items-center h-16 bg-gray-950 px-4 md:px-8 w-10">
             <div className={toggleMenu()}>
                 <Link href="/dashboard" className="text-white font-bold text-lg md:text-xl px-2 py-1 hover:bg-gray-800 rounded-md md:mx-2" onClick={closeMenu}>
                 Overview
@@ -45,4 +45,9 @@ export default function HamburgerMenu() {
             </div>
         </nav>
     );
+}
+
+export function Logout() {
+    document.cookie = "token=; Max-Age=0; path=/;";
+    window.location.href = "/login";
 }

@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { cookies } from 'next/headers'; 
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
-import HamburgerMenu from './hamburger';
+import {HamburgerMenu, Logout} from './hamburger';
+import LogOut from '@/app/lib/actions/user/logout'
 
 export default async function Navbar( ) {
     const cookieStored = cookies();
@@ -24,6 +25,10 @@ export default async function Navbar( ) {
 
             <div className='md:hidden'>
                 <HamburgerMenu />
+            </div>
+
+            <div className="text-emerald-500 cursor-pointer" onClick={Logout}>
+                Logout
             </div>
         </nav>
     );
