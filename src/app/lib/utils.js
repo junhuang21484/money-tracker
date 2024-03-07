@@ -5,11 +5,9 @@ export const formatCurrency = (amount) => {
     });
   };
 
-export function findFieldGivenArrObj(arrayObj, fieldName, field, returnField) {
-  for (let i = 0; i < arrayObj.length; i++) {
-      if (arrayObj[i][fieldName] === field) {
-          return arrayObj[i][returnField];
-      }
+  export function convertToTitleCase(str) {
+    if (!str) {
+        return ""
+    }
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
   }
-  return null; 
-}

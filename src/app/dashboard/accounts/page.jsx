@@ -23,7 +23,7 @@ export default async function AccountPage({ searchParams }) {
   );
 
   return (
-    <main className="bg-gray-950 h-full">
+    <main className="bg-gray-950 h-full p-4">
       <div className="flex flex-col mx-2">
         <div className="flex justify-between">
           <h1 className="text-white text-3xl font-bold">Accounts</h1>
