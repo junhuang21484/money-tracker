@@ -1,13 +1,10 @@
 import Link from 'next/link';
-import { cookies } from 'next/headers'; 
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
-import { getDataFromToken } from "@/app/lib/data/jwtToken";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import HamburgerMenu from './hamburger';
 
 export default async function Navbar( ) {
-    const cookieStored = cookies();
-    const token = cookieStored.get("token");
-    const userId = getDataFromToken(token.value).user_id;
+    const userId = getLoggedInUserID()
     const userName = await fetchFirstNameByUserID(userId);
 
     return (

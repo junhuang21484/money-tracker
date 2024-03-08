@@ -4,13 +4,10 @@ import SearchBar from "@/app/lib/ui/util/searchBar";
 import OrderFilter from "@/app/lib/ui/util/orderFilter";
 import { fetchAccTypeToUser } from "@/app/lib/data/accountType";
 import { fetchFilteredAccounts } from "@/app/lib/data/accounts";
-import { getDataFromToken } from "@/app/lib/data/jwtToken";
-import { cookies } from "next/headers";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 export default async function AccountPage({ searchParams }) {
-  const storedCookies = cookies();
-  const token = storedCookies.get("token");
-  const userID = getDataFromToken(token.value).user_id;
+  const userID = getLoggedInUserID()
   const accountTypesAvailable = await fetchAccTypeToUser(userID);
   const query = searchParams?.query || "";
   const orderBy = searchParams?.orderBy || "";
