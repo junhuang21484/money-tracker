@@ -1,6 +1,8 @@
 "use client"
 import Link from 'next/link';
 import { useState } from 'react';
+import Logout from "@/app/lib/actions/user/logout"
+
 
 export function HamburgerMenu() {
     const [isOpen, setIsOpen] = useState(false);
@@ -9,8 +11,8 @@ export function HamburgerMenu() {
         setIsOpen(false);
     }
 
-    const handleLogout = () => {
-        Logout();
+    const handleLogout = async () => {
+        await Logout();
         closeMenu();
     }
 
@@ -35,7 +37,7 @@ export function HamburgerMenu() {
                 <Link href="/dashboard/budgets" className="text-white font-bold text-lg md:text-xl px-2 py-1 hover:bg-gray-800 rounded-md md:mx-2" onClick={closeMenu}>
                 Budgets
                 </Link>
-                <button onClick={handleLogout} className="text-white font-bold text-lg md:text-xl px-4 py-2 hover:bg-red-700 bg-red-600 rounded-md transition duration-300 ease-in-out">
+                <button onClick={async () => {Logout()}} className="text-white font-bold text-lg md:text-xl px-4 py-2 hover:bg-red-700 bg-red-600 rounded-md transition duration-300 ease-in-out">
                 Logout
                 </button>
             </div>
@@ -53,9 +55,4 @@ export function HamburgerMenu() {
             </div>
         </nav>
     );
-}
-
-export function Logout() {
-    document.cookie = "token=; Max-Age=0; path=/;";
-    window.location.href = "/login";
 }

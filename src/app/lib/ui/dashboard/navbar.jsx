@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { cookies } from 'next/headers'; 
+import { cookies } from 'next/headers';
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
-import {HamburgerMenu, Logout} from './hamburger';
+import { HamburgerMenu } from './hamburger';
 import { ChartPieIcon, CreditCardIcon, WalletIcon } from "@heroicons/react/24/outline"
+import LogoutBtn from "./logout-btn"
 
-export default async function Navbar( ) {
+export default async function Navbar() {
     const cookieStored = cookies();
     const token = cookieStored.get("token");
     const userId = getDataFromToken(token.value).user_id;
@@ -15,7 +16,7 @@ export default async function Navbar( ) {
         { name: "Overview", href: "/dashboard", icon: ChartPieIcon },
         { name: "Accounts", href: "/dashboard/accounts", icon: CreditCardIcon },
         { name: "Budget", href: "/dashboard/budget", icon: WalletIcon }
-      ]
+    ]
 
     const NavLink = ({ href, name, icon: Icon }) => (
         <Link href={href} className="flex items-center text-white px-4 py-2 hover:bg-gray-900 rounded">
@@ -30,7 +31,7 @@ export default async function Navbar( ) {
                 Money Minder
             </Link>
             <div className="hidden md:flex space-x-4">
-                {navLinks.map((link) => <NavLink key={link.name} href={link.href} name={link.name} icon={link.icon}/>)}
+                {navLinks.map((link) => <NavLink key={link.name} href={link.href} name={link.name} icon={link.icon} />)}
             </div>
 
             <div className="w-1/2 text-end">
@@ -39,12 +40,11 @@ export default async function Navbar( ) {
                 </span>
             </div>
 
+            <LogoutBtn />
             <div className='md:hidden'>
                 <HamburgerMenu />
             </div>
-            <div className="hidden md:flex text-emerald-500 cursor-pointer ml-4 px-3 py-2 bg-gray-800 rounded hover:bg-gray-700" onClick={Logout}>
-                Logout
-            </div>
+            
         </nav>
     );
 }
