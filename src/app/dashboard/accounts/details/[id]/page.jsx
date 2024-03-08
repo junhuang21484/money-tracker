@@ -5,9 +5,12 @@ import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card"
 import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name-edit"
 import { formatCurrency, convertToTitleCase } from "@/app/lib/utils";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
+import { updateAccountName } from "@/app/lib/data/accounts"
 import Link from "next/link";
 
 export default async function AccountDetails({ params }) {
+    const userID = getLoggedInUserID(getLoggedInUserID)
     const accountID = params.id
     const accountData = await fetchAccountByID(accountID)
     const accountBalance = formatCurrency(accountData.balance)
@@ -22,7 +25,7 @@ export default async function AccountDetails({ params }) {
                 Back
             </Link>
             
-            <AccountNameEdit accountName={accountData.name} />
+            <AccountNameEdit userID={userID} accountID={accountID} accountName={accountData.name} />
 
             <div className="rounded-lg border-2 p-4">
                 <h1 className="text-2xl mb-2">Overview</h1>

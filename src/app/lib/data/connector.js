@@ -1,7 +1,6 @@
-require('dotenv').config()
-const mysql = require('mysql2')
+import { createConnection } from 'mysql2';
 
-const connection = mysql.createConnection(process.env.DATABASE_URL)
+const connection = createConnection(process.env.DATABASE_URL)
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to MySQL database: ' + err.stack);
@@ -10,4 +9,4 @@ connection.connect((err) => {
     console.log('Connected to MySQL database as ID ' + connection.threadId);
 });
 
-module.exports = connection;
+export default connection;

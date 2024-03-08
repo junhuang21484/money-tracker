@@ -67,6 +67,25 @@ export async function fetchFilteredAccounts(userID, query, orderBy, filterDirect
     });
 }
 
+export function updateAccountName(userID, accountID, newName) {
+    const accountInfo = fetchAccountByID(accountID)
+    console.log(accountInfo)
+    if (userID != accountInfo.user_id) return {}
+
+    const sql = `UPDATE accounts SET name=? WHERE account_id=?`;
+    const values = [newName, accountID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
 export function insertNewAccount(userID, accountTypeID, plaidPersistentAccID, name, balance) {
     const sql = `INSERT INTO accounts (account_id, user_id, account_type_id, plaid_persistent_acc_id, name, balance) VALUES (UUID(), ?, ?, ?, ?, ?)`;
     const values = [userID, accountTypeID, plaidPersistentAccID, name, balance];
