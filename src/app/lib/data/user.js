@@ -88,11 +88,15 @@ export function fetchEmailByUserID(userID) {
   });
 }
 
-export function updateUser(email, password, firstName, lastName, role) {
+export function updateUserByID(userID, updatedUserData) {
+  const { firstName, lastName, email, password } = updatedUserData;
+
   const sql = `UPDATE Users
-                SET password = ?, first_name = ?, last_name = ?, role = ?
-                WHERE email = ?`;
-  const values = [password, firstName, lastName, role, email];
+               SET first_name = ?, last_name = ?, email = ?, password = ?
+               WHERE user_id = ?`;
+
+  const values = [firstName, lastName, email, password, userID];
+
   return new Promise((resolve, reject) => {
     connection.query(sql, values, (error, results) => {
       if (error) {

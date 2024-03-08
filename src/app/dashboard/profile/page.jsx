@@ -1,6 +1,3 @@
-// ProfilePage.js
-
-import React from "react";
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { fetchLastNameByUserID } from "@/app/lib/data/user";
 import { fetchEmailByUserID } from "@/app/lib/data/user";
@@ -11,10 +8,10 @@ import EditProfileBtn from "@/app/lib/ui/dashboard/profile/edit-profile-btn";
 const ProfilePage = async () => {
   const storedCookies = cookies();
   const token = storedCookies.get("token");
-  const userId = getDataFromToken(token.value).user_id;
-  const firstName = await fetchFirstNameByUserID(userId);
-  const lastName = await fetchLastNameByUserID(userId);
-  const email = await fetchEmailByUserID(userId);
+  const userID = getDataFromToken(token.value).user_id;
+  const firstName = await fetchFirstNameByUserID(userID);
+  const lastName = await fetchLastNameByUserID(userID);
+  const email = await fetchEmailByUserID(userID);
 
   return (
     <div className="ml-4 mr-8">
@@ -36,7 +33,7 @@ const ProfilePage = async () => {
             <p className="text-white mt-2">Email: {email}</p>
           </div>
           <div className="flex  mt-4">
-            <EditProfileBtn />
+            <EditProfileBtn userID={userID} />
             <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-800 ml-4">
               Delete Account
             </button>

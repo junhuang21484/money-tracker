@@ -1,9 +1,10 @@
+"use client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useFormState, useFormStatus } from "react-dom";
 import clsx from "clsx";
 import Update from "@/app/lib/actions/user/update";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function EditProfileModal({ closeModal }) {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function EditProfileModal({ closeModal }) {
                     type="text"
                     name="firstName"
                     id="firstName"
+                    required
                     className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
                 </div>
@@ -55,6 +57,7 @@ export default function EditProfileModal({ closeModal }) {
                     type="text"
                     name="lastName"
                     id="lastName"
+                    required
                     className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
                 </div>
@@ -71,6 +74,7 @@ export default function EditProfileModal({ closeModal }) {
                   type="email"
                   name="email"
                   id="email"
+                  required
                   className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
@@ -86,6 +90,7 @@ export default function EditProfileModal({ closeModal }) {
                   type="password"
                   name="password"
                   id="password"
+                  required
                   className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
@@ -100,15 +105,19 @@ export default function EditProfileModal({ closeModal }) {
                   type="password"
                   name="confirmPassword"
                   id="confirmPassword"
+                  required
                   className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
               {state.errorMsg && (
-                <p className="text-center text-red-500 mb-2">
+                <p
+                  className={`text-center text-${
+                    state.success ? "green" : "red"
+                  }-500 mb-2`}
+                >
                   {state.errorMsg}
                 </p>
               )}
-
               <div className="mt-2">
                 <UpdateBtn />
               </div>

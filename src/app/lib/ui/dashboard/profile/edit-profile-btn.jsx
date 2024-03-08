@@ -3,14 +3,13 @@
 import { useState } from "react";
 import EditProfileModal from "@/app/lib/ui/dashboard/profile/edit-profile-modal";
 
-export default function EditProfileBtn({ userID, accountTypes }) {
+export default function EditProfileBtn({ userID }) {
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <div>
       {modalOpen && (
         <EditProfileModal
           userID={userID}
-          accountTypes={accountTypes}
           closeModal={() => setModalOpen(false)}
         />
       )}
