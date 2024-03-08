@@ -1,6 +1,7 @@
+'use server'
 import connection from "./connector";
 
-export function fetchAccTypeToUser(userID) {
+export async function fetchAccTypeToUser(userID) {
     const sql = `SELECT * FROM accountTypes WHERE user_id='DEFAULT' OR user_id = ?`;
     const values = [userID];
 
@@ -15,7 +16,7 @@ export function fetchAccTypeToUser(userID) {
     });
 }
 
-export function fetchAccTypeToUserByName(userID, name) {
+export async function fetchAccTypeToUserByName(userID, name) {
     const sql = `SELECT * FROM accountTypes WHERE (user_id='DEFAULT' OR user_id=?) AND name=?`;
     const values = [userID, name];
 

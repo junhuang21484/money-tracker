@@ -1,6 +1,7 @@
+'use server'
 import connection from "./connector";
 
-export function getPlaidAccountInfoByID(plaidPersistentAccID) {
+export async function getPlaidAccountInfoByID(plaidPersistentAccID) {
   const sql = `SELECT * FROM plaidAccountInfo WHERE plaid_persistent_acc_id=?`;
   const values = [plaidPersistentAccID];
 
@@ -15,7 +16,7 @@ export function getPlaidAccountInfoByID(plaidPersistentAccID) {
   })
 }
 
-export function insertNewPlaidAccountInfo(plaidPersistentAccID, accountID, itemID) {
+export async function insertNewPlaidAccountInfo(plaidPersistentAccID, accountID, itemID) {
   const sql = `INSERT INTO plaidAccountInfo (plaid_persistent_acc_id, plaid_acc_id, item_id) VALUES (?, ?, ?)`;
   const values = [plaidPersistentAccID, accountID, itemID];
 
