@@ -4,7 +4,7 @@ import { fetchAccountByID } from "@/app/lib/data/accounts";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card"
 import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name-edit"
 import { formatCurrency, convertToTitleCase } from "@/app/lib/utils";
-import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftStartOnRectangleIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
 import Link from "next/link";
 
@@ -14,15 +14,29 @@ export default async function AccountDetails({ params }) {
     const accountData = await fetchAccountByID(accountID)
     const accountBalance = formatCurrency(accountData.balance)
 
+    if (userID != accountData.user_id) {
+        return <div>User not permitted</div>
+    }
+
     return (
         <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
-            <Link 
-                href="/dashboard/accounts"
-                className="bg-emerald-500 hover:bg-emerald-400 hover:text-blue-500 rounded px-4 py-2 w-fit flex gap-2 items-center justify-center"
-            >
-                <ArrowLeftStartOnRectangleIcon className="w-6 h-6"/>
-                Back
-            </Link>
+            <div className="flex w-full justify-between">
+                <Link 
+                    href="/dashboard/accounts"
+                    className="bg-emerald-500 hover:bg-emerald-400 hover:text-blue-500 rounded px-4 py-2 w-fit flex gap-2 items-center justify-center"
+                >
+                    <ArrowLeftStartOnRectangleIcon className="w-6 h-6"/>
+                    Back
+                </Link>
+                <Link 
+                    href={`/dashboard/accounts/${accountID}/transactions`}
+                    className="bg-blue-500 hover:bg-blue-400 hover:text-blue-500 rounded px-4 py-2 w-fit flex gap-2 items-center justify-center"
+                >
+                    <DocumentTextIcon className="w-6 h-6"/>
+                    Transactions
+                </Link>
+            </div>
+            
             
             <AccountNameEdit userID={userID} accountID={accountID} accountName={accountData.name} />
 

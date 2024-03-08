@@ -4,7 +4,7 @@ import { useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { updateAccountName } from "@/app/lib/data/accounts"
 
-export default function AccountNameEdit({ userID, accountID, accountName, serverAction }) {
+export default function AccountNameEdit({ userID, accountID, accountName }) {
   const [accName, setAccName] = useState(accountName);
   const [editOpen, setEditOpen] = useState(false);
 

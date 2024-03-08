@@ -29,7 +29,7 @@ export default function AccountCard({ accID, accName, accType, balance, tracking
         <div className="flex  space-between w-full">
           <Link
             className="text-indigo-500 hover:text-blue-600 font-bold flex items-center gap-1 w-1/2"
-            href={`/dashboard/accounts/details/${accID}`}
+            href={`/dashboard/accounts/${accID}/details`}
           >
             View Details <ArrowRightCircleIcon className="w-5 h-5" />
           </Link>
