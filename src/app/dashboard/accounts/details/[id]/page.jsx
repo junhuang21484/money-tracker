@@ -24,12 +24,16 @@ export default async function AccountDetails({ params }) {
             
             <AccountNameEdit accountName={accountData.name} />
 
-            <div className="grid grid-cols-2 xl:grid-cols-4 w-full gap-4">
-                <OverviewCard title="Current Balance" value={accountBalance} type="balance" />
-                <OverviewCard title="Account Type" value={convertToTitleCase(accountData.account_type_name)} type="accType"/>
-                <OverviewCard title="Total Income" value={"TBD"} type="income" />
-                <OverviewCard title="Total Expense" value={"TBD"} type="expense" />
+            <div className="rounded-lg border-2 p-4">
+                <h1 className="text-2xl mb-2">Overview</h1>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
+                    <OverviewCard title="Current Balance" value={accountBalance} type="balance" />
+                    <OverviewCard title="Account Type" value={convertToTitleCase(accountData.account_type_name)} type="accType"/>
+                    <OverviewCard title="Total Income" value={"TBD"} type="income" />
+                    <OverviewCard title="Total Expense" value={"TBD"} type="expense" />
+                </div>
             </div>
+            
             
         </main>
     );
