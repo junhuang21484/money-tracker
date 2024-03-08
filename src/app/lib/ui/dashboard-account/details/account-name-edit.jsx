@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { updateAccountName } from "@/app/lib/data/accounts"
 
 export default function AccountNameEdit({ userID, accountID, accountName, serverAction }) {
   const [accName, setAccName] = useState(accountName);
@@ -31,6 +32,7 @@ export default function AccountNameEdit({ userID, accountID, accountName, server
           <button
             onClick={async () => {
               setEditOpen(false)
+              await updateAccountName(userID, accountID, accName)
             }}
             className="bg-emerald-500 hover:bg-emerald-400 rounded h-full px-4 py-1"
           >

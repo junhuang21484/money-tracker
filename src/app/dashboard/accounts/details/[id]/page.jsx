@@ -6,7 +6,6 @@ import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name
 import { formatCurrency, convertToTitleCase } from "@/app/lib/utils";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
-import { updateAccountName } from "@/app/lib/data/accounts"
 import Link from "next/link";
 
 export default async function AccountDetails({ params }) {

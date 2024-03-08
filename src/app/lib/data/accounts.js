@@ -1,7 +1,8 @@
+'use server'
 import connection from "./connector";
 import { unstable_noStore as noStore } from 'next/cache';
 
-export function fetchAccountByID(accountID) {
+export async function fetchAccountByID(accountID) {
     const sql = `
     SELECT accounts.*, accType.name as account_type_name
     FROM accounts
@@ -22,7 +23,7 @@ export function fetchAccountByID(accountID) {
     });
 }
 
-export function fetchAccountByUserAndPlaidID(userID, plaidPersistentAccID) {
+export async function fetchAccountByUserAndPlaidID(userID, plaidPersistentAccID) {
     const sql = `SELECT * FROM accounts WHERE user_id = ? AND plaid_persistent_acc_id = ?`;
     const values = [userID, plaidPersistentAccID];
 
@@ -67,9 +68,8 @@ export async function fetchFilteredAccounts(userID, query, orderBy, filterDirect
     });
 }
 
-export function updateAccountName(userID, accountID, newName) {
-    const accountInfo = fetchAccountByID(accountID)
-    console.log(accountInfo)
+export async function updateAccountName(userID, accountID, newName) {
+    const accountInfo = await fetchAccountByID(accountID)
     if (userID != accountInfo.user_id) return {}
 
     const sql = `UPDATE accounts SET name=? WHERE account_id=?`;
@@ -78,15 +78,12 @@ export function updateAccountName(userID, accountID, newName) {
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {
             if (error) {
-                return reject(error);
             }
-
-            resolve(results);
         });
     });
 }
 
-export function insertNewAccount(userID, accountTypeID, plaidPersistentAccID, name, balance) {
+export async function insertNewAccount(userID, accountTypeID, plaidPersistentAccID, name, balance) {
     const sql = `INSERT INTO accounts (account_id, user_id, account_type_id, plaid_persistent_acc_id, name, balance) VALUES (UUID(), ?, ?, ?, ?, ?)`;
     const values = [userID, accountTypeID, plaidPersistentAccID, name, balance];
 
