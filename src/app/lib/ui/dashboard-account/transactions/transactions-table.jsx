@@ -1,3 +1,5 @@
+'use client'
+
 export default function TransactionsTable() {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -16,21 +18,11 @@ export default function TransactionsTable() {
                 </label>
               </div>
             </th>
-            <th scope="col" className="px-6 py-3">
-              Name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Date
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Category
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Amount
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Actions
-            </th>
+            <th scope="col" className="px-6 py-3">Name</th>
+            <th scope="col" className="px-6 py-3">Date</th>
+            <th scope="col" className="px-6 py-3">Category</th>
+            <th scope="col" className="px-6 py-3">Amount</th>
+            <th scope="col" className="px-6 py-3">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +39,7 @@ export default function TransactionsTable() {
                 </label>
               </div>
             </td>
-            <th className="px-6 py-4 font-medium">Spotify</th>
+            <td className="px-6 py-4">Spotify</td>
             <td className="px-6 py-4">March 1st, 2024</td>
             <td className="px-6 py-4">Music</td>
             <td className="px-6 py-4">$12.99</td>
