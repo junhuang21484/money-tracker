@@ -68,17 +68,18 @@ export async function fetchFilteredAccounts(userID, query, orderBy, filterDirect
     });
 }
 
-export async function updateAccountName(userID, accountID, newName) {
-    const accountInfo = await fetchAccountByID(accountID)
-    if (userID != accountInfo.user_id) return {}
-
+export async function updateAccountName(accountID, newName) {
     const sql = `UPDATE accounts SET name=? WHERE account_id=?`;
     const values = [newName, accountID];
 
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {
             if (error) {
+                console.log(error)
+                return reject(error);
             }
+
+            resolve(results);
         });
     });
 }
