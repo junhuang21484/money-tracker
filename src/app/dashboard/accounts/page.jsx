@@ -20,7 +20,7 @@ export default async function AccountPage({ searchParams }) {
   );
 
   return (
-    <main className="bg-gray-950 h-full p-4">
+    <main className="bg-gray-950 h-full w-full flex flex-col p-4">
       <div className="flex flex-col mx-2">
         <div className="flex justify-between">
           <h1 className="text-white text-3xl font-bold">Accounts</h1>
@@ -32,7 +32,7 @@ export default async function AccountPage({ searchParams }) {
             <SearchBar placeholder="Search accounts by name, balance, account type" />
           </div>
 
-          <div className="sm:w-2/5 2xl:w-1/5">
+          <div className="sm:w-2/5 2xl:w-1/5 ">
             <OrderFilter filterOption={["", "Name", "Balance"]} />
           </div>
         </div>

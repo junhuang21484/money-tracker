@@ -34,7 +34,7 @@ export default function OrderFilter( {filterOption} ) {
     }
 
     return (
-        <div className="flex w-full h-full items-center gap-4 text-white">
+        <div className="flex w-full h-full items-center justify-end gap-4 text-white">
             <h1>Order By: </h1>
             <select className="px-4 py-2 text-gray-700 bg-white border rounded-md" onChange={handleFilterChange}>
                 {filterOption.map((option) => (
