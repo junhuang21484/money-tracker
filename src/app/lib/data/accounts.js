@@ -84,6 +84,22 @@ export async function updateAccountName(accountID, newName) {
     });
 }
 
+export async function updateAccountBalance(accountID, newBalance) {
+    const sql = `UPDATE accounts SET balance=? WHERE account_id=?`;
+    const values = [newBalance, accountID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                console.log(error)
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
 export async function insertNewAccount(userID, accountTypeID, plaidPersistentAccID, name, balance) {
     const sql = `INSERT INTO accounts (account_id, user_id, account_type_id, plaid_persistent_acc_id, name, balance) VALUES (UUID(), ?, ?, ?, ?, ?)`;
     const values = [userID, accountTypeID, plaidPersistentAccID, name, balance];

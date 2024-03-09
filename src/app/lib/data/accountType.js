@@ -30,3 +30,18 @@ export async function fetchAccTypeToUserByName(userID, name) {
         });
     });
 }
+
+export async function fetchAccTypeByID(accountTypeID,) {
+    const sql = `SELECT * FROM accountTypes WHERE account_type_id=?`;
+    const values = [accountTypeID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            
+            resolve(results[0]);
+        });
+    });
+}
