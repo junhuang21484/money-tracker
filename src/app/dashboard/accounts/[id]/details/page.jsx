@@ -15,6 +15,8 @@ export default async function AccountDetails({ params }) {
   const userID = getLoggedInUserID(getLoggedInUserID);
   const accountID = params.id;
   const accountData = await fetchAccountByID(accountID);
+  if (!accountData) return (<div>Account Not Found</div>)
+  
   const accountBalance = formatCurrency(accountData.balance);
 
   if (userID != accountData.user_id) {
