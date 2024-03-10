@@ -2,9 +2,10 @@
 
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
 import { fetchPlaidAccountInfoByPlaidAccId, fetchPlaidAccountRelatedToItemID } from "@/app/lib/data/plaidAccountInfo"
-import { updateAccountBalance } from "@/app/lib/data/accounts"
+import { updateAccountBalanceByPlaidAccountID } from "@/app/lib/data/accounts"
 import { fetchPlaidConnectionByItemId, updatePlaidTransactionCursor } from "@/app/lib/data/plaidConnections"
 import { insertNewTransaction, updateTransactionFromPlaid, deleteTransactionByPlaid, fetchTransactionByPlaidTransID } from "@/app/lib/data/transactions"
+import { getAccountLinkedUncached } from "@/app/lib/plaid/plaid-wrapper"
 import { fetchNewSyncData } from "@/app/lib/plaid/plaid-wrapper"
 import { revalidatePath } from "next/cache"
 
@@ -18,13 +19,13 @@ class SimpleTransaction {
         name,
         amount,
     ) {
-        this.plaidTransactionId = plaidTransactionId;
-        this.userId = userId;
-        this.accountId = accountId;
-        this.category = category;
-        this.date = date;
-        this.name = name;
-        this.amount = amount;
+        this.plaidTransactionId = plaidTransactionId
+        this.userId = userId
+        this.accountId = accountId
+        this.category = category
+        this.date = date
+        this.name = name
+        this.amount = amount
     }
 
     static fromPlaidTransaction(txnObj, userId) {
@@ -36,7 +37,7 @@ class SimpleTransaction {
             txnObj.date,
             txnObj.merchant_name ?? txnObj.name,
             txnObj.amount
-        );
+        )
     }
 }
 
@@ -58,31 +59,27 @@ export default async function syncTransactions(accountData) {
         const allRelatedAccount = await fetchPlaidAccountRelatedToItemID(plaidConnectionInfo.item_id)
         const plaidToAccountMap = {}
         allRelatedAccount.forEach(accountInfo => {
-            const { plaid_acc_id, account_id, balance, is_depository, created_at } = accountInfo
-            plaidToAccountMap[plaid_acc_id] = {
-                account_id,
-                balance,
-                created_at: new Date(created_at),
-                addBalFactor: is_depository ? -1 : 1,
-                remModBalFactor: is_depository ? 1 : -1
+            const { plaid_account_id, account_id } = accountInfo
+            plaidToAccountMap[plaid_account_id] = {
+                account_id
             }
         })
+        const summary = { added: 0, removed: 0, modified: 0 }
 
-        console.log(plaidAccountInfo, plaidConnectionInfo, newTransactions, plaidToAccountMap)
-
-        const summary = { added: 0, removed: 0, modified: 0 };
         // Handle added transactions
         await Promise.all(
             newTransactions.added.map(async (txnObj) => {
                 const transObj = SimpleTransaction.fromPlaidTransaction(txnObj, loggedInUser)
                 const accInfo = plaidToAccountMap[transObj.accountId]
-                const transactionDate = transObj.date
-                const result = await insertNewTransaction(accInfo['account_id'], transObj.name, transObj.amount, transObj.category, transObj.date, transObj.plaidTransactionId)
-                if (result) {
-                    summary.added += 1;
-                    if (transactionDate > accInfo.created_at) { // If date is before created it should not affect current balance
-                        const modifiedBalance = accInfo.balance + (transObj.amount * accInfo.addBalFactor);
+                const transactionDate = new Date(transObj.date)
+                // const result = await insertNewTransaction(accInfo['account_id'], transObj.name, transObj.amount, transObj.category, transObj.date, transObj.plaidTransactionId)
+                await new Promise(resolve => setTimeout(resolve, 1000))
+                if (true) {
+                    summary.added += 1
+                    if (transactionDate > accInfo.created_at) {
+                        const modifiedBalance = Number((accInfo.balance + (transObj.amount * accInfo.addBalFactor)).toFixed(2))
                         plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance }
+                        console.log(modifiedBalance, accInfo.balance, transObj.amount, transObj.accountId)
                     }
                 }
             })
@@ -99,10 +96,10 @@ export default async function syncTransactions(accountData) {
                     summary.modified += 1
                     const diff = oldTransactionData.amount - transObj.amount
                     const modifiedBalance = accInfo.balance + (diff * accInfo.remModBalFactor)
-                    plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance };
+                    plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance }
                 }
             })
-        );
+        )
 
         // Handle deleted transaction
         await Promise.all(
@@ -117,19 +114,20 @@ export default async function syncTransactions(accountData) {
                     plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance }
                 }
             })
-        );
+        )
 
         // Save the cursor
         await updatePlaidTransactionCursor(plaidConnectionInfo.item_id, newTransactions.nextCursor)
-
+        
         // Update balance
-        Promise.all(
-            Object.keys(plaidToAccountMap).forEach(async (plaidAccId) => {
-                const accID = plaidToAccountMap[plaidAccId]['account_id']
-                await updateAccountBalance(accID, plaidToAccountMap[plaidAccId]['balance'])
+        const accountDataPlaid = await getAccountLinkedUncached(plaidConnectionInfo.access_token)
+        const accounts = accountDataPlaid['accounts']
+        await Promise.all(
+            accounts.map(async (account) => {
+                await updateAccountBalanceByPlaidAccountID(account.account_id, account.balances.current)
             })
         )
-        
+
         revalidatePath('/dashboard/accounts')
         return { success: true, msg: `Transaction Synced:\nAdded: ${summary.added}\nModified: ${summary.modified}\nRemoved: ${summary.removed}` }
     }

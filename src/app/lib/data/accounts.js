@@ -102,6 +102,23 @@ export async function updateAccountBalance(accountID, newBalance) {
     });
 }
 
+export async function updateAccountBalanceByPlaidAccountID(plaidAccountId, newBalance) {
+    const sql = `UPDATE accounts SET balance=? WHERE plaid_account_id=?`;
+    const values = [newBalance, plaidAccountId];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                console.log(error)
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
+
 export async function insertNewAccount(userID, accountTypeID, plaidAccountID, name, balance) {
     const sql = `INSERT INTO accounts (account_id, user_id, account_type_id, plaid_account_id, name, balance) VALUES (UUID(), ?, ?, ?, ?, ?)`;
     const values = [userID, accountTypeID, plaidAccountID, name, balance];
