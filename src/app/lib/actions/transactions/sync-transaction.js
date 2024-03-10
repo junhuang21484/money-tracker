@@ -1,7 +1,7 @@
 'use server'
 
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
-import { fetchPlaidAccountInfoByPersistID, fetchPlaidAccountRelatedToItemID } from "@/app/lib/data/plaidAccountInfo"
+import { fetchPlaidAccountInfoByPlaidAccId, fetchPlaidAccountRelatedToItemID } from "@/app/lib/data/plaidAccountInfo"
 import { updateAccountBalance } from "@/app/lib/data/accounts"
 import { fetchPlaidConnectionByItemId, updatePlaidTransactionCursor } from "@/app/lib/data/plaidConnections"
 import { insertNewTransaction, updateTransactionFromPlaid, deleteTransactionByPlaid, fetchTransactionByPlaidTransID } from "@/app/lib/data/transactions"
@@ -45,7 +45,7 @@ export default async function syncTransactions(accountData) {
         const loggedInUser = getLoggedInUserID()
         if (!loggedInUser || (loggedInUser != accountData.user_id)) return { success: false, msg: "Unauthorized user" }
 
-        const plaidAccountInfo = await fetchPlaidAccountInfoByPersistID(accountData.plaid_persistent_acc_id)
+        const plaidAccountInfo = await fetchPlaidAccountInfoByPlaidAccId(accountData.plaid_account_id)
         if (!plaidAccountInfo) return { success: false, msg: "Only plaid account can sync transaction(s)" }
 
         const plaidConnectionInfo = await fetchPlaidConnectionByItemId(plaidAccountInfo.item_id, loggedInUser)
@@ -67,6 +67,8 @@ export default async function syncTransactions(accountData) {
                 remModBalFactor: is_depository ? 1 : -1
             }
         })
+
+        console.log(plaidAccountInfo, plaidConnectionInfo, newTransactions, plaidToAccountMap)
 
         const summary = { added: 0, removed: 0, modified: 0 };
         // Handle added transactions

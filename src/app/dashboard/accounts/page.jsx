@@ -48,7 +48,7 @@ export default async function AccountPage({ searchParams }) {
                 accName={account.name}
                 accType={account.account_type_name}
                 balance={account.balance}
-                tracking={account.plaid_persistent_acc_id ? "auto" : "manual"}
+                tracking={account.plaid_account_id ? "auto" : "manual"}
               />
             );
           })}

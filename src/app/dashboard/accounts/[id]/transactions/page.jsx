@@ -32,7 +32,7 @@ export default async function AccountTransaction({ params }) {
           Back
         </Link>
 
-        {accountData.plaid_persistent_acc_id ? (
+        {accountData.plaid_account_id ? (
           <SyncTransactionBtn accountData={accountData} />
         ) : (
           <AddTransactionBtn accountData={accountData} />

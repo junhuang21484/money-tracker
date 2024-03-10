@@ -23,9 +23,9 @@ export async function fetchAccountByID(accountID) {
     });
 }
 
-export async function fetchAccountByUserAndPlaidID(userID, plaidPersistentAccID) {
-    const sql = `SELECT * FROM accounts WHERE user_id = ? AND plaid_persistent_acc_id = ?`;
-    const values = [userID, plaidPersistentAccID];
+export async function fetchAccountByUserAndPlaidID(userID, plaidAccountId) {
+    const sql = `SELECT * FROM accounts WHERE user_id = ? AND plaid_account_id = ?`;
+    const values = [userID, plaidAccountId];
 
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {
@@ -54,6 +54,8 @@ export async function fetchFilteredAccounts(userID, query, orderBy, filterDirect
 
     if (orderBy && acceptedOrderBy.includes(orderBy)) {
         sql += `\nORDER BY accounts.${orderBy} ${filterDirection === "ASC" || filterDirection === "DESC" ? filterDirection : ""}`
+    } else {
+        sql += '\nORDER by accounts.name'
     }
 
     return new Promise((resolve, reject) => {
@@ -100,9 +102,9 @@ export async function updateAccountBalance(accountID, newBalance) {
     });
 }
 
-export async function insertNewAccount(userID, accountTypeID, plaidPersistentAccID, name, balance) {
-    const sql = `INSERT INTO accounts (account_id, user_id, account_type_id, plaid_persistent_acc_id, name, balance) VALUES (UUID(), ?, ?, ?, ?, ?)`;
-    const values = [userID, accountTypeID, plaidPersistentAccID, name, balance];
+export async function insertNewAccount(userID, accountTypeID, plaidAccountID, name, balance) {
+    const sql = `INSERT INTO accounts (account_id, user_id, account_type_id, plaid_account_id, name, balance) VALUES (UUID(), ?, ?, ?, ?, ?)`;
+    const values = [userID, accountTypeID, plaidAccountID, name, balance];
 
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {
