@@ -4,13 +4,16 @@ import { fetchTransactionsByAccount } from "@/app/lib/data/transactions";
 import Link from "next/link";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import TransactionsTable from "@/app/lib/ui/dashboard-account/transactions/transactions-table";
-import { AddTransactionBtn } from "@/app/lib/ui/dashboard-account/transactions/buttons";
+import {
+  AddTransactionBtn,
+  SyncTransactionBtn,
+} from "@/app/lib/ui/dashboard-account/transactions/buttons";
 
 export default async function AccountTransaction({ params }) {
   const userID = getLoggedInUserID(getLoggedInUserID);
   const accountID = params.id;
   const accountData = await fetchAccountByID(accountID);
-  const transactionData = await fetchTransactionsByAccount(accountID)
+  const transactionData = await fetchTransactionsByAccount(accountID);
 
   if (userID != accountData.user_id) {
     return <div>User not permitted</div>;
@@ -28,7 +31,12 @@ export default async function AccountTransaction({ params }) {
           <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
           Back
         </Link>
-        <AddTransactionBtn accountData={accountData} />
+
+        {accountData.plaid_persistent_acc_id ? (
+          <SyncTransactionBtn accountData={accountData} />
+        ) : (
+          <AddTransactionBtn accountData={accountData} />
+        )}
       </div>
 
       <TransactionsTable transactions={transactionData} />
