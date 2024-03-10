@@ -1,5 +1,4 @@
 'use server'
-
 import { fetchAccountByID } from "@/app/lib/data/accounts";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card"
 import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name-edit"
@@ -7,6 +6,7 @@ import { formatCurrency, convertToTitleCase } from "@/app/lib/utils";
 import { ArrowLeftStartOnRectangleIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
 import Link from "next/link";
+import SimpleGraph from "@/app/lib/ui/dashboard-account/details/balance-graph";
 
 export default async function AccountDetails({ params }) {
     const userID = getLoggedInUserID(getLoggedInUserID)
@@ -48,9 +48,16 @@ export default async function AccountDetails({ params }) {
                     <OverviewCard title="Total Income" value={"TBD"} type="income" />
                     <OverviewCard title="Total Expense" value={"TBD"} type="expense" />
                 </div>
+            </div>  
+            <div className="rounded-lg border-2 p-4">
+                <h1 className="text-2xl mb-2">Balance Over Time</h1>
+                <SimpleGraph accountData={accountData} />
             </div>
-            
+                
             
         </main>
     );
 }
+
+//left graph for balance over time
+//right graph for expenses by category

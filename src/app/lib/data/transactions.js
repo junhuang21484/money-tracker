@@ -18,7 +18,7 @@ export async function insertNewTransaction(accountID, name, amount, category, da
 }
 
 export async function fetchTransactionsByAccount(accountID) {
-    const sql = `SELECT * FROM transactions WHERE account_Id=?`;
+    const sql = `SELECT * FROM transactions WHERE account_Id=? ORDER BY date DESC`;
     const values = [accountID];
 
     return new Promise((resolve, reject) => {
