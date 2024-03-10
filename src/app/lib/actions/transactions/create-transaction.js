@@ -20,7 +20,6 @@ export default async function createNewTransaction(accountData, prevState, formD
 
         // Change the balance only if transaction is made after account creation
         if (transactionDateObj > accountCreated) {
-            console.log("UPDATING BALANCE")
             const newBalance = accountData.balance + parseFloat(transactionAmount)
             await updateAccountBalance(accountData.account_id, newBalance)
         }

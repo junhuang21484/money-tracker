@@ -6,7 +6,7 @@ export function getDataFromToken(tokenVal) {
         const decodedToken = jwt.verify(tokenVal, process.env.JWT_SECRET);
         return { user_id: decodedToken.user_id }
     } catch (error) {
-        console.log(error.message)
+        console.log(error)
     }
 }
 
@@ -17,6 +17,6 @@ export function getLoggedInUserID() {
         const decodedToken = jwt.verify(tokenVal, process.env.JWT_SECRET);
         return decodedToken.user_id
     } catch (error) {
-        console.log(error.message)
+        console.log(error)
     }
 }

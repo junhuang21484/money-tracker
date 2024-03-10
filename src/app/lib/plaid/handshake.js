@@ -52,7 +52,7 @@ export async function exchangePublicToken(userID, publicToken, institutionName) 
     } else if (addedAcc == 0) return { success: true, msg: "All account(s) ALREADY imported" };
     
   } catch (error) {
-    console.log(error.message)
+    console.log(error)
     return { success: false, msg: "Internal Errors" }
   }
 }

@@ -10,6 +10,6 @@ export default async function editAccountName(userID, accountID, newName) {
         await updateAccountName(accountID, newName)
         revalidatePath("/dashboard/accounts")
     } catch (error) {
-        console.log(error.message)
+        console.log(error)
     }
 }

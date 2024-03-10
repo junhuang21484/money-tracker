@@ -18,10 +18,9 @@ export async function fetchPlaidAccountInfoByPlaidAccId(plaid_account_id) {
 
 export async function fetchPlaidAccountRelatedToItemID(itemId) {
   const sql = `
-  SELECT PAI.plaid_acc_id, ACC.account_id, ACC.balance, ACC.created_at, ACC_T.is_depository from plaidAccountInfo as PAI
+  SELECT PAI.plaid_account_id, ACC.account_id from plaidAccountInfo as PAI
   JOIN accounts as ACC on PAI.plaid_account_id = ACC.plaid_account_id
-  JOIN accountTypes as ACC_T on ACC.account_type_id = ACC_T.account_type_id
-  WHERE PAI.item_id = ?
+  WHERE PAI.item_id = ?;
   `;
   const values = [itemId];
 
@@ -38,7 +37,7 @@ export async function fetchPlaidAccountRelatedToItemID(itemId) {
 
 
 export async function insertNewPlaidAccountInfo(plaid_account_id, itemID) {
-  const sql = `INSERT INTO plaidAccountInfo (plaid_account_id, item_id) VALUES (?, ?, ?)`;
+  const sql = `INSERT INTO plaidAccountInfo (plaid_account_id, item_id) VALUES (?, ?)`;
   const values = [plaid_account_id, itemID];
 
   return new Promise((resolve, reject) => {
