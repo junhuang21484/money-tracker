@@ -133,3 +133,4 @@ export async function insertNewAccount(userID, accountTypeID, plaidAccountID, na
         });
     });
 }
+  

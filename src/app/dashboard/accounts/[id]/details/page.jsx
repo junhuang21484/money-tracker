@@ -10,13 +10,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import Link from "next/link";
+import SimpleGraph from "@/app/lib/ui/dashboard-account/details/balance-graph";
 
 export default async function AccountDetails({ params }) {
   const userID = getLoggedInUserID(getLoggedInUserID);
   const accountID = params.id;
   const accountData = await fetchAccountByID(accountID);
-  if (!accountData) return (<div>Account Not Found</div>)
-  
+  if (!accountData) return <div>Account Not Found</div>;
+
   const accountBalance = formatCurrency(accountData.balance);
 
   if (userID != accountData.user_id) {
@@ -65,6 +66,14 @@ export default async function AccountDetails({ params }) {
           <OverviewCard title="Total Expense" value={"TBD"} type="expense" />
         </div>
       </div>
+
+      <div className="rounded-lg border-2 p-4">
+        <h1 className="text-2xl mb-2">Balance Over Time</h1>
+        <SimpleGraph accountData={accountData} />
+      </div>
     </main>
   );
 }
+
+//left graph for balance over time
+//right graph for expenses by category
