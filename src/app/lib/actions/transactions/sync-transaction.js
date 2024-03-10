@@ -72,14 +72,13 @@ export default async function syncTransactions(accountData) {
                 const transObj = SimpleTransaction.fromPlaidTransaction(txnObj, loggedInUser)
                 const accInfo = plaidToAccountMap[transObj.accountId]
                 const transactionDate = new Date(transObj.date)
-                // const result = await insertNewTransaction(accInfo['account_id'], transObj.name, transObj.amount, transObj.category, transObj.date, transObj.plaidTransactionId)
+                const result = await insertNewTransaction(accInfo['account_id'], transObj.name, transObj.amount, transObj.category, transObj.date, transObj.plaidTransactionId)
                 await new Promise(resolve => setTimeout(resolve, 1000))
-                if (true) {
+                if (result) {
                     summary.added += 1
                     if (transactionDate > accInfo.created_at) {
                         const modifiedBalance = Number((accInfo.balance + (transObj.amount * accInfo.addBalFactor)).toFixed(2))
                         plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance }
-                        console.log(modifiedBalance, accInfo.balance, transObj.amount, transObj.accountId)
                     }
                 }
             })

@@ -7,6 +7,7 @@ import {
 import { useState } from "react";
 import AddTransactionModal from "./add-transaction-modal";
 import InfoModal from "@/app/lib/ui/general-modals/info-modal";
+import LoadingModal from "@/app/lib/ui/general-modals/loading-modal"
 import syncTransactions from "@/app/lib/actions/transactions/sync-transaction";
 
 export function AddTransactionBtn({ accountData }) {
@@ -32,24 +33,24 @@ export function AddTransactionBtn({ accountData }) {
 
 export function SyncTransactionBtn({ accountData }) {
   const [infoModalOpen, setInfoModalOpen] = useState(false);
-  const [modalMsg, setModalMsg] = useState({
-    title: "",
-    desc: "",
-    iconType: null,
-  });
+  const [loadingModalOpen, setLoadingModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState( { title: "", desc: "", iconType: null } );
 
   async function handleSync() {
+    setLoadingModalOpen(true)
     const result = await syncTransactions(accountData);
     if (result.success) {
       setModalMsg({ title: "Transaction Synced Success", desc: result.msg, iconType: "check" })
     } else {
       setModalMsg({ title: "Transaction Synced Failed", desc: result.msg, iconType: "xmark" })
     }
+    setLoadingModalOpen(false)
     setInfoModalOpen(true)
   }
 
   return (
     <div>
+      {loadingModalOpen && <LoadingModal description={"Fetching data from plaid..."} />}
       {infoModalOpen && (
         <InfoModal
           title={modalMsg.title}
