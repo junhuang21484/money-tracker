@@ -4,8 +4,8 @@ import PLAID_CLIENT from "./plaid-client"
 export async function getAccountLinked(accessToken) {
   try {
     const response = await PLAID_CLIENT.accountsGet({ access_token: accessToken });
-    const accounts = response.data.accounts;
-    console.log(accounts)
+    const accounts = response.data.accounts
+    return accounts
   } catch (error) {
     // handle error
   }
