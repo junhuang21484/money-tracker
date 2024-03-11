@@ -39,7 +39,6 @@ export default function SimpleGraph({ accountData }) {
 
     fetchMonthlyBalance();
   }, [accountData.account_id, accountData.balance]); 
-  console.log("Mapped data:", data)
 
   return (
     <ResponsiveContainer width="100%" height={300}>

@@ -40,7 +40,7 @@ export default async function AccountTransaction({ params }) {
         )}
       </div>
 
-      <TransactionsTable transactions={transactionData} />
+      <TransactionsTable transactions={transactionData} account_type={accountData.plaid_account_id ? "auto" : "manual"} />
     </main>
   );
 }

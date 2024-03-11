@@ -1,7 +1,7 @@
 "use client";
 import { formatCurrency, formatDateToLocal } from "@/app/lib/utils";
 
-export default function TransactionsTable({ transactions }) {
+export default function TransactionsTable({ account_type, transactions }) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-400">
@@ -19,21 +19,11 @@ export default function TransactionsTable({ transactions }) {
                 </label>
               </div>
             </th>
-            <th scope="col" className="px-6 py-3">
-              Name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Date
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Category
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Amount
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Actions
-            </th>
+            <th scope="col" className="px-6 py-3">Name</th>
+            <th scope="col" className="px-6 py-3">Date</th>
+            <th scope="col" className="px-6 py-3">Category</th>
+            <th scope="col" className="px-6 py-3">Amount</th>
+            {account_type === "manual" && <th scope="col" className="px-6 py-3">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -58,9 +48,8 @@ export default function TransactionsTable({ transactions }) {
                 <td className="px-6 py-4">{formatDateToLocal(trans.date)}</td>
                 <td className="px-6 py-4">{trans.category}</td>
                 <td className="px-6 py-4">{formatCurrency(trans.amount)}</td>
-                <td className="px-6 py-4">
-                  To be worked on
-                </td>
+                {account_type === "manual" && <td className="px-6 py-4">To be worked on</td>}
+                
               </tr>
             );
           })}
