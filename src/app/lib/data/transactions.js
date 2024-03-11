@@ -85,3 +85,30 @@ export async function fetchTransactionByPlaidTransID(plaidTransactionId) {
     })
 }
 
+export async function getMonthlyBalanceChange(accountID) {
+    const sql = `
+      SELECT DATE_FORMAT(date, '%Y-%m-01') AS month_start,
+             MAX(LAST_DAY(date)) AS month_end,
+             ROUND(SUM(amount), 2) AS balance_change
+      FROM transactions
+      WHERE account_id = ?
+      GROUP BY month_start
+      ORDER BY month_start ASC
+    `;
+    const values = [accountID];
+  
+    return new Promise((resolve, reject) => {
+      connection.query(sql, values, (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+  
+        resolve(results);
+      });
+    });
+  }
+  
+  
+  
+
+  
