@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
-import { HamburgerMenu } from './hamburger';
 import { ChartPieIcon, CreditCardIcon, WalletIcon } from "@heroicons/react/24/outline"
 import LogoutBtn from "./logout-btn"
 
@@ -38,9 +37,7 @@ export default async function Navbar( ) {
             </div>
 
             <LogoutBtn />
-            <div className='md:hidden'>
-                <HamburgerMenu />
-            </div>
+            
             
         </nav>
     );

@@ -42,6 +42,7 @@ export default function SimpleGraph({ accountData }) {
 
   return (
     <ResponsiveContainer width="100%" height={300}>
+      <h1 className='text-xl text-center'>Balance Over Time</h1>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month_start" />

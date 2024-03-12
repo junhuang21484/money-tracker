@@ -1,16 +1,22 @@
 "use server";
 
 import { fetchAccountByID } from "@/app/lib/data/accounts";
+import { fetchTransactionsByAccount } from "@/app/lib/data/transactions";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
 import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name-edit";
+import Link from "next/link";
+import SimpleGraph from "@/app/lib/ui/dashboard-account/details/balance-graph";
 import { formatCurrency, convertToTitleCase } from "@/app/lib/utils";
 import {
   ArrowLeftStartOnRectangleIcon,
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
-import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
-import Link from "next/link";
-import SimpleGraph from "@/app/lib/ui/dashboard-account/details/balance-graph";
+import {
+  AddTransactionBtn,
+  SyncTransactionBtn,
+} from "@/app/lib/ui/dashboard-account/transactions/buttons";
+import TransactionsTable from "@/app/lib/ui/dashboard-account/transactions/transactions-table";
 
 export default async function AccountDetails({ params }) {
   const userID = getLoggedInUserID(getLoggedInUserID);
@@ -19,6 +25,7 @@ export default async function AccountDetails({ params }) {
   if (!accountData) return <div>Account Not Found</div>;
 
   const accountBalance = formatCurrency(accountData.balance);
+  const transactionData = await fetchTransactionsByAccount(accountID);
 
   if (userID != accountData.user_id) {
     return <div>User not permitted</div>;
@@ -40,18 +47,19 @@ export default async function AccountDetails({ params }) {
           <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
           Back
         </Link>
+
         <Link
           href={`/dashboard/accounts/${accountID}/transactions`}
           className="bg-blue-500 hover:bg-blue-400 hover:text-blue-500 rounded px-4 py-2 w-fit flex gap-2 items-center justify-center"
         >
           <DocumentTextIcon className="w-6 h-6" />
-          Transactions
+          Transaction
         </Link>
       </div>
 
       <div className="rounded-lg border-2 p-4">
         <h1 className="text-2xl mb-2">Overview</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
+        <div className="grid grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
           <OverviewCard
             title="Current Balance"
             value={accountBalance}
@@ -68,8 +76,25 @@ export default async function AccountDetails({ params }) {
       </div>
 
       <div className="rounded-lg border-2 p-4">
-        <h1 className="text-2xl mb-2">Balance Over Time</h1>
-        <SimpleGraph accountData={accountData} />
+        <h1 className="text-2xl mb-2">Analytics</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <SimpleGraph accountData={accountData} />
+        </div>
+      </div>
+
+      <div className="rounded-lg border-2 p-4">
+        <div className="flex w-full justify-between mb-2">
+          <h1 className="text-2xl">Transactions</h1>
+          {accountData.plaid_account_id ? (
+            <SyncTransactionBtn accountData={accountData} />
+          ) : (
+            <AddTransactionBtn accountData={accountData} />
+          )}
+        </div>
+        <TransactionsTable
+          transactions={transactionData}
+          account_type={accountData.plaid_account_id ? "auto" : "manual"}
+        />
       </div>
     </main>
   );
