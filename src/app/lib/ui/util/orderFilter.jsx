@@ -16,7 +16,7 @@ export default function OrderFilter( {filterOption} ) {
         
         if (newFilter) params.set("orderBy", newFilter)
         else params.delete("orderBy")
-        replace(`${pathname}?${params.toString()}`);
+        replace(`${pathname}?${params.toString()}`, {scroll: false});
     }
 
     function orderBtnClick(filterDirection) {
@@ -30,7 +30,7 @@ export default function OrderFilter( {filterOption} ) {
           } else {
             params.delete('filterDirection');
           }
-        replace(`${pathname}?${params.toString()}`);
+        replace(`${pathname}?${params.toString()}`, {scroll: false});
     }
 
     return (

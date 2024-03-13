@@ -17,6 +17,8 @@ import {
   SyncTransactionBtn,
 } from "@/app/lib/ui/dashboard-account/transactions/buttons";
 import TransactionsTable from "@/app/lib/ui/dashboard-account/transactions/transactions-table";
+import SearchBar from "@/app/lib/ui/util/searchBar";
+import OrderFilter from "@/app/lib/ui/util/orderFilter"
 
 export default async function AccountDetails({ params }) {
   const userID = getLoggedInUserID(getLoggedInUserID);
@@ -31,6 +33,7 @@ export default async function AccountDetails({ params }) {
     return <div>User not permitted</div>;
   }
 
+  const sectionHeaderStyling = "text-xl font-bold md:text-2xl"
   return (
     <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
       <AccountNameEdit
@@ -57,9 +60,9 @@ export default async function AccountDetails({ params }) {
         </Link>
       </div>
 
-      <div className="rounded-lg border-2 p-4">
-        <h1 className="text-2xl mb-2">Overview</h1>
-        <div className="grid grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
+      <div className="rounded-lg border-2 p-4 border-gray-500">
+        <h1 className={sectionHeaderStyling}>Overview</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
           <OverviewCard
             title="Current Balance"
             value={accountBalance}
@@ -75,22 +78,32 @@ export default async function AccountDetails({ params }) {
         </div>
       </div>
 
-      <div className="rounded-lg border-2 p-4">
-        <h1 className="text-2xl mb-2">Analytics</h1>
+      <div className="rounded-lg border-2 p-4 border-gray-500">
+        <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <SimpleGraph accountData={accountData} />
         </div>
       </div>
 
-      <div className="rounded-lg border-2 p-4">
-        <div className="flex w-full justify-between mb-2">
-          <h1 className="text-2xl">Transactions</h1>
+      <div className="rounded-lg border-2 p-4 border-gray-500 flex flex-col gap-4">
+        <div className="flex w-full justify-between mb-2 items-center">
+          <h1 className={sectionHeaderStyling}>Transactions</h1>
           {accountData.plaid_account_id ? (
             <SyncTransactionBtn accountData={accountData} />
           ) : (
             <AddTransactionBtn accountData={accountData} />
           )}
         </div>
+        
+        <div className="flex w-full">
+          <div className="w-full md:w-4/5">
+            <SearchBar placeholder={"Search by transaction name, amount, category, or date"} />
+          </div>
+          <div className="flex-1 hidden md:block">
+            <OrderFilter filterOption={["", "name", "amount", "category", "date"]} />
+          </div>
+        </div>
+        
         <TransactionsTable
           transactions={transactionData}
           account_type={accountData.plaid_account_id ? "auto" : "manual"}
