@@ -1,7 +1,7 @@
 "use server";
 
 import { fetchAccountByID } from "@/app/lib/data/accounts";
-import { fetchTransactionsByAccount } from "@/app/lib/data/transactions";
+import { fetchFilteredTransactions } from "@/app/lib/data/transactions";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
 import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name-edit";
@@ -20,14 +20,17 @@ import TransactionsTable from "@/app/lib/ui/dashboard-account/transactions/trans
 import SearchBar from "@/app/lib/ui/util/searchBar";
 import OrderFilter from "@/app/lib/ui/util/orderFilter"
 
-export default async function AccountDetails({ params }) {
+export default async function AccountDetails({ params, searchParams }) {
   const userID = getLoggedInUserID(getLoggedInUserID);
   const accountID = params.id;
+  const query = searchParams?.query || "";
+  const orderBy = searchParams?.orderBy || "";
+  const filterDirection = searchParams?.filterDirection || "";
   const accountData = await fetchAccountByID(accountID);
   if (!accountData) return <div>Account Not Found</div>;
 
   const accountBalance = formatCurrency(accountData.balance);
-  const transactionData = await fetchTransactionsByAccount(accountID);
+  const transactionData = await fetchFilteredTransactions(accountID, query, orderBy, filterDirection);
 
   if (userID != accountData.user_id) {
     return <div>User not permitted</div>;
@@ -107,6 +110,7 @@ export default async function AccountDetails({ params }) {
         <TransactionsTable
           transactions={transactionData}
           account_type={accountData.plaid_account_id ? "auto" : "manual"}
+          is_depository={accountData.is_depository}
         />
       </div>
     </main>

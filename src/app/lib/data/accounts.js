@@ -4,7 +4,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 export async function fetchAccountByID(accountID) {
     const sql = `
-    SELECT accounts.*, accType.name as account_type_name
+    SELECT accounts.*, accType.name as account_type_name, accType.is_depository
     FROM accounts
     JOIN accountTypes as accType
     ON accounts.account_type_id = accType.account_type_id

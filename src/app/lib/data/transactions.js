@@ -1,6 +1,7 @@
 'use server'
 
 import connection from "./connector";
+import { unstable_noStore as noStore } from 'next/cache';
 
 export async function insertNewTransaction(accountID, name, amount, category, date, plaidTransactionId = null) {
     const sql = `INSERT INTO transactions (transaction_id, account_id, name, amount, category, date, plaid_transaction_id) VALUES (UUID(), ?, ?, ?, ?, ?, ?)`;
@@ -55,7 +56,7 @@ export async function updateTransactionFromPlaid(transactionObj, plaidTransactio
 }
 
 export async function fetchTransactionsByAccount(accountID) {
-    const sql = `SELECT * FROM transactions WHERE account_Id=? ORDER BY date DESC`;
+    const sql = `SELECT * FROM transactions WHERE account_id=? ORDER BY date DESC`;
     const values = [accountID];
 
     return new Promise((resolve, reject) => {
@@ -67,6 +68,40 @@ export async function fetchTransactionsByAccount(accountID) {
             resolve(results);
         });
     })
+}
+
+export async function fetchFilteredTransactions(accountID, query, orderBy, filterDirection){
+    noStore();
+
+    const acceptedOrderBy = ["Name", "Date", "Category", "Amount"]
+    let sql = `
+    SELECT * from transactions
+    WHERE
+        account_id=? AND
+        (name LIKE ? OR
+        date LIKE ? OR
+        category LIKE ? OR
+        amount LIKE ?
+        )
+    `;
+    const values = [accountID, `%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`];
+
+    if (orderBy && acceptedOrderBy.includes(orderBy)) {
+        sql += `\nORDER BY ${orderBy} ${filterDirection === "ASC" || filterDirection === "DESC" ? filterDirection : ""}`
+    } else {
+        sql += '\nORDER by date DESC'
+    }
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                console.log(error)
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
 }
 
 
