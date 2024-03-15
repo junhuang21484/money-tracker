@@ -21,6 +21,16 @@ export async function getAccountLinkedUncached(accessToken) {
   }
 }
 
+export async function removePlaidItem(accessToken) {
+  try {
+    console.log("Unlinking ", accessToken)
+    const response = await PLAID_CLIENT.itemRemove({ access_token: accessToken });
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
 export async function fetchNewSyncData(accessToken, initialCursor, retriesLeft = 3) {
   const allData = {
     added: [],

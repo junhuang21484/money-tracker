@@ -58,3 +58,18 @@ export async function updatePlaidTransactionCursor(itemId, newCursor) {
     });
   })
 }
+
+export async function deletePlaidConnectionByAccessToken(accessToken, userID) {
+  const sql = `DELETE FROM plaidConnections WHERE access_token=? AND user_id=?`;
+  const values = [accessToken, userID];
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(results);
+    });
+  })
+}

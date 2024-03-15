@@ -144,6 +144,20 @@ export async function getMonthlyBalanceChange(accountID) {
   }
   
   
+  export async function deleteTransactionsToAccountID(accountID) {
+    const sql = `DELETE FROM transactions WHERE account_id=?`;
+    const values = [accountID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+  }
   
 
   

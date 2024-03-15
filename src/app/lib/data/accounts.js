@@ -133,4 +133,19 @@ export async function insertNewAccount(userID, accountTypeID, plaidAccountID, na
         });
     });
 }
-  
+
+
+export async function deleteAccountByID(userID, accountID) {
+    const sql = `DELETE FROM accounts WHERE user_id=? AND account_id=?`;
+    const values = [userID, accountID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}

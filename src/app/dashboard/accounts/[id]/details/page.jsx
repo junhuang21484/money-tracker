@@ -8,10 +8,8 @@ import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name
 import Link from "next/link";
 import SimpleGraph from "@/app/lib/ui/dashboard-account/details/balance-graph";
 import { formatCurrency, convertToTitleCase } from "@/app/lib/utils";
-import {
-  ArrowLeftStartOnRectangleIcon,
-  DocumentTextIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import DelAccountBtn from "@/app/lib/ui/dashboard-account/details/delete-account-btn";
 import {
   AddTransactionBtn,
   SyncTransactionBtn,
@@ -54,13 +52,7 @@ export default async function AccountDetails({ params, searchParams }) {
           Back
         </Link>
 
-        <Link
-          href={`/dashboard/accounts/${accountID}/transactions`}
-          className="bg-blue-500 hover:bg-blue-400 hover:text-blue-500 rounded px-4 py-2 w-fit flex gap-2 items-center justify-center"
-        >
-          <DocumentTextIcon className="w-6 h-6" />
-          Transaction
-        </Link>
+        <DelAccountBtn accountData={accountData} />
       </div>
 
       <div className="rounded-lg border-2 p-4 border-gray-500">
@@ -103,7 +95,7 @@ export default async function AccountDetails({ params, searchParams }) {
             <SearchBar placeholder={"Search by transaction name, amount, category, or date"} />
           </div>
           <div className="flex-1 hidden md:block">
-            <OrderFilter filterOption={["", "name", "amount", "category", "date"]} />
+            <OrderFilter filterOption={["", "Name", "Amount", "Category", "Date"]} />
           </div>
         </div>
         

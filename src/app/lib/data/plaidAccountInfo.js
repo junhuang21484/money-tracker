@@ -51,3 +51,19 @@ export async function insertNewPlaidAccountInfo(plaid_account_id, itemID) {
   })
 }
 
+export async function deletePlaidAccountInfoByID(plaid_account_id) {
+  const sql = `DELETE FROM plaidAccountInfo WHERE plaid_account_id = ?`;
+  const values = [plaid_account_id];
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(results);
+    });
+  })
+}
+
+
