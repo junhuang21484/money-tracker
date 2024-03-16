@@ -4,7 +4,7 @@ import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
 import { fetchPlaidAccountInfoByPlaidAccId, fetchPlaidAccountRelatedToItemID } from "@/app/lib/data/plaidAccountInfo"
 import { updateAccountBalanceByPlaidAccountID } from "@/app/lib/data/accounts"
 import { fetchPlaidConnectionByItemId, updatePlaidTransactionCursor } from "@/app/lib/data/plaidConnections"
-import { insertNewTransaction, updateTransactionFromPlaid, deleteTransactionByPlaid, fetchTransactionByPlaidTransID } from "@/app/lib/data/transactions"
+import { insertNewTransaction, updateTransactionFromPlaid, deleteTransactionByPlaid } from "@/app/lib/data/transactions"
 import { getAccountLinkedUncached } from "@/app/lib/plaid/plaid-wrapper"
 import { fetchNewSyncData } from "@/app/lib/plaid/plaid-wrapper"
 import { revalidatePath } from "next/cache"
@@ -71,16 +71,9 @@ export default async function syncTransactions(accountData) {
             newTransactions.added.map(async (txnObj) => {
                 const transObj = SimpleTransaction.fromPlaidTransaction(txnObj, loggedInUser)
                 const accInfo = plaidToAccountMap[transObj.accountId]
-                const transactionDate = new Date(transObj.date)
                 const result = await insertNewTransaction(accInfo['account_id'], transObj.name, transObj.amount, transObj.category, transObj.date, transObj.plaidTransactionId)
                 await new Promise(resolve => setTimeout(resolve, 1000))
-                if (result) {
-                    summary.added += 1
-                    if (transactionDate > accInfo.created_at) {
-                        const modifiedBalance = Number((accInfo.balance + (transObj.amount * accInfo.addBalFactor)).toFixed(2))
-                        plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance }
-                    }
-                }
+                if (result) summary.added += 1
             })
         )
 
@@ -88,15 +81,8 @@ export default async function syncTransactions(accountData) {
         await Promise.all(
             newTransactions.modified.map(async (txnObj) => {
                 const transObj = SimpleTransaction.fromPlaidTransaction(txnObj, loggedInUser)
-                const accInfo = plaidToAccountMap[transObj.accountId]
-                const oldTransactionData = await fetchTransactionByPlaidTransID(transObj.plaidTransactionId)
                 const result = await updateTransactionFromPlaid(transObj, transObj.plaidTransactionId)
-                if (result) {
-                    summary.modified += 1
-                    const diff = oldTransactionData.amount - transObj.amount
-                    const modifiedBalance = accInfo.balance + (diff * accInfo.remModBalFactor)
-                    plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance }
-                }
+                if (result) summary.modified += 1
             })
         )
 
@@ -104,14 +90,8 @@ export default async function syncTransactions(accountData) {
         await Promise.all(
             newTransactions.modified.map(async (txnObj) => {
                 const transObj = SimpleTransaction.fromPlaidTransaction(txnObj, loggedInUser)
-                const accInfo = plaidToAccountMap[transObj.accountId]
-                const oldTransactionData = await fetchTransactionByPlaidTransID(transObj.plaidTransactionId)
                 const result = await deleteTransactionByPlaid(transObj.plaidTransactionId)
-                if (result) {
-                    summary.removed += 1
-                    const modifiedBalance = accInfo.balance + (oldTransactionData.amount * accInfo.remModBalFactor)
-                    plaidToAccountMap[transObj.accountId] = { ...accInfo, balance: modifiedBalance }
-                }
+                if (result) summary.removed += 1
             })
         )
 
