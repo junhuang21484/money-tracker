@@ -101,7 +101,7 @@ export default async function AccountDetails({ params, searchParams }) {
         
         <TransactionsTable
           transactions={transactionData}
-          account_type={accountData.plaid_account_id ? "auto" : "manual"}
+          accountType={accountData.plaid_account_id ? "auto" : "manual"}
           is_depository={accountData.is_depository}
         />
       </div>

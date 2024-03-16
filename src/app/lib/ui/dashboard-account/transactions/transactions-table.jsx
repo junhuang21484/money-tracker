@@ -1,14 +1,11 @@
 "use client";
 import { formatCurrency, formatDateToLocal } from "@/app/lib/utils";
-import {
-  PencilSquareIcon,
-  TrashIcon,
-  TrashIcons,
-} from "@heroicons/react/24/outline";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { DeleteTransactionBtn, EditTransactionBtn } from "./buttons";
 import clsx from "clsx";
 
 export default function TransactionsTable({
-  account_type,
+  accountType,
   transactions,
   is_depository,
 }) {
@@ -22,14 +19,12 @@ export default function TransactionsTable({
               <div>
                 <p>{formatDateToLocal(trans.date)}</p>
               </div>
-              <div className="flex justify-end gap-2">
-                <button className="bg-gray-700 rounded p-1">
-                  <PencilSquareIcon className="w-5 h-5" />
-                </button>
-                <button className="bg-red-500 rounded p-1">
-                  <TrashIcon className="w-5 h-5" />
-                </button>
-              </div>
+              {accountType === "manual" && (
+                <div className="flex justify-end gap-2">
+                  <EditTransactionBtn transactionId={trans.transaction_id} />
+                  <DeleteTransactionBtn transactionId={trans.transaction_id} />
+                </div>
+              )}
             </div>
 
             <div className="flex items-center justify-between border-b pb-4">
@@ -59,7 +54,7 @@ export default function TransactionsTable({
       <table className="w-full text-sm text-left rtl:text-right text-gray-400 hidden md:table">
         <thead className="text-xs uppercase bg-gray-700 text-emerald-500">
           <tr>
-            {account_type === "manual" && (
+            {accountType === "manual" && (
               <th scope="col" className="p-4">
                 <div className="flex items-center">
                   <input
@@ -82,7 +77,7 @@ export default function TransactionsTable({
             <th scope="col" className="px-6 py-3">
               Amount
             </th>
-            {account_type === "manual" && (
+            {accountType === "manual" && (
               <th scope="col" className="px-6 py-3">
                 Actions
               </th>
@@ -96,7 +91,7 @@ export default function TransactionsTable({
                 key={trans.transaction_id}
                 className="bg-gray-800 hover:bg-gray-600 text-white"
               >
-                {account_type === "manual" && (
+                {accountType === "manual" && (
                   <td className="w-4 p-4">
                     <div className="flex items-center">
                       <input
@@ -118,8 +113,13 @@ export default function TransactionsTable({
                 >
                   {formatCurrency(trans.amount)}
                 </td>
-                {account_type === "manual" && (
-                  <td className="px-6 py-4">To be worked on</td>
+                {accountType === "manual" && (
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      <EditTransactionBtn transactionId={trans.transaction_id} />
+                      <DeleteTransactionBtn transactionId={trans.transaction_id} />
+                    </div>
+                  </td>
                 )}
               </tr>
             );

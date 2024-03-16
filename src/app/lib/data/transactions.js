@@ -33,6 +33,36 @@ export async function deleteTransactionByPlaid(plaidTransactionId) {
     })
 }
 
+export async function deleteTransactionsToAccountID(accountID) {
+    const sql = `DELETE FROM transactions WHERE account_id=?`;
+    const values = [accountID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
+export async function deleteTransactionByID(transactionId) {
+    const sql = `DELETE FROM transactions WHERE transaction_id=?`;
+    const values = [transactionId];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
 export async function updateTransactionFromPlaid(transactionObj, plaidTransactionId) {
     const sql = `
     UPDATE transactions 
@@ -55,6 +85,21 @@ export async function updateTransactionFromPlaid(transactionObj, plaidTransactio
     })
 }
 
+export async function fetchTransactionById(transactionId) {
+    const sql = `SELECT * FROM transactions WHERE transaction_id=?`;
+    const values = [transactionId];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results[0]);
+        });
+    })
+}
+
 export async function fetchTransactionsByAccount(accountID) {
     const sql = `SELECT * FROM transactions WHERE account_id=? ORDER BY date DESC`;
     const values = [accountID];
@@ -70,7 +115,7 @@ export async function fetchTransactionsByAccount(accountID) {
     })
 }
 
-export async function fetchFilteredTransactions(accountID, query, orderBy, filterDirection){
+export async function fetchFilteredTransactions(accountID, query, orderBy, filterDirection) {
     noStore();
 
     const acceptedOrderBy = ["Name", "Date", "Category", "Amount"]
@@ -131,22 +176,6 @@ export async function getMonthlyBalanceChange(accountID) {
       ORDER BY month_start ASC
     `;
     const values = [accountID];
-  
-    return new Promise((resolve, reject) => {
-      connection.query(sql, values, (error, results) => {
-        if (error) {
-          return reject(error);
-        }
-  
-        resolve(results);
-      });
-    });
-  }
-  
-  
-  export async function deleteTransactionsToAccountID(accountID) {
-    const sql = `DELETE FROM transactions WHERE account_id=?`;
-    const values = [accountID];
 
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {
@@ -157,7 +186,8 @@ export async function getMonthlyBalanceChange(accountID) {
             resolve(results);
         });
     });
-  }
-  
+}
 
-  
+
+
+
