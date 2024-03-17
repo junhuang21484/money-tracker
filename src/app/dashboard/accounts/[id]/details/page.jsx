@@ -102,7 +102,6 @@ export default async function AccountDetails({ params, searchParams }) {
         <TransactionsTable
           transactions={transactionData}
           accountType={accountData.plaid_account_id ? "auto" : "manual"}
-          is_depository={accountData.is_depository}
         />
       </div>
     </main>

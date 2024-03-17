@@ -1,14 +1,16 @@
 "use client";
 import { formatCurrency, formatDateToLocal } from "@/app/lib/utils";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { DeleteTransactionBtn, EditTransactionBtn } from "./buttons";
 import clsx from "clsx";
 
 export default function TransactionsTable({
   accountType,
   transactions,
-  is_depository,
 }) {
+  if (!transactions?.length) return (
+    <p className="w-full text-center text-xl">No Transaction Data Found</p>
+  )
+
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg w-full">
       {/* Table for small screens */}
@@ -21,8 +23,8 @@ export default function TransactionsTable({
               </div>
               {accountType === "manual" && (
                 <div className="flex justify-end gap-2">
-                  <EditTransactionBtn transactionId={trans.transaction_id} />
-                  <DeleteTransactionBtn transactionId={trans.transaction_id} />
+                  <EditTransactionBtn transactionData={trans} />
+                  <DeleteTransactionBtn transactionData={trans} />
                 </div>
               )}
             </div>
@@ -116,8 +118,8 @@ export default function TransactionsTable({
                 {accountType === "manual" && (
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
-                      <EditTransactionBtn transactionId={trans.transaction_id} />
-                      <DeleteTransactionBtn transactionId={trans.transaction_id} />
+                      <EditTransactionBtn transactionData={trans} />
+                      <DeleteTransactionBtn transactionData={trans} />
                     </div>
                   </td>
                 )}
