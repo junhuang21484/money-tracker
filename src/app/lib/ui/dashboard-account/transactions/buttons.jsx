@@ -11,6 +11,7 @@ import AddTransactionModal from "./add-transaction-modal";
 import InfoModal from "@/app/lib/ui/general-modals/info-modal";
 import LoadingModal from "@/app/lib/ui/general-modals/loading-modal";
 import ActionModal from "@/app/lib/ui/general-modals/action-modal";
+import EditTransactionModal from "./edit-transaction-modal";
 import syncTransactions from "@/app/lib/actions/transactions/sync-transaction";
 import deleteTransaction from "@/app/lib/actions/transactions/delete-transaction";
 
@@ -90,7 +91,7 @@ export function SyncTransactionBtn({ accountData }) {
   );
 }
 
-export function DeleteTransactionBtn({ transactionId }) {
+export function DeleteTransactionBtn({ transactionData }) {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [loadingModalOpen, setLoadingModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
@@ -104,7 +105,7 @@ export function DeleteTransactionBtn({ transactionId }) {
   useEffect(() => {
     async function doDelete() {
       setLoadingModalOpen(true);
-      const data = await deleteTransaction(transactionId);
+      const data = await deleteTransaction(transactionData);
       setInfoModalMsg({
         title: data.success
           ? "Transaction Deleted"
@@ -158,10 +159,14 @@ export function DeleteTransactionBtn({ transactionId }) {
   );
 }
 
-export function EditTransactionBtn({ transactionId }) {
+export function EditTransactionBtn({ transactionData }) {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
-    <button className="bg-gray-700 rounded p-1">
-      <PencilSquareIcon className="w-5 h-5" />
-    </button>
+    <div>
+      {modalOpen && <EditTransactionModal transactionData={transactionData} closeModal={() => setModalOpen(false)}/>}
+      <button className="bg-gray-700 rounded p-1" onClick={() => setModalOpen(true)}>
+        <PencilSquareIcon className="w-5 h-5" />
+      </button>
+    </div>
   );
 }

@@ -63,6 +63,25 @@ export async function deleteTransactionByID(transactionId) {
     });
 }
 
+export async function updateTransactionById(transactionId, name, amount, category, date) {
+    const sql = `
+    UPDATE transactions 
+    SET name = ?, amount = ?, category = ?, date = ?
+    WHERE transaction_id = ?
+    `;
+    const values = [name, amount, category, date, transactionId]
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(false);
+            }
+
+            resolve(true);
+        });
+    })
+}
+
 export async function updateTransactionFromPlaid(transactionObj, plaidTransactionId) {
     const sql = `
     UPDATE transactions 
