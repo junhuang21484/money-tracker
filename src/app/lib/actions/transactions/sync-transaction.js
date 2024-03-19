@@ -59,9 +59,10 @@ export default async function syncTransactions(accountData) {
         const allRelatedAccount = await fetchPlaidAccountRelatedToItemID(plaidConnectionInfo.item_id)
         const plaidToAccountMap = {}
         allRelatedAccount.forEach(accountInfo => {
-            const { plaid_account_id, account_id } = accountInfo
+            const { plaid_account_id, account_id, is_depository } = accountInfo
             plaidToAccountMap[plaid_account_id] = {
-                account_id
+                account_id,
+                is_depository
             }
         })
         const summary = { added: 0, removed: 0, modified: 0 }
@@ -71,7 +72,8 @@ export default async function syncTransactions(accountData) {
             newTransactions.added.map(async (txnObj) => {
                 const transObj = SimpleTransaction.fromPlaidTransaction(txnObj, loggedInUser)
                 const accInfo = plaidToAccountMap[transObj.accountId]
-                const result = await insertNewTransaction(accInfo['account_id'], transObj.name, transObj.amount, transObj.category, transObj.date, transObj.plaidTransactionId)
+                const modifiedAmount = accInfo.is_depository ? transObj.amount * -1 : transObj.amount
+                const result = await insertNewTransaction(accInfo['account_id'], transObj.name, modifiedAmount, transObj.category, transObj.date, transObj.plaidTransactionId)
                 await new Promise(resolve => setTimeout(resolve, 1000))
                 if (result) summary.added += 1
             })

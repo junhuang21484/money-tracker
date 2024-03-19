@@ -18,9 +18,10 @@ export async function fetchPlaidAccountInfoByPlaidAccId(plaid_account_id) {
 
 export async function fetchPlaidAccountRelatedToItemID(itemId) {
   const sql = `
-  SELECT PAI.plaid_account_id, ACC.account_id from plaidAccountInfo as PAI
+  SELECT PAI.plaid_account_id, ACC.account_id, ACCT.is_depository from plaidAccountInfo as PAI
   JOIN accounts as ACC on PAI.plaid_account_id = ACC.plaid_account_id
-  WHERE PAI.item_id = ?;
+  JOIN accountTypes as ACCT on ACC.account_type_id = ACCT.account_type_id
+  WHERE PAI.item_id = ?
   `;
   const values = [itemId];
 

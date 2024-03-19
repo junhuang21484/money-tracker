@@ -2,26 +2,30 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import ActionModal from "@/app/lib/ui/general-modals/action-modal";
+import LoadingModal from "@/app/lib/ui/general-modals/loading-modal";
 import deleteAccount from "@/app/lib/actions/account/delete-account";
 
-export default function DelAccountBtn({accountData}) {
-  const [modalOpen, setModalOpen] = useState(false)
-  const [delAccount, setDelAccount] = useState(false)
+export default function DelAccountBtn({ accountData }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [loadingModalOpen, setLoadingModalOpen] = useState(false);
+  const [delAccount, setDelAccount] = useState(false);
 
   useEffect(() => {
     async function doDeleteAccount() {
-        await deleteAccount(accountData)
+      setLoadingModalOpen(true);
+      await deleteAccount(accountData);
+      setLoadingModalOpen(false);
     }
-    
+
     if (delAccount) {
-        console.log("DELETING ACCOUNT")
-        doDeleteAccount()
-        setDelAccount(false)
+      doDeleteAccount();
+      setDelAccount(false);
     }
-  }, [delAccount])
+  }, [delAccount]);
 
   return (
     <div>
+      {loadingModalOpen && <LoadingModal description="Deleting account..." />}
       {modalOpen && (
         <ActionModal
           title={"Delete Account"}
