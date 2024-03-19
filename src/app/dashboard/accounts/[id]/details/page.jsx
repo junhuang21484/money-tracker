@@ -7,6 +7,7 @@ import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
 import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name-edit";
 import Link from "next/link";
 import SimpleGraph from "@/app/lib/ui/dashboard-account/details/balance-graph";
+import SpendingPieChart from "@/app/lib/ui/dashboard-account/details/pie-chart";
 import { formatCurrency, convertToTitleCase } from "@/app/lib/utils";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import DelAccountBtn from "@/app/lib/ui/dashboard-account/details/delete-account-btn";
@@ -77,6 +78,7 @@ export default async function AccountDetails({ params, searchParams }) {
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <SimpleGraph accountData={accountData} />
+          <SpendingPieChart />
         </div>
       </div>
 

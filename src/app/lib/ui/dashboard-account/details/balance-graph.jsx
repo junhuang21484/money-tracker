@@ -46,7 +46,10 @@ export default function SimpleGraph({ accountData }) {
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month_start" />
-        <YAxis domain={['dataMin', 'dataMax']} />
+        <YAxis 
+        domain={[0, dataMax => (dataMax + 500)]} 
+        tickFormatter={(tick) => Math.round(tick).toString()} 
+        />
         <Tooltip />
         <Line type="monotone" dataKey="balance" stroke="#8884d8" dot={true} />
       </LineChart>
