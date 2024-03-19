@@ -1,44 +1,37 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getMonthlyBalanceChange } from '../../../data/transactions';
 
-export default function SimpleGraph({ accountData }) {
+export default function SimpleGraph({ accountData, transactionData }) {
+  console.log('accountData:', accountData);
+  console.log('transactionData:', transactionData);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchMonthlyBalance = async () => {
-      try {
-        const monthlyBalanceChanges = await getMonthlyBalanceChange(accountData.account_id);
-        let currentBalance = parseFloat(accountData.balance);
+    let currentBalance = parseFloat(accountData.balance);
 
-        const balanceOverTime = monthlyBalanceChanges.reduce((acc, monthChange, index) => {
-          const balanceChange = parseFloat(monthChange.balance_change);
-          currentBalance -= balanceChange;
-          const roundedBalance = parseFloat(currentBalance.toFixed(2));
+    const sortedTransactions = transactionData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-          acc.push({
-            month_start: monthChange.month_start,
-            balance: roundedBalance
-          });
+    const balanceOverTime = sortedTransactions.reduce((acc, transaction) => {
+      currentBalance += parseFloat(transaction.amount);
+      const newBalance = parseFloat(currentBalance.toFixed(2));
 
-          if (index === monthlyBalanceChanges.length - 1) {
-            acc.push({
-              month_start: 'Latest', 
-              balance: parseFloat(accountData.balance.toFixed(2)) 
-            });
-          }
-          return acc;
-        }, []);
+      acc.push({
+        date: transaction.date,
+        balance: newBalance
+      });
 
-        setData(balanceOverTime); 
-      } catch (error) {
-        console.error('Failed to fetch monthly balance change:', error);
-      }
-    };
+      return acc;
+    }, []);
 
-    fetchMonthlyBalance();
-  }, [accountData.account_id, accountData.balance]); 
+    balanceOverTime.push({
+      date: 'Latest',
+      balance: parseFloat(accountData.balance.toFixed(2))
+    });
+
+    setData(balanceOverTime);
+  }, [accountData, transactionData]); 
+
 
   return (
     <ResponsiveContainer width="100%" height={300}>

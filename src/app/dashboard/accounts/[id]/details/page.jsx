@@ -77,7 +77,7 @@ export default async function AccountDetails({ params, searchParams }) {
       <div className="rounded-lg border-2 p-4 border-gray-500">
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <SimpleGraph accountData={accountData} />
+          <SimpleGraph accountData={accountData} transactionData={transactionData} />
           <SpendingPieChart />
         </div>
       </div>
@@ -110,5 +110,3 @@ export default async function AccountDetails({ params, searchParams }) {
   );
 }
 
-//left graph for balance over time
-//right graph for expenses by category
