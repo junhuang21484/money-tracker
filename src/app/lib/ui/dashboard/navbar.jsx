@@ -1,15 +1,11 @@
 import Link from 'next/link';
-import { cookies } from 'next/headers';
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
-import { getDataFromToken } from "@/app/lib/data/jwtToken";
-import { HamburgerMenu } from './hamburger';
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import { ChartPieIcon, CreditCardIcon, WalletIcon } from "@heroicons/react/24/outline"
 import LogoutBtn from "./logout-btn"
 
-export default async function Navbar() {
-    const cookieStored = cookies();
-    const token = cookieStored.get("token");
-    const userId = getDataFromToken(token.value).user_id;
+export default async function Navbar( ) {
+    const userId = getLoggedInUserID()
     const userName = await fetchFirstNameByUserID(userId);
 
     const navLinks = [
@@ -26,7 +22,7 @@ export default async function Navbar() {
     );
 
     return (
-        <nav className="flex justify-between items-center w-full h-16 bg-gray-950 px-2">
+        <nav className="flex justify-between items-center w-full h-16 bg-gray-900 drop-shadow-lg px-2">
             <Link href="/" className='text-emerald-500 font-extrabold text-2xl lg:text-4xl w-1/2'>
                 Money Minder
             </Link>
@@ -41,9 +37,7 @@ export default async function Navbar() {
             </div>
 
             <LogoutBtn />
-            <div className='md:hidden'>
-                <HamburgerMenu />
-            </div>
+            
             
         </nav>
     );

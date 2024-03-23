@@ -1,16 +1,13 @@
-import AddAccountBtn from "@/app/lib/ui/dashboard/account/add-account-btn";
-import AccountCard from "@/app/lib/ui/dashboard/account/account-card";
+import AddAccountBtn from "@/app/lib/ui/dashboard-account/add-account-btn";
+import AccountCard from "@/app/lib/ui/dashboard-account/account-card";
 import SearchBar from "@/app/lib/ui/util/searchBar";
 import OrderFilter from "@/app/lib/ui/util/orderFilter";
 import { fetchAccTypeToUser } from "@/app/lib/data/accountType";
 import { fetchFilteredAccounts } from "@/app/lib/data/accounts";
-import { getDataFromToken } from "@/app/lib/data/jwtToken";
-import { cookies } from "next/headers";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 export default async function AccountPage({ searchParams }) {
-  const storedCookies = cookies();
-  const token = storedCookies.get("token");
-  const userID = getDataFromToken(token.value).user_id;
+  const userID = getLoggedInUserID()
   const accountTypesAvailable = await fetchAccTypeToUser(userID);
   const query = searchParams?.query || "";
   const orderBy = searchParams?.orderBy || "";
@@ -23,7 +20,7 @@ export default async function AccountPage({ searchParams }) {
   );
 
   return (
-    <main className="bg-gray-950 h-full">
+    <main className="bg-gray-950 h-full w-full flex flex-col p-4">
       <div className="flex flex-col mx-2">
         <div className="flex justify-between">
           <h1 className="text-white text-3xl font-bold">Accounts</h1>
@@ -35,7 +32,7 @@ export default async function AccountPage({ searchParams }) {
             <SearchBar placeholder="Search accounts by name, balance, account type" />
           </div>
 
-          <div className="sm:w-2/5 2xl:w-1/5">
+          <div className="sm:w-2/5 2xl:w-1/5 ">
             <OrderFilter filterOption={["", "Name", "Balance"]} />
           </div>
         </div>
@@ -47,10 +44,11 @@ export default async function AccountPage({ searchParams }) {
             return (
               <AccountCard
                 key={account.account_id}
+                accID={account.account_id}
                 accName={account.name}
                 accType={account.account_type_name}
                 balance={account.balance}
-                tracking={account.plaid_persistent_acc_id ? "auto" : "manual"}
+                tracking={account.plaid_account_id ? "auto" : "manual"}
               />
             );
           })}

@@ -16,7 +16,7 @@ export default function OrderFilter( {filterOption} ) {
         
         if (newFilter) params.set("orderBy", newFilter)
         else params.delete("orderBy")
-        replace(`${pathname}?${params.toString()}`);
+        replace(`${pathname}?${params.toString()}`, {scroll: false});
     }
 
     function orderBtnClick(filterDirection) {
@@ -30,11 +30,11 @@ export default function OrderFilter( {filterOption} ) {
           } else {
             params.delete('filterDirection');
           }
-        replace(`${pathname}?${params.toString()}`);
+        replace(`${pathname}?${params.toString()}`, {scroll: false});
     }
 
     return (
-        <div className="flex w-full h-full items-center gap-4 text-white">
+        <div className="flex w-full h-full items-center justify-end gap-4 text-white">
             <h1>Order By: </h1>
             <select className="px-4 py-2 text-gray-700 bg-white border rounded-md" onChange={handleFilterChange}>
                 {filterOption.map((option) => (

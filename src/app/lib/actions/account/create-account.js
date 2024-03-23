@@ -8,7 +8,7 @@ export default async function createNewManualAccount(userID, prevState, formData
         revalidatePath("/dashboard/accounts")
         return {success: true, msg: `Account ${formData.get("accountName")} created`}
     } catch (error) {
-        console.log(error.message)
+        console.log(error)
         return {success: false, msg: "Server Error"}
     }
 }

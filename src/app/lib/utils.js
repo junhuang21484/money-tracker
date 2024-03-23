@@ -1,15 +1,24 @@
 export const formatCurrency = (amount) => {
-    return (amount).toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    });
-  };
+  return (amount).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+};
 
-export function findFieldGivenArrObj(arrayObj, fieldName, field, returnField) {
-  for (let i = 0; i < arrayObj.length; i++) {
-      if (arrayObj[i][fieldName] === field) {
-          return arrayObj[i][returnField];
-      }
+export const formatDateToLocal = (dateStr, locale = 'en-US',) => {
+  const date = new Date(dateStr);
+  const options = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  };
+  const formatter = new Intl.DateTimeFormat(locale, options);
+  return formatter.format(date);
+};
+
+export function convertToTitleCase(str) {
+  if (!str) {
+    return ""
   }
-  return null; 
+  return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
 }

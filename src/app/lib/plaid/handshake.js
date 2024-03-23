@@ -52,7 +52,7 @@ export async function exchangePublicToken(userID, publicToken, institutionName) 
     } else if (addedAcc == 0) return { success: true, msg: "All account(s) ALREADY imported" };
     
   } catch (error) {
-    console.log(error.message)
+    console.log(error)
     return { success: false, msg: "Internal Errors" }
   }
 }
@@ -60,14 +60,13 @@ export async function exchangePublicToken(userID, publicToken, institutionName) 
 export async function importLinkedAccount(userID, existingPlaidConnection, linkedAccounts, accountsItemID, institutionName) {
   let addedAcc = 0;
   await Promise.all(linkedAccounts.map(async (account) => {
-    const accountID = account.account_id;
+    const plaidAccountId = account.account_id;
     const balance = account.balances.current;
-    const plaidPersistentAccID = account.persistent_account_id;
     const accountName = `${institutionName} - ${account.name}`;
 
     const accountSubtype = account.subtype;
 
-    const existingAcc = await fetchAccountByUserAndPlaidID(userID, plaidPersistentAccID);
+    const existingAcc = await fetchAccountByUserAndPlaidID(userID, plaidAccountId);
     if (existingPlaidConnection && existingAcc) return; // Skip since current already imported
 
     // If this is not a pre-define account type then it will get introduced to other category
@@ -78,8 +77,8 @@ export async function importLinkedAccount(userID, existingPlaidConnection, linke
     }
     const accountTypeID = accountTypeData.account_type_id
 
-    await insertNewPlaidAccountInfo(plaidPersistentAccID, accountID, accountsItemID); // Create new plaid account info
-    await insertNewAccount(userID, accountTypeID, plaidPersistentAccID, accountName, balance) // Create new account
+    await insertNewPlaidAccountInfo(plaidAccountId, accountsItemID); // Create new plaid account info
+    await insertNewAccount(userID, accountTypeID, plaidAccountId, accountName, balance) // Create new account
 
     addedAcc++; // Increment addedAcc for each successfully added account
 

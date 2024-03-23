@@ -26,7 +26,7 @@ export function HamburgerMenu() {
     }
 
     return (
-        <nav className="flex justify-between items-center h-16 bg-gray-950 px-4 md:px-8 w-10">
+        <nav className="flex justify-between items-center h-16 bg-gray-900 px-4 md:px-8 w-10">
             <div className={toggleMenu()}>
                 <Link href="/dashboard" className="text-white font-bold text-lg md:text-xl px-2 py-1 hover:bg-gray-800 rounded-md md:mx-2" onClick={closeMenu}>
                 Overview

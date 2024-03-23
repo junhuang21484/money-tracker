@@ -1,8 +1,11 @@
+"use client";
+
+import { useState } from "react";
 import AddAccountForm from "./add-account-form";
 import AddAccountPlaid from "./add-account-plaid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-export default function AddAccountModal({ userID, accountTypes, closeModal }) {
+function AddAccountModal({ userID, accountTypes, closeModal }) {
   return (
     <dialog className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-50 z-50 overflow-auto backdrop-blur flex justify-center items-center">
         <div className="bg-white m-auto p-8 rounded-lg relative">
@@ -28,3 +31,17 @@ export default function AddAccountModal({ userID, accountTypes, closeModal }) {
   );
 }
 
+export default function AddAccountBtn( {userID, accountTypes} ) {
+  const [modalOpen, setModalOpen] = useState(false);
+  return (
+    <div>
+      {modalOpen && <AddAccountModal userID={userID} accountTypes={accountTypes} closeModal={() => setModalOpen(false)} />}
+      <button
+        onClick={() => setModalOpen(true)}
+        className="bg-emerald-500 px-4 py-2 rounded hover:bg-emerald-300"
+      >
+        Add Account
+      </button>
+    </div>
+  );
+}
