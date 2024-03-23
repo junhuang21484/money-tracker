@@ -184,6 +184,30 @@ export async function fetchTransactionByPlaidTransID(plaidTransactionId) {
     })
 }
 
+export async function getTransactionSummaryByAccountId(accountId) {
+    const sql = `SELECT
+                    account_id,
+                    ROUND(SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END)) AS total_positive_amount,
+                    ROUND(SUM(CASE WHEN amount < 0 THEN ABS(amount) ELSE 0 END)) AS total_negative_amount
+                FROM
+                    transactions
+                WHERE
+                    account_id = ?
+                GROUP BY
+                    account_id;`;
+    const values = [accountId];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results[0]);
+        });
+    })
+}
+
 export async function getMonthlyBalanceChange(accountID) {
     const sql = `
       SELECT DATE_FORMAT(date, '%Y-%m-01') AS month_start,

@@ -1,7 +1,7 @@
 "use server";
 
 import { fetchAccountByID } from "@/app/lib/data/accounts";
-import { fetchFilteredTransactions } from "@/app/lib/data/transactions";
+import { fetchFilteredTransactions, getTransactionSummaryByAccountId } from "@/app/lib/data/transactions";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
 import AccountNameEdit from "@/app/lib/ui/dashboard-account/details/account-name-edit";
@@ -26,9 +26,12 @@ export default async function AccountDetails({ params, searchParams }) {
   const orderBy = searchParams?.orderBy || "";
   const filterDirection = searchParams?.filterDirection || "";
   const accountData = await fetchAccountByID(accountID);
+  const transactionSummary = await getTransactionSummaryByAccountId(accountID);
   if (!accountData) return <div>Account Not Found</div>;
 
   const accountBalance = formatCurrency(accountData.balance);
+  const positiveTransactionSum = formatCurrency(transactionSummary.total_positive_amount);
+  const negativeTransactionSum = formatCurrency(transactionSummary.total_negative_amount);
   const transactionData = await fetchFilteredTransactions(accountID, query, orderBy, filterDirection);
 
   if (userID != accountData.user_id) {
@@ -69,8 +72,8 @@ export default async function AccountDetails({ params, searchParams }) {
             value={convertToTitleCase(accountData.account_type_name)}
             type="accType"
           />
-          <OverviewCard title="Total Income" value={"TBD"} type="income" />
-          <OverviewCard title="Total Expense" value={"TBD"} type="expense" />
+          <OverviewCard title="Total Income" value={positiveTransactionSum} type="income" />
+          <OverviewCard title="Total Expense" value={negativeTransactionSum} type="expense" />
         </div>
       </div>
 
