@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-export default function SimpleGraph({ accountData, transactionData }) {
+export default function BalanceOverTimeGraph({ accountData, transactionData }) {
   console.log('accountData:', accountData);
   console.log('transactionData:', transactionData);
   const [data, setData] = useState([]);
