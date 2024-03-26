@@ -1,28 +1,29 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { format, startOfMonth, endOfMonth, eachMonthOfInterval } from 'date-fns';
 
 export default function BalanceOverTimeGraph({ accountData, transactionData }) {
-  console.log('accountData:', accountData);
-  console.log('transactionData:', transactionData);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     let currentBalance = parseFloat(accountData.balance);
 
     const sortedTransactions = transactionData.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const dateRange = sortedTransactions.length ? { start: startOfMonth(new Date(sortedTransactions[0].date)), end: endOfMonth(new Date(sortedTransactions[sortedTransactions.length - 1].date)) } : null;
+    const months = dateRange ? eachMonthOfInterval(dateRange) : [];
 
-    const balanceOverTime = sortedTransactions.reduce((acc, transaction) => {
-      currentBalance += parseFloat(transaction.amount);
-      const newBalance = parseFloat(currentBalance.toFixed(2));
-
-      acc.push({
-        date: transaction.date,
-        balance: newBalance
+    const balanceOverTime = months.map(month => {
+      const monthEnd = endOfMonth(month);
+      const transactionsThisMonth = sortedTransactions.filter(t => new Date(t.date) <= monthEnd);
+      transactionsThisMonth.forEach(t => {
+        currentBalance += parseFloat(t.amount);
       });
-
-      return acc;
-    }, []);
+      return {
+        date: format(month, 'MMM-yyyy'),
+        balance: parseFloat(currentBalance.toFixed(2))
+      };
+    });
 
     balanceOverTime.push({
       date: 'Latest',
@@ -30,19 +31,25 @@ export default function BalanceOverTimeGraph({ accountData, transactionData }) {
     });
 
     setData(balanceOverTime);
-  }, [accountData, transactionData]); 
+  }, [accountData, transactionData]);
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
-      const isLatest = payload[0].payload.isLatest;
-      if (isLatest) {
-        return (
-          <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '5px', border: '1px solid #ccc' }}>
-            <p className="label">{`Current balance: $${payload[0].value}`}</p>
-          </div>
-        );
-      }
+      const styles = {
+        backgroundColor: '#10B981',
+        padding: '5px 10px', 
+        border: '1px solid #cccccc', 
+        borderRadius: '8px', 
+        color: 'black', 
+      };
+  
+      return (
+        <div className="custom-tooltip" style={styles}>
+          <p className="label">{`$${payload[0].value.toFixed(2)}`}</p>
+        </div>
+      );
     }
+  
     return null;
   };
 

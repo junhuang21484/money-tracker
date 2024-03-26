@@ -30,8 +30,8 @@ export default async function AccountDetails({ params, searchParams }) {
   if (!accountData) return <div>Account Not Found</div>;
 
   const accountBalance = formatCurrency(accountData.balance);
-  const positiveTransactionSum = formatCurrency(transactionSummary.total_positive_amount);
-  const negativeTransactionSum = formatCurrency(transactionSummary.total_negative_amount);
+  const positiveTransactionSum = formatCurrency(transactionSummary?.total_positive_amount || 0);
+  const negativeTransactionSum = formatCurrency(transactionSummary?.total_negative_amount || 0);
   const transactionData = await fetchFilteredTransactions(accountID, query, orderBy, filterDirection);
 
   if (userID != accountData.user_id) {
@@ -81,7 +81,7 @@ export default async function AccountDetails({ params, searchParams }) {
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <BalanceOverTimeGraph accountData={accountData} transactionData={transactionData} />
-          <SpendingPieChart transactionData={transactionData}/>
+          <SpendingPieChart transactionData={transactionData} accountData={accountData}/>
         </div>
       </div>
 
