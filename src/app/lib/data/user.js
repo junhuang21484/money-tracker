@@ -92,22 +92,44 @@ export async function fetchEmailByUserID(userID) {
   });
 }
 
-export async function updateUserByID(userID, updatedUserData) {
-  const { firstName, lastName, email, password } = updatedUserData;
+export async function getUserOverview(userId) {
+  const availableFundSQL = `
+    SELECT SUM(accounts.balance) AS available_fund
+    FROM Users
+    JOIN accounts ON accounts.user_id = Users.user_id
+    JOIN accountTypes ON accounts.account_type_id = accountTypes.account_type_id
+    WHERE Users.user_id = ? AND accountTypes.is_depository = 1;
+  `;
 
-  const sql = `UPDATE Users
-               SET first_name = ?, last_name = ?, email = ?, password = ?
-               WHERE user_id = ?`;
+  const debtSQL = `
+    SELECT SUM(accounts.balance) AS outstanding_debt
+    FROM Users
+    JOIN accounts ON accounts.user_id = Users.user_id
+    JOIN accountTypes ON accounts.account_type_id = accountTypes.account_type_id
+    WHERE Users.user_id = ? AND accountTypes.is_depository = 0;
+  `;
 
-  const values = [firstName, lastName, email, password, userID];
+  const queries = [
+    new Promise((resolve, reject) => {
+      connection.query(availableFundSQL, [userId], (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results[0]?.available_fund || 0);
+      });
+    }),
+    new Promise((resolve, reject) => {
+      connection.query(debtSQL, [userId], (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results[0]?.outstanding_debt || 0);
+      });
+    }),
+  ];
 
-  return new Promise((resolve, reject) => {
-    connection.query(sql, values, (error, results) => {
-      if (error) {
-        return reject(error);
-      }
+  const [availableFund, outstandingDebt] = await Promise.all(queries);
 
-      resolve(results);
-    });
-  });
+  return { availableFund, outstandingDebt };
 }
+

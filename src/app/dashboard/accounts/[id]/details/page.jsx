@@ -30,8 +30,8 @@ export default async function AccountDetails({ params, searchParams }) {
   if (!accountData) return <div>Account Not Found</div>;
 
   const accountBalance = formatCurrency(accountData.balance);
-  const positiveTransactionSum = formatCurrency(transactionSummary.total_positive_amount);
-  const negativeTransactionSum = formatCurrency(transactionSummary.total_negative_amount);
+  const positiveTransactionSum = formatCurrency(transactionSummary?.total_positive_amount || 0);
+  const negativeTransactionSum = formatCurrency(transactionSummary?.total_negative_amount || 0);
   const transactionData = await fetchFilteredTransactions(accountID, query, orderBy, filterDirection);
 
   if (userID != accountData.user_id) {
@@ -62,18 +62,10 @@ export default async function AccountDetails({ params, searchParams }) {
       <div className="rounded-lg border-2 p-4 border-gray-500">
         <h1 className={sectionHeaderStyling}>Overview</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
-          <OverviewCard
-            title="Current Balance"
-            value={accountBalance}
-            type="balance"
-          />
-          <OverviewCard
-            title="Account Type"
-            value={convertToTitleCase(accountData.account_type_name)}
-            type="accType"
-          />
-          <OverviewCard title="Total Income" value={positiveTransactionSum} type="income" />
-          <OverviewCard title="Total Expense" value={negativeTransactionSum} type="expense" />
+          <OverviewCard data={[{title: "Current Balance", value: accountBalance, type: "balance"}]}/>
+          <OverviewCard data={[{title: "Account Type", value: convertToTitleCase(accountData.account_type_name), type: "accType"}]}/>
+          <OverviewCard data={[{title: "Total Income", value: positiveTransactionSum, type: "Income"}]}/>
+          <OverviewCard data={[{title: "Total Expense", value: negativeTransactionSum, type: "Expense"}]}/>
         </div>
       </div>
 
