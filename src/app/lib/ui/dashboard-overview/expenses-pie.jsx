@@ -13,7 +13,7 @@ const dataForPieChart = [
 export default function ExpensesPie() {
   return (
     <ResponsiveContainer width="100%" height={300}>
-    <h1 className='text-xl text-center'>Expenses By Category</h1>
+    <h1 className='text-xl text-center'>Expenses By Category Overall</h1>
       <PieChart>
         <Pie
           data={dataForPieChart}

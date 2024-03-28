@@ -36,7 +36,7 @@ export default function OverviewGraph() {
 
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <h1 className='text-xl text-center'>Balance Over Time</h1>
+      <h1 className='text-xl text-center'>Total Balance Over Time</h1>
       <LineChart data={dummyData}>
         <CartesianGrid stroke="#e0e0e0" />
         <XAxis 
