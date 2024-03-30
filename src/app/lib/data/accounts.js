@@ -23,6 +23,21 @@ export async function fetchAccountByID(accountID) {
     });
 }
 
+export async function fetchAccountByUserID(userID) {
+    const sql = `SELECT * FROM accounts WHERE user_id = ?`;
+    const values = [userID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
 export async function fetchAccountByUserAndPlaidID(userID, plaidAccountId) {
     const sql = `SELECT * FROM accounts WHERE user_id = ? AND plaid_account_id = ?`;
     const values = [userID, plaidAccountId];

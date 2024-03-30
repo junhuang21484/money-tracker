@@ -1,12 +1,15 @@
 import { getUserOverview } from "@/app/lib/data/user";
+import { fetchAccountByUserID } from "@/app/lib/data/accounts";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import { formatCurrency } from "@/app/lib/utils"
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
+import CreateGoalBtn from "@/app/lib/ui/dashboard-goals/create-goal-btn"
 
 export default async function DashboardPage() {
   const sectionHeaderStyling = "text-xl font-bold md:text-2xl";
   const userId = getLoggedInUserID();
   const { availableFund, outstandingDebt } = await getUserOverview(userId);
+  const accountData = await fetchAccountByUserID(userId);
 
   return (
     <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
@@ -28,7 +31,11 @@ export default async function DashboardPage() {
       </div>
 
       <div className="rounded-lg border-2 p-4 border-gray-500">
-        <h1 className={sectionHeaderStyling}>Goals</h1>
+        <div className="flex w-full justify-between items-center">
+          <h1 className={sectionHeaderStyling}>Goals</h1>
+          <CreateGoalBtn userId={userId} accountData={accountData} />
+        </div>
+        
       </div>
 
       <div className="rounded-lg border-2 p-4 border-gray-500">

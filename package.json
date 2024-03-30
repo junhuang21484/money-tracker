@@ -22,8 +22,10 @@
     "react": "^18",
     "react-dom": "^18",
     "react-plaid-link": "^3.5.1",
+    "react-select": "^5.8.0",
     "recharts": "^2.12.2",
-    "use-debounce": "^10.0.0"
+    "use-debounce": "^10.0.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
