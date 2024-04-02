@@ -31,6 +31,22 @@ export async function insertNewGoalAccounts(goalId, relatedAcc) {
     });
 }
 
+export async function deleteGoalAccountByAccountId(accountId) {
+    const sql = 'DELETE FROM goal_accounts WHERE account_id = ?';
+    const values = [accountId]
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
+
 export async function fetchGoalByUserID(userID) {
     const sql = `SELECT * FROM goals WHERE user_id = ?`;
     const values = [userID];

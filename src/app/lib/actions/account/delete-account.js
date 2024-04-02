@@ -3,6 +3,7 @@ import { fetchPlaidAccountInfoByPlaidAccId, deletePlaidAccountInfoByID, fetchPla
 import { deleteAccountByID } from "@/app/lib/data/accounts"
 import { fetchPlaidConnectionByItemId, deletePlaidConnectionByAccessToken } from "@/app/lib/data/plaidConnections"
 import { deleteTransactionsToAccountID } from "@/app/lib/data/transactions"
+import { deleteGoalAccountByAccountId } from "@/app/lib/data/goals"
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
 import { removePlaidItem } from "@/app/lib/plaid/plaid-wrapper"
 import { revalidatePath } from "next/cache"
@@ -16,6 +17,7 @@ export default async function deleteAccount(accountData) {
     try {
         await deleteAccountByID(loggedInUser, accountData.account_id) // Remove account
         await deleteTransactionsToAccountID(accountData.account_id) // Remove transactions related to account
+        await deleteGoalAccountByAccountId(accountData.account_id) // Remove goal accounts from goals containing this account
 
         // Check if this is a plaid account
         const plaidAccountId = accountData.plaid_account_id
