@@ -6,6 +6,8 @@ import { formatCurrency } from "@/app/lib/utils";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
 import CreateGoalBtn from "@/app/lib/ui/dashboard-goals/create-goal-btn";
 import GoalCard from "@/app/lib/ui/dashboard-goals/goal-card";
+import OverviewGraph from "@/app/lib/ui/dashboard-overview/balance-over-time";
+import ExpensesPie from "@/app/lib/ui/dashboard-overview/expenses-pie";
 
 export default async function DashboardPage() {
   const sectionHeaderStyling = "text-xl font-bold md:text-2xl";
@@ -41,8 +43,12 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="rounded-lg border-2 p-4 border-gray-500">
+      <div className="rounded-lg border-2 p-12 border-gray-500">
         <h1 className={sectionHeaderStyling}>Analytics</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <OverviewGraph />
+        <ExpensesPie />
+        </div>
       </div>
 
       <div className="rounded-lg border-2 p-4 border-gray-500 ">
