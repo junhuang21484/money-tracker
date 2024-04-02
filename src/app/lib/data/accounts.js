@@ -24,7 +24,10 @@ export async function fetchAccountByID(accountID) {
 }
 
 export async function fetchAccountByUserID(userID) {
-    const sql = `SELECT * FROM accounts WHERE user_id = ?`;
+    const sql = `
+    SELECT accounts.*, accountTypes.is_depository FROM accounts
+    JOIN accountTypes ON accounts.account_type_id = accountTypes.account_type_id
+    WHERE accounts.user_id = ?`;
     const values = [userID];
 
     return new Promise((resolve, reject) => {

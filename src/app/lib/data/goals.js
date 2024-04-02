@@ -30,3 +30,34 @@ export async function insertNewGoalAccounts(goalId, relatedAcc) {
         });
     });
 }
+
+export async function fetchGoalByUserID(userID) {
+    const sql = `SELECT * FROM goals WHERE user_id = ?`;
+    const values = [userID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
+
+export async function fetchGoalAccountByGoalId(goalId) {
+    const sql = `SELECT * FROM goal_accounts WHERE goal_id = ?`;
+    const values = [goalId];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}

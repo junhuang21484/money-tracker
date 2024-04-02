@@ -2,6 +2,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import { insertNewGoal, insertNewGoalAccounts } from "@/app/lib/data/goals"
+import { revalidatePath } from 'next/cache';
 
 export async function createGoal(userId, prevState, formData) {
     try {
@@ -12,6 +13,7 @@ export async function createGoal(userId, prevState, formData) {
         await insertNewGoal(goalId, userId, goalName, goalAmt)
         await insertNewGoalAccounts(goalId, relatedAcc);
 
+        revalidatePath('/dashboard')
         return { success: true, msg: "Goal created successfully" }
     } catch (error) {
         console.log(error)
