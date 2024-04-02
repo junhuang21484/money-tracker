@@ -6,6 +6,8 @@ import { formatCurrency } from "@/app/lib/utils";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
 import CreateGoalBtn from "@/app/lib/ui/dashboard-goals/create-goal-btn";
 import GoalCard from "@/app/lib/ui/dashboard-goals/goal-card";
+import SearchBar from "@/app/lib/ui/util/searchBar"
+import OrderFilter from "@/app/lib/ui/util/orderFilter"
 import OverviewGraph from "@/app/lib/ui/dashboard-overview/balance-over-time";
 import ExpensesPie from "@/app/lib/ui/dashboard-overview/expenses-pie";
 
@@ -51,13 +53,22 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="rounded-lg border-2 p-4 border-gray-500 ">
+      <div className="rounded-lg border-2 p-4 border-gray-500 flex flex-col gap-2">
         <div className="flex w-full justify-between items-center">
           <h1 className={sectionHeaderStyling}>Goals</h1>
           <CreateGoalBtn userId={userId} accountData={accountData} />
         </div>
-        {goalData.length === 0 && <div className="text-center text-xl mt-2 w-full">No goal data to display</div>}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-4">
+          
+        <div className="flex justify-between w-full gap-2">
+          <div className="flex-1">
+            <SearchBar placeholder="Search by name, target amount" />
+          </div>
+          <div>
+            <OrderFilter filterOption={["Goal Name", "Target Amount"]} />
+          </div>
+        </div>
+        {goalData.length === 0 && <div className="text-center text-xl w-full">No goal data to display</div>}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {
               goalData.map((goal) => (
                 <GoalCard key={goal.goal_id} goalData={goal} allAccountInfo={accountData} />
