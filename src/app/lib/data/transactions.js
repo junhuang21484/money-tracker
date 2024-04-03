@@ -231,6 +231,27 @@ export async function getMonthlyBalanceChange(accountID) {
     });
 }
 
+export async function fetchUserTransactions(userID) {
+    const sql = `
+        SELECT t.* 
+        FROM transactions t
+        JOIN accounts a ON t.account_id = a.account_id
+        WHERE a.user_id = ?
+        ORDER BY t.date DESC`;
+    const values = [userID];
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
+
 
 
 

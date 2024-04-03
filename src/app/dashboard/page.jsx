@@ -3,6 +3,7 @@ import { fetchAccountByUserID } from "@/app/lib/data/accounts";
 import { fetchGoalByUserID } from "@/app/lib/data/goals";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import { formatCurrency } from "@/app/lib/utils";
+import { fetchUserTransactions } from "@/app/lib/data/transactions";
 import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
 import CreateGoalBtn from "@/app/lib/ui/dashboard-goals/create-goal-btn";
 import GoalCard from "@/app/lib/ui/dashboard-goals/goal-card";
@@ -17,6 +18,9 @@ export default async function DashboardPage() {
   const { availableFund, outstandingDebt } = await getUserOverview(userId);
   const accountData = await fetchAccountByUserID(userId);
   const goalData = await fetchGoalByUserID(userId);
+
+  const transactions = await fetchUserTransactions(userId);
+  console.log("ALL THE TRANSACTION IN THIS USER: ", transactions);
 
   return (
     <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
