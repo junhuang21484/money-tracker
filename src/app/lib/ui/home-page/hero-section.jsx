@@ -67,6 +67,8 @@ const HeroSection = () => {
               className="absolute inset-0 object-cover"
               layout="fill"
               objectFit="cover"
+              sizes="(min-width: 640px) 50vw, 100vw"
+              priority
             />
           </div>
         </motion.div>
