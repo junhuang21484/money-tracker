@@ -20,13 +20,12 @@ export default async function DashboardPage() {
   const goalData = await fetchGoalByUserID(userId);
 
   const transactions = await fetchUserTransactions(userId);
-  console.log("ALL THE TRANSACTION IN THIS USER: ", transactions);
 
   return (
     <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
       <div className="rounded-lg border-2 p-4 border-gray-500">
         <h1 className={sectionHeaderStyling}>Overview</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 w-full gap-4 ">
           <OverviewCard
             data={[
               {
@@ -72,7 +71,7 @@ export default async function DashboardPage() {
           </div>
         </div>
         {goalData.length === 0 && <div className="text-center text-xl w-full">No goal data to display</div>}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {
               goalData.map((goal) => (
                 <GoalCard key={goal.goal_id} goalData={goal} allAccountInfo={accountData} />

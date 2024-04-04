@@ -22,13 +22,13 @@ export default async function GoalCard({ goalData, allAccountInfo }) {
 
   return (
     <section className={clsx(
-      'min-w-80 shadow-md rounded-md p-4 flex items-center',
+      'max-w-96 shadow-md rounded-md p-4 flex items-center justify-center',
       {'bg-emerald-600': progress === 100,
         'bg-gray-800': progress < 100
       }
     )}>
       {/* Circular progress bar */}
-      <div className="relative w-20 h-20">
+      <div className="relative w-20 h-20 bg-red-">
         <svg className="w-full h-full">
           {/* Background circle */}
           <circle className="text-gray-300" strokeWidth="5" stroke="currentColor" fill="transparent" r="30" cx="40" cy="40" />
