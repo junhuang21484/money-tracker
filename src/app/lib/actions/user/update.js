@@ -68,14 +68,32 @@ export default async function Update(prevState, formData) {
 
     const newPassword = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
+
     if (newPassword !== null && confirmPassword !== null) {
       if (newPassword.length >= 8) {
-        if (newPassword === confirmPassword) {
-          updatedUserData.password = await bcrypt.hash(newPassword, 10);
+        const numberRegex = /\d/;
+        const letterRegex = /[a-zA-Z]/;
+        const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+        if (
+          numberRegex.test(newPassword) &&
+          letterRegex.test(newPassword) &&
+          specialCharRegex.test(newPassword)
+        ) {
+          if (newPassword === confirmPassword) {
+            updatedUserData.password = await bcrypt.hash(newPassword, 10);
+          } else {
+            return {
+              msg: "Passwords do not match",
+              errorMsg: "Passwords do not match",
+              success: false,
+            };
+          }
         } else {
           return {
-            msg: "Passwords do not match",
-            errorMsg: "Passwords do not match",
+            msg: "Password must contain at least one number, one letter, and one special character",
+            errorMsg:
+              "Password must contain at least one number, one letter, and one special character",
             success: false,
           };
         }
