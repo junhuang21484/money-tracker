@@ -81,6 +81,7 @@ function AddGoalForm({ userId, accountData }) {
           id="accounts"
           options={accountOptions}
           isMulti
+          required
           className="basic-multi-select text-start"
           classNamePrefix="select"
         />

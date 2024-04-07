@@ -21,7 +21,6 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 export default function OverviewGraph( { transactionsData } ) {
-  console.log("ALL TRANS DATA:", transactionsData);
   const [data, setData] = useState([]);
 
   useEffect(() => {

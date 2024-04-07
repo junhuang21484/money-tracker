@@ -109,6 +109,14 @@ export async function getUserOverview(userId) {
     WHERE Users.user_id = ? AND accountTypes.is_depository = 0;
   `;
 
+  const spendingSQL = `SELECT ROUND(SUM(TRANS.amount)) AS amount, TRANS.category FROM accounts ACC
+  JOIN accountTypes ACCT
+  ON ACC.account_type_id = ACCT.account_type_id
+  JOIN transactions TRANS
+  ON ACC.account_id = TRANS.account_id
+  WHERE ACC.user_id = ?
+  GROUP BY TRANS.category`
+
   const queries = [
     new Promise((resolve, reject) => {
       connection.query(availableFundSQL, [userId], (error, results) => {
@@ -126,10 +134,37 @@ export async function getUserOverview(userId) {
         resolve(results[0]?.outstanding_debt || 0);
       });
     }),
+    new Promise((resolve, reject) => {
+      connection.query(spendingSQL, [userId], (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      });
+    })
   ];
 
-  const [availableFund, outstandingDebt] = await Promise.all(queries);
+  const [availableFund, outstandingDebt, spendingByCategory] = await Promise.all(queries);
+  const highestIncomeData = spendingByCategory.reduce(
+    (max, current) => {
+      if (current.amount > max.amount) {
+        return current;
+      }
+      return max;
+    },
+    { amount: -Infinity, category: "" }
+  )
+  const highestSpendingData = spendingByCategory.reduce(
+    (min, current) => {
+      if (current.amount < min.amount) {
+        return current;
+      }
+      return min;
+    },
+    { amount: Infinity, category: "" }
+  )
 
-  return { availableFund, outstandingDebt };
+  
+  return { availableFund, outstandingDebt, highestIncomeData, highestSpendingData };
 }
 
