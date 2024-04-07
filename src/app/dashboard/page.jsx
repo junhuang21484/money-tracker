@@ -14,7 +14,7 @@ import ExpensesPie from "@/app/lib/ui/dashboard-overview/expenses-pie";
 
 export default async function DashboardPage() {
   const sectionHeaderStyling = "text-xl font-bold md:text-2xl";
-  const userId = getLoggedInUserID();
+  const userId = await getLoggedInUserID()
   const accountData = await fetchAccountByUserID(userId);
   const goalData = await fetchGoalByUserID(userId);
   const transactionsData = await fetchUserTransactions(userId);

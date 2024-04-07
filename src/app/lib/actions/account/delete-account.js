@@ -11,7 +11,7 @@ import { redirect } from "next/navigation"
 
 
 export default async function deleteAccount(accountData) {
-    const loggedInUser = getLoggedInUserID()
+    const loggedInUser = await getLoggedInUserID()
     // User not logged in or account is not their
     if (!loggedInUser || loggedInUser != accountData.user_id) return {success: false, msg: "Unauthorized"}
     try {

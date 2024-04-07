@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache"
 
 export default async function deleteTransaction(transactionData) {
     try {
-        const loggedInUser = getLoggedInUserID()
+        const loggedInUser = await getLoggedInUserID()
         const relatedAccount = await fetchAccountByID(transactionData.account_id)
         if (!loggedInUser || loggedInUser != relatedAccount.user_id) return { success: false, msg: "Unauthorized" }
 

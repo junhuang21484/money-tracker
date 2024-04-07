@@ -20,7 +20,7 @@ import SearchBar from "@/app/lib/ui/util/searchBar";
 import OrderFilter from "@/app/lib/ui/util/orderFilter"
 
 export default async function AccountDetails({ params, searchParams }) {
-  const userID = getLoggedInUserID(getLoggedInUserID);
+  const userID = await getLoggedInUserID();
   const accountID = params.id;
   const query = searchParams?.query || "";
   const orderBy = searchParams?.orderBy || "";

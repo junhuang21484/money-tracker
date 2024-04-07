@@ -43,7 +43,7 @@ class SimpleTransaction {
 
 export default async function syncTransactions(accountData) {
     try {
-        const loggedInUser = getLoggedInUserID()
+        const loggedInUser = await getLoggedInUserID()
         if (!loggedInUser || (loggedInUser != accountData.user_id)) return { success: false, msg: "Unauthorized user" }
 
         const plaidAccountInfo = await fetchPlaidAccountInfoByPlaidAccId(accountData.plaid_account_id)

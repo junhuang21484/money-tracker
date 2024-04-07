@@ -5,7 +5,7 @@ import { ChartPieIcon, CreditCardIcon, UserIcon } from "@heroicons/react/24/outl
 import LogoutBtn from "./logout-btn"
 
 export default async function Navbar( ) {
-    const userId = getLoggedInUserID()
+    const userId = await getLoggedInUserID()
     const userName = await fetchFirstNameByUserID(userId);
 
     const navLinks = [
