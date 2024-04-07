@@ -76,7 +76,7 @@ export default async function DashboardPage() {
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <OverviewGraph transactionsData={transactionsData} />
-          <ExpensesPie />
+          <ExpensesPie transactionsData={transactionsData} />
         </div>
       </div>
 
