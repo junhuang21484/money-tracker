@@ -15,8 +15,9 @@ export default function DeleteAccountModal({ closeModal }) {
           <h3 className="font-bold text-4xl text-white">Delete Account</h3>
           <div className="flex flex-col w-full">
             <div>
-              <p className=" text-white">
-                you are about to delete your account
+              <p className=" text-white m-6">
+                Are you sure you want to delete your account? This action cannot
+                be undone.
               </p>
             </div>
             <div className="mt-2">
@@ -51,7 +52,7 @@ function DeleteBtn() {
       disabled={isDeleting}
       onClick={handleDeleteClick}
       className={clsx(
-        "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-400",
+        "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-500 rounded-md hover:bg-red-600",
         { "bg-gray-500 cursor-not-allowed hover:bg-gray-500": isDeleting }
       )}
     >

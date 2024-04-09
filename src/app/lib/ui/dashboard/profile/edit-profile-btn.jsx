@@ -15,7 +15,7 @@ export default function EditProfileBtn({ userID }) {
       )}
       <button
         onClick={() => setModalOpen(true)}
-        className="bg-emerald-500 px-4 py-2 rounded hover:bg-emerald-300"
+        className="bg-primary-500 px-4 py-2 rounded hover:bg-primary-600"
       >
         Edit Profile
       </button>
