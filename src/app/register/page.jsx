@@ -21,8 +21,7 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="flex flex-row items-stretch justify-center min-h-screen overflow-hidden"
-      style={{ backgroundColor: "121212" }}
+      className="flex flex-row items-stretch justify-center min-h-screen overflow-hidden bg-[#121212]"
     >
       {/* Left Side: Image */}
       <div
@@ -38,7 +37,7 @@ export default function RegisterPage() {
             >
               MoneyMinder
             </Link>
-            <p className="text-xl pt-2">Register</p>
+            <p className="text-xl pt-2 text-white">Register</p>
           </div>
           <form className="mt-6" action={formAction}>
             <div className="flex w-full gap-4">

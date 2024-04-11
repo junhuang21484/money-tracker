@@ -23,8 +23,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="flex flex-row items-stretch justify-center min-h-screen overflow-hidden"
-      style={{ backgroundColor: "121212" }}
+      className="flex flex-row items-stretch justify-center min-h-screen overflow-hidden bg-[#121212]"
     >
       {/* Left Side: Image */}
       <div
@@ -42,7 +41,7 @@ export default function LoginPage() {
             >
               MoneyMinder
             </Link>
-            <p className="text-xl pt-2">Log in</p>
+            <p className="text-xl pt-2 text-white">Log in</p>
           </div>
           <form className="mt-6" action={formAction}>
             {state.errorMsg && !state.success && (
