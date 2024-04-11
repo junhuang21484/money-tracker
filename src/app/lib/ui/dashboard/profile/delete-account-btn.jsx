@@ -1,23 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import EditProfileModal from "@/app/lib/ui/dashboard/profile/edit-profile-modal";
-
-export default function EditProfileBtn({ userID }) {
+import DeleteAccountModal from "@/app/lib/ui/dashboard/profile/delete-account-model";
+export default function DeleteAccountBtn({ userID }) {
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <div>
       {modalOpen && (
-        <EditProfileModal
+        <DeleteAccountModal
           userID={userID}
           closeModal={() => setModalOpen(false)}
         />
       )}
       <button
         onClick={() => setModalOpen(true)}
-        className="bg-primary-500 px-4 py-2 rounded hover:bg-primary-600"
+        className="bg-red-500 px-4 py-2 rounded hover:bg-red-600"
       >
-        Edit Profile
+        Delete Account
       </button>
     </div>
   );

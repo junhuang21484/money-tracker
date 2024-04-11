@@ -111,3 +111,22 @@ export async function updateUserByID(userID, updatedUserData) {
     });
   });
 }
+
+export async function deleteUserByID(userID) {
+  const sql = `DELETE FROM Users WHERE user_id = ?`;
+  const values = [userID];
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+
+      if (results.affectedRows === 0) {
+        return reject(new Error("User not found"));
+      }
+
+      resolve(results);
+    });
+  });
+}

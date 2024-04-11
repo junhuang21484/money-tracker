@@ -4,6 +4,7 @@ import { fetchEmailByUserID } from "@/app/lib/data/user";
 import { getDataFromToken } from "@/app/lib/data/jwtToken";
 import { cookies } from "next/headers";
 import EditProfileBtn from "@/app/lib/ui/dashboard/profile/edit-profile-btn";
+import DeleteAccountBtn from "@/app/lib/ui/dashboard/profile/delete-account-btn";
 
 const ProfilePage = async () => {
   const storedCookies = cookies();
@@ -34,9 +35,7 @@ const ProfilePage = async () => {
           </div>
           <div className="flex  mt-4">
             <EditProfileBtn userID={userID} />
-            <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-800 ml-4">
-              Delete Account
-            </button>
+            <DeleteAccountBtn />
           </div>
         </div>
       </div>

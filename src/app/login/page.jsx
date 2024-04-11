@@ -22,34 +22,34 @@ export default function LoginPage() {
 
   return (
     <div
-      className="flex flex-row items-stretch justify-center min-h-screen overflow-hidden"
-      style={{ backgroundColor: "rgb(33,33,33)" }}
+      className="flex flex-row items-stretch justify-center min-h-screen overflow-hidden bg-[#121212]"
     >
       {/* Left Side: Image */}
       <div
-        className="w-1/2 h-screen relative hidden lg:block"
-        style={{ backgroundImage: `url('/user-control/signin-left-img.png')` }}
+        className="w-1/2 h-screen relative hidden lg:block bg-center bg-cover"
+        style={{ backgroundImage: `url('/user-control/login.png')` }}
       ></div>
 
       {/* Right Side: Login Form */}
-      <div className="w-4/5 flex flex-col items-center justify-center lg:w-1/2">
-        <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-md">
-          <div className="w-full justify-center flex">
+      <div className="w-4/5 flex flex-col justify-center lg:w-1/2">
+        <div className="w-full pl-4 md:pl-10 lg:max-w-lg">
+          <div className="w-full pb-4">
             <Link
               href="/"
-              className="text-3xl font-extrabold text-center text-emerald-500 mx-auto"
+              className="text-4xl font-bold text-primary-500 mx-auto"
             >
-              Money Minder
+              MoneyMinder
             </Link>
+            <p className="text-xl pt-2 text-white">Log in</p>
           </div>
           <form className="mt-6" action={formAction}>
             {state.errorMsg && !state.success && (
               <p className="text-red-500 text-center">{state.errorMsg}</p>
             )}
-            <div className="mb-4">
+            <div className="mb-6">
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold text-gray-800"
+                className="text-white block mb-2 text-sm font-medium"
               >
                 Email
               </label>
@@ -58,13 +58,13 @@ export default function LoginPage() {
                 name="email"
                 id="email"
                 required
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
               />
             </div>
             <div className="mb-2">
               <label
                 htmlFor="password"
-                className="block text-sm font-semibold text-gray-800"
+                className="text-white block mb-2 text-sm font-medium"
               >
                 Password
               </label>
@@ -73,12 +73,12 @@ export default function LoginPage() {
                 name="password"
                 id="password"
                 required
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
               />
             </div>
             <Link
               href="/forget"
-              className="text-xs text-blue-600 hover:underline"
+              className="text-xs text-primary-500 hover:underline"
             >
               Forget Password?
             </Link>
@@ -86,11 +86,11 @@ export default function LoginPage() {
               <SubmitBtn />
             </div>
           </form>
-          <p className="mt-4 text-sm text-center text-gray-700">
+          <p className="mt-4 text-sm  text-[#ADB7BE]">
             Don't have an account?{" "}
             <Link
               href="/register"
-              className="font-medium text-blue-600 hover:underline"
+              className="font-medium text-primary-500 hover:underline"
             >
               Sign up
             </Link>
@@ -108,7 +108,7 @@ function SubmitBtn() {
       type="submit"
       disabled={pending}
       className={clsx(
-        "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600",
+        "bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full",
         { "bg-gray-500 cursor-not-allowed hover:bg-gray-500": pending }
       )}
     >
