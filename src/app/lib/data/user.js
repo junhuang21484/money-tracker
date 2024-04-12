@@ -117,6 +117,24 @@ export async function getUserOverview(userId) {
   WHERE ACC.user_id = ?
   GROUP BY TRANS.category`
 
+  const yearlySpendingIncomeSQL = `SELECT SUM(
+    CASE 
+      WHEN transactions.amount > 0 AND accountTypes.is_depository = 1 THEN transactions.amount
+      WHEN transactions.amount < 0 AND accountTypes.is_depository = 0 THEN transactions.amount
+      ELSE 0 END
+      ) AS total_income,
+    SUM(
+      CASE 
+        WHEN transactions.amount > 0 AND accountTypes.is_depository = 0 THEN transactions.amount
+        WHEN transactions.amount < 0 AND accountTypes.is_depository = 1 THEN transactions.amount 
+              ELSE 0 END
+      ) AS total_expense
+  FROM transactions
+  JOIN accounts ON transactions.account_id = accounts.account_id
+  JOIN accountTypes ON accounts.account_type_id = accountTypes.account_type_id
+  WHERE accounts.user_id = ?
+    AND abs(DATEDIFF(CURRENT_DATE, transactions.date)) <= 365;`
+
   const queries = [
     new Promise((resolve, reject) => {
       connection.query(availableFundSQL, [userId], (error, results) => {
@@ -141,30 +159,26 @@ export async function getUserOverview(userId) {
         }
         resolve(results);
       });
+    }),
+    new Promise((resolve, reject) => {
+      connection.query(yearlySpendingIncomeSQL, [userId], (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results[0]);
+      });
     })
   ];
 
-  const [availableFund, outstandingDebt, spendingByCategory] = await Promise.all(queries);
-  const highestIncomeData = spendingByCategory.reduce(
-    (max, current) => {
-      if (current.amount > max.amount) {
-        return current;
-      }
-      return max;
-    },
-    { amount: -Infinity, category: "" }
-  )
-  const highestSpendingData = spendingByCategory.reduce(
-    (min, current) => {
-      if (current.amount < min.amount) {
-        return current;
-      }
-      return min;
-    },
-    { amount: Infinity, category: "" }
-  )
+  const [availableFund, outstandingDebt, spendingByCategory, yearlySpendingIncomeRaw] = await Promise.all(queries);
+  const highestIncomeData = spendingByCategory.reduce((max, current) => (current.amount > max.amount ? current : max), { amount: -Infinity, category: "" });
+  const highestSpendingData = spendingByCategory.reduce((min, current) => (current.amount < min.amount ? current : min), { amount: Infinity, category: "" });
 
-  
-  return { availableFund, outstandingDebt, highestIncomeData, highestSpendingData };
+  const yearlySpendingIncome = {
+    total_income: Number(yearlySpendingIncomeRaw.total_income.toFixed(2)),
+    total_expense: Number(yearlySpendingIncomeRaw.total_expense.toFixed(2)),
+  };
+
+  return { availableFund, outstandingDebt, highestIncomeData, highestSpendingData, yearlySpendingIncome };
 }
 

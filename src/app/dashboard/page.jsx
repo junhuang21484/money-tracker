@@ -1,10 +1,8 @@
-import { getUserOverview } from "@/app/lib/data/user";
 import { fetchAccountByUserID } from "@/app/lib/data/accounts";
 import { fetchGoalByUserID } from "@/app/lib/data/goals";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
-import { formatCurrency } from "@/app/lib/utils";
 import { fetchUserTransactions } from "@/app/lib/data/transactions";
-import OverviewCard from "@/app/lib/ui/dashboard-account/details/overview-card";
+import OverviewCardWrapper from "@/app/lib/ui/dashboard-overview/overview-card-wrapper";
 import CreateGoalBtn from "@/app/lib/ui/dashboard-goals/create-goal-btn";
 import GoalCard from "@/app/lib/ui/dashboard-goals/goal-card";
 import SearchBar from "@/app/lib/ui/util/searchBar";
@@ -18,58 +16,13 @@ export default async function DashboardPage() {
   const accountData = await fetchAccountByUserID(userId);
   const goalData = await fetchGoalByUserID(userId);
   const transactionsData = await fetchUserTransactions(userId);
-  const { availableFund, outstandingDebt, highestIncomeData, highestSpendingData } = await getUserOverview(userId);
+
 
   return (
     <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
       <div className="rounded-lg border-2 p-4 border-gray-500">
         <h1 className={sectionHeaderStyling}>Overview</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-4 ">
-          <OverviewCard
-            data={[
-              {
-                title: "Net Balance",
-                value: formatCurrency(availableFund - outstandingDebt),
-                type: "balance",
-              },
-              {
-                title: "Available Fund",
-                value: formatCurrency(availableFund),
-                type: "income",
-              },
-              {
-                title: "Outstanding Debt",
-                value: formatCurrency(outstandingDebt),
-                type: "expense",
-              },
-            ]}
-          />
-          <OverviewCard
-            data={[
-              {
-                title: "Highest Spending Category",
-                value: highestSpendingData.category,
-                type: "balance",
-              },
-              {
-                title: "Highest Spending Amount",
-                value: formatCurrency(highestSpendingData.amount),
-                type: "balance",
-              },
-              {
-                title: "Highest Income Category",
-                value: highestIncomeData.category,
-                type: "income",
-              },
-              {
-                title: "Highest Income Amount",
-                value: formatCurrency(highestIncomeData.amount),
-                type: "balance",
-              },
-            ]}
-          />
-          
-        </div>
+        <OverviewCardWrapper userId={userId} />
       </div>
 
       <div className="rounded-lg border-2 p-12 border-gray-500">
