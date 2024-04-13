@@ -3,12 +3,12 @@ import { fetchGoalByUserID } from "@/app/lib/data/goals";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import { fetchUserTransactions } from "@/app/lib/data/transactions";
 import OverviewCardWrapper from "@/app/lib/ui/dashboard-overview/overview-card-wrapper";
-import CreateGoalBtn from "@/app/lib/ui/dashboard-goals/create-goal-btn";
-import GoalCard from "@/app/lib/ui/dashboard-goals/goal-card";
+import CreateGoalBtn from "@/app/lib/ui/dashboard-overview/goals/create-goal-btn";
+import GoalCard from "@/app/lib/ui/dashboard-overview/goals/goal-card";
 import SearchBar from "@/app/lib/ui/util/searchBar";
 import OrderFilter from "@/app/lib/ui/util/orderFilter";
-import OverviewGraph from "@/app/lib/ui/dashboard-overview/balance-over-time";
-import ExpensesPie from "@/app/lib/ui/dashboard-overview/expenses-pie";
+import OverviewGraph from "@/app/lib/ui/dashboard-overview/chart/balance-over-time";
+import ExpensesPie from "@/app/lib/ui/dashboard-overview/chart/expenses-pie";
 
 export default async function DashboardPage() {
   const sectionHeaderStyling = "text-xl font-bold md:text-2xl";
