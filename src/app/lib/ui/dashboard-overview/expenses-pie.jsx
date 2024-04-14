@@ -47,7 +47,7 @@ const renderCustomizedLabel = ({
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-  if (percent < 0.005) {
+  if (percent < 0.03) {
     return null;
   }
 
@@ -58,7 +58,7 @@ const renderCustomizedLabel = ({
       fill={COLORS[index % COLORS.length]}
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
-      fontSize={"0.8em"}
+      fontSize={"1em"}
     >
       {`${name} (${(percent * 100).toFixed(0)}%)`}
     </Text>
