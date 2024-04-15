@@ -16,7 +16,8 @@ export default async function DashboardPage() {
   const accountData = await fetchAccountByUserID(userId);
   const goalData = await fetchGoalByUserID(userId);
   const transactionsData = await fetchUserTransactions(userId);
-
+  const { availableFund, outstandingDebt, highestIncomeData, highestSpendingData } = await getUserOverview(userId);
+  const NetBalance = availableFund - outstandingDebt;
 
   return (
     <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
@@ -28,7 +29,7 @@ export default async function DashboardPage() {
       <div className="rounded-lg border-2 p-12 border-gray-500">
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <OverviewGraph transactionsData={transactionsData} />
+          <OverviewGraph transactionsData={transactionsData} NetBalance={NetBalance}/>
           <ExpensesPie transactionsData={transactionsData} />
         </div>
       </div>
