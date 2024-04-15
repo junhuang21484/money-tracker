@@ -19,7 +19,7 @@ export default async function Delete() {
 
     if (storedCookies.get("token")) {
       storedCookies.delete("token");
-      revalidatePath("/");
+      redirect("/");
     }
 
     return {

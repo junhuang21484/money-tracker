@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import EditProfileModal from "@/app/lib/ui/dashboard/profile/edit-profile-modal";
+import EditProfilePicModal from "@/app/lib/ui/dashboard/profile/edit-profile-pic-model";
 
-export default function EditProfileBtn({ onSuccess }) {
+export default function EditProfilePicBtn({ onSuccess }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalClose = () => {
@@ -15,12 +15,12 @@ export default function EditProfileBtn({ onSuccess }) {
 
   return (
     <div>
-      {modalOpen && <EditProfileModal closeModal={handleModalClose} />}
+      {modalOpen && <EditProfilePicModal closeModal={handleModalClose} />}
       <button
         onClick={() => setModalOpen(true)}
         className="bg-primary-500 px-4 py-2 rounded hover:bg-primary-600"
       >
-        Edit Account Details
+        Edit Profile Picture
       </button>
     </div>
   );
