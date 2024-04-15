@@ -68,7 +68,6 @@ export async function fetchNewSyncData(accessToken, initialCursor, retriesLeft =
         error
       )} Let's try again from the beginning!`
     );
-    await setTimeout(1000);
     return fetchNewSyncData(accessToken, initialCursor, retriesLeft - 1);
   }
 }

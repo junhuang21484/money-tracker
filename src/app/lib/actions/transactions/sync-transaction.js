@@ -22,7 +22,7 @@ class SimpleTransaction {
         this.plaidTransactionId = plaidTransactionId
         this.userId = userId
         this.accountId = accountId
-        this.category = category
+        this.category = category.replace(/_/g, " ")
         this.date = date
         this.name = name
         this.amount = amount
