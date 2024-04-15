@@ -6,8 +6,6 @@ import { fetchUserNetBalance } from "@/app/lib/data/user";
 import OverviewCardWrapper from "@/app/lib/ui/dashboard-overview/overview-card-wrapper";
 import CreateGoalBtn from "@/app/lib/ui/dashboard-overview/goals/create-goal-btn";
 import GoalCard from "@/app/lib/ui/dashboard-overview/goals/goal-card";
-import SearchBar from "@/app/lib/ui/util/searchBar";
-import OrderFilter from "@/app/lib/ui/util/orderFilter";
 import OverviewGraph from "@/app/lib/ui/dashboard-overview/chart/balance-over-time";
 import ExpensesPie from "@/app/lib/ui/dashboard-overview/chart/expenses-pie";
 
@@ -40,14 +38,6 @@ export default async function DashboardPage() {
           <CreateGoalBtn userId={userId} accountData={accountData} />
         </div>
 
-        <div className="flex justify-between w-full gap-2">
-          <div className="flex-1">
-            <SearchBar placeholder="Search by name, target amount" />
-          </div>
-          <div>
-            <OrderFilter filterOption={["Goal Name", "Target Amount"]} />
-          </div>
-        </div>
         {goalData.length === 0 && (
           <div className="text-center text-xl w-full">
             No goal data to display

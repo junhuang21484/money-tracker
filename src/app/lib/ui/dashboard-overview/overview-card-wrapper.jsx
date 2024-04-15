@@ -36,7 +36,7 @@ export default async function OverviewCardWrapper({userId}) {
         data={[
           {
             title: "Highest Spending Category",
-            value: highestSpendingData.category,
+            value: highestSpendingData.category ? highestSpendingData.category : "No Data",
             type: "balance",
           },
           {
@@ -46,7 +46,7 @@ export default async function OverviewCardWrapper({userId}) {
           },
           {
             title: "Highest Income Category",
-            value: highestIncomeData.category,
+            value: highestIncomeData.category ? highestIncomeData.category : "No Data",
             type: "income",
           },
           {
@@ -67,7 +67,11 @@ export default async function OverviewCardWrapper({userId}) {
             title: "Average Income / Month",
             value: formatCurrency(yearlySpendingIncome.total_income / 12),
             type: "balance",
-          },
+          }
+        ]}
+      />
+      <OverviewCard
+        data={[
           {
             title: "Total Expense (YTD)",
             value: formatCurrency(yearlySpendingIncome.total_expense),

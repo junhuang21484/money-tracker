@@ -198,8 +198,8 @@ export async function getUserOverview(userId) {
   const highestSpendingData = spendingByCategory.reduce((min, current) => (current.amount < min.amount ? current : min), { amount: Infinity, category: "" });
 
   const yearlySpendingIncome = {
-    total_income: Number(yearlySpendingIncomeRaw.total_income.toFixed(2)),
-    total_expense: Number(yearlySpendingIncomeRaw.total_expense.toFixed(2)),
+    total_income: Number(yearlySpendingIncomeRaw.total_income?.toFixed(2) || 0),
+    total_expense: Number(yearlySpendingIncomeRaw.total_expense?.toFixed(2) || 0),
   };
 
   return { availableFund, outstandingDebt, highestIncomeData, highestSpendingData, yearlySpendingIncome };

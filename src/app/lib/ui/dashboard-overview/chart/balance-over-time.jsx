@@ -48,7 +48,14 @@ export default function OverviewGraph( { transactionsData, netBalance } ) {
   const minDomain = minBalance - buffer;
   const maxDomain = maxBalance + buffer;
 
-
+  if (data.length === 0) {
+    return (
+      <div>
+        <h1 className='text-xl text-center'>Total Balance Over Time</h1>
+        <p className='text-center mt-4'>No data to display</p>
+      </div>
+    )
+  }
   return (
     <ResponsiveContainer width="100%" height={300}>
       <h1 className='text-xl text-center'>Total Balance Over Time</h1>
