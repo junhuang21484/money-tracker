@@ -1,3 +1,5 @@
+'use server'
+
 import AddAccountBtn from "@/app/lib/ui/dashboard-account/add-account-btn";
 import AccountCard from "@/app/lib/ui/dashboard-account/account-card";
 import SearchBar from "@/app/lib/ui/util/searchBar";
