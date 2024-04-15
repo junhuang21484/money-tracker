@@ -63,10 +63,6 @@ export default async function DashboardPage() {
           ))}
         </div>
       </div>
-
-      <div className="rounded-lg border-2 p-4 border-gray-500">
-        <h1 className={sectionHeaderStyling}>Budget</h1>
-      </div>
     </main>
   );
 }

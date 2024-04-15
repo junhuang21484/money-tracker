@@ -105,10 +105,6 @@ export default function ExpensesPie({ transactionsData }) {
     }));
   }, [filteredTransactions]);
 
-  if (!dataForPieChart.length) {
-    return <div>No transaction data available.</div>;
-  }
-
   return (
     <div className="flex flex-col items-center justify-center space-x-4 space-y-4">
       {/* Dropdown menu to select month */}
@@ -149,36 +145,40 @@ export default function ExpensesPie({ transactionsData }) {
         </select>
       </div>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={dataForPieChart}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius="80%"
-            innerRadius="60%"
-            fill="#8884d8"
-            paddingAngle={5}
-            dataKey="value"
-          >
-            {dataForPieChart.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend
-            align="center"
-            verticalAlign="bottom"
-            layout="horizontal"
-            wrapperStyle={{ bottom: -10 }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+      {dataForPieChart.length && (
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={dataForPieChart}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius="80%"
+              innerRadius="60%"
+              fill="#8884d8"
+              paddingAngle={5}
+              dataKey="value"
+            >
+              {dataForPieChart.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend
+              align="center"
+              verticalAlign="bottom"
+              layout="horizontal"
+              wrapperStyle={{ bottom: -10 }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      )}
+
+      {!dataForPieChart.length && <div>No transaction data available.</div>}
     </div>
   );
 }
