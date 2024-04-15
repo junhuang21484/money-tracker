@@ -7,7 +7,7 @@ import { fetchFilteredAccounts } from "@/app/lib/data/accounts";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 export default async function AccountPage({ searchParams }) {
-  const userID = getLoggedInUserID()
+  const userID = await getLoggedInUserID()
   const accountTypesAvailable = await fetchAccTypeToUser(userID);
   const query = searchParams?.query || "";
   const orderBy = searchParams?.orderBy || "";

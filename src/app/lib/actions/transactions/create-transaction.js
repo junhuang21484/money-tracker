@@ -5,7 +5,7 @@ import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
 import { revalidatePath } from "next/cache"
 
 export default async function createNewTransaction(accountData, prevState, formData) {
-    const loggedInUserID = getLoggedInUserID()
+    const loggedInUserID = await getLoggedInUserID()
     if (loggedInUserID != accountData.user_id) return {success: false, msg: "Unauthorized"} // User not matching up with account owner
 
     const transactionName = formData.get('name')

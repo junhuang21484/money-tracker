@@ -6,9 +6,8 @@ import { getLoggedInUserID } from "@/app/lib/data/jwtToken"
 import { revalidatePath } from "next/cache"
 
 export default async function editTransaction(transactionData, prevState, formData) {
-    console.log("EDITING TRANSACTION")
     try {
-        const loggedInUser = getLoggedInUserID()
+        const loggedInUser = await getLoggedInUserID()
         const relatedAccount = await fetchAccountByID(transactionData.account_id)
         if (!loggedInUser || loggedInUser != relatedAccount.user_id) return { success: false, msg: "Unauthorized" }
 

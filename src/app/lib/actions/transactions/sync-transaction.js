@@ -22,7 +22,7 @@ class SimpleTransaction {
         this.plaidTransactionId = plaidTransactionId
         this.userId = userId
         this.accountId = accountId
-        this.category = category
+        this.category = category.replace(/_/g, " ")
         this.date = date
         this.name = name
         this.amount = amount
@@ -43,7 +43,7 @@ class SimpleTransaction {
 
 export default async function syncTransactions(accountData) {
     try {
-        const loggedInUser = getLoggedInUserID()
+        const loggedInUser = await getLoggedInUserID()
         if (!loggedInUser || (loggedInUser != accountData.user_id)) return { success: false, msg: "Unauthorized user" }
 
         const plaidAccountInfo = await fetchPlaidAccountInfoByPlaidAccId(accountData.plaid_account_id)

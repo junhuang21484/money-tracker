@@ -1,17 +1,17 @@
 import Link from 'next/link';
 import { fetchFirstNameByUserID } from "@/app/lib/data/user";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
-import { ChartPieIcon, CreditCardIcon, WalletIcon } from "@heroicons/react/24/outline"
+import { ChartPieIcon, CreditCardIcon, UserIcon } from "@heroicons/react/24/outline"
 import LogoutBtn from "./logout-btn"
 
 export default async function Navbar( ) {
-    const userId = getLoggedInUserID()
+    const userId = await getLoggedInUserID()
     const userName = await fetchFirstNameByUserID(userId);
 
     const navLinks = [
         { name: "Overview", href: "/dashboard", icon: ChartPieIcon },
         { name: "Accounts", href: "/dashboard/accounts", icon: CreditCardIcon },
-        { name: "Budget", href: "/dashboard/budget", icon: WalletIcon }
+        { name: "Profile", href: "/dashboard/profile", icon: UserIcon },
     ]
 
     const NavLink = ({ href, name, icon: Icon }) => (
