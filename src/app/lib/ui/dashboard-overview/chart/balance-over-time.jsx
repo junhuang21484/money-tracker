@@ -21,11 +21,11 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-export default function OverviewGraph( { transactionsData, NetBalance } ) {
+export default function OverviewGraph( { transactionsData, netBalance } ) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    let runningBalance = NetBalance;
+    let runningBalance = netBalance;
   
     const sortedTransactions = transactionsData.sort((a, b) => new Date(a.date) - new Date(b.date));
   
@@ -39,7 +39,7 @@ export default function OverviewGraph( { transactionsData, NetBalance } ) {
     });
   
     setData(balanceOverTime);
-  }, [transactionsData, NetBalance]);
+  }, [transactionsData, netBalance]);
   
   
   const minBalance = Math.min(...data.map((data) => data.balance));

@@ -31,9 +31,39 @@ export async function insertNewGoalAccounts(goalId, relatedAcc) {
     });
 }
 
+export async function deleteGoalById(goalId) {
+    const sql = 'DELETE FROM goals WHERE goal_id = ?';
+    const values = [goalId]
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    })
+}
+
 export async function deleteGoalAccountByAccountId(accountId) {
     const sql = 'DELETE FROM goal_accounts WHERE account_id = ?';
     const values = [accountId]
+
+    return new Promise((resolve, reject) => {
+        connection.query(sql, values, (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+
+            resolve(results);
+        });
+    });
+}
+
+export async function deleteGoalAccountByGoalId(goalId) {
+    const sql = 'DELETE FROM goal_accounts WHERE goal_id = ?';
+    const values = [goalId]
 
     return new Promise((resolve, reject) => {
         connection.query(sql, values, (error, results) => {

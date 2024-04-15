@@ -2,6 +2,7 @@ import { fetchAccountByUserID } from "@/app/lib/data/accounts";
 import { fetchGoalByUserID } from "@/app/lib/data/goals";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import { fetchUserTransactions } from "@/app/lib/data/transactions";
+import { fetchUserNetBalance } from "@/app/lib/data/user";
 import OverviewCardWrapper from "@/app/lib/ui/dashboard-overview/overview-card-wrapper";
 import CreateGoalBtn from "@/app/lib/ui/dashboard-overview/goals/create-goal-btn";
 import GoalCard from "@/app/lib/ui/dashboard-overview/goals/goal-card";
@@ -16,8 +17,7 @@ export default async function DashboardPage() {
   const accountData = await fetchAccountByUserID(userId);
   const goalData = await fetchGoalByUserID(userId);
   const transactionsData = await fetchUserTransactions(userId);
-  const { availableFund, outstandingDebt, highestIncomeData, highestSpendingData } = await getUserOverview(userId);
-  const NetBalance = availableFund - outstandingDebt;
+  const netBalance = await fetchUserNetBalance(userId);
 
   return (
     <main className="w-full h-full bg-gray-950 text-white flex flex-col gap-4 p-4">
@@ -29,7 +29,7 @@ export default async function DashboardPage() {
       <div className="rounded-lg border-2 p-12 border-gray-500">
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <OverviewGraph transactionsData={transactionsData} NetBalance={NetBalance}/>
+          <OverviewGraph transactionsData={transactionsData} netBalance={netBalance}/>
           <ExpensesPie transactionsData={transactionsData} />
         </div>
       </div>

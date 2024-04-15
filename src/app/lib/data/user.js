@@ -92,6 +92,29 @@ export async function fetchEmailByUserID(userID) {
   });
 }
 
+export async function fetchUserNetBalance(userId) {
+  const sql = `
+    SELECT
+      SUM(CASE WHEN accountTypes.is_depository = 1 THEN accounts.balance ELSE 0 END) AS available_fund,
+      SUM(CASE WHEN accountTypes.is_depository = 0 THEN accounts.balance ELSE 0 END) AS outstanding_debt
+    FROM Users
+    JOIN accounts ON accounts.user_id = Users.user_id
+    JOIN accountTypes ON accounts.account_type_id = accountTypes.account_type_id
+    WHERE Users.user_id = ?
+  `;
+
+  const { available_fund = 0, outstanding_debt = 0 } = await new Promise((resolve, reject) => {
+    connection.query(sql, [userId], (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results[0] || {});
+    });
+  });
+
+  return available_fund - outstanding_debt;
+}
+
 export async function getUserOverview(userId) {
   const availableFundSQL = `
     SELECT SUM(accounts.balance) AS available_fund
