@@ -1,4 +1,3 @@
-"use client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useState } from "react";
@@ -37,10 +36,10 @@ function DeleteBtn() {
       setDeleting(true);
       const result = await Delete();
 
-      if (result.success) {
+      if (result && result.success) {
         console.log(result.msg);
       } else {
-        console.error(result.errorMsg);
+        console.error(result && result.errorMsg);
       }
     } finally {
       setDeleting(false);

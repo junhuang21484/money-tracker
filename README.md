@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# MoneyMinder
 
-First, run the development server:
+A web application that allows users to track their financial status by integrating with the Plaid API. The application will provide users with insights into their spending habits, income, and overall financial standing, using visual graphs, and a user-friendly 
+interface.
+
+
+## Features
+
+- Analytics: The website consist of graphs that help the user break down their spending trends, and categories, and just in general provide insight into their financial standing.
+- Automation: Track down user’s spending automatically through the use of Plaid API.
+- Budgeting, and Goal Setting.
+- User-friendly interface.
+
+
+## Tech Stack
+
+**Client:**  React, Next.js, TailwindCSS
+
+**Server:** Next.js, Node.js
+
+**Database:** MySQL
+
+**Storage:** Firebase
+
+
+## Run Locally
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://github.com/junhuang21484/money-tracker.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+  cd my-project
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Install dependencies
 
-## Learn More
+```bash
+  npm i
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start the server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+  npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Open http://localhost:3000 with your browser to see the result.
+## Environment Variables
 
-## Deploy on Vercel
+To run this project, you will need to add the following environment variables to your .env file
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`DATABASE_URL`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`JWT_SECRET`
+
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  npm run deploy
+```
+
+
+## Authors
+
+- [@junhuang21484](https://github.com/junhuang21484)
+- [@Abdel03](https://github.com/Abdel03)
+- [@wyc0914](https://github.com/wyc0914)
+- [@Sangye21](https://github.com/Sangye21)
+
+
+## Badges
+
+Add badges from somewhere like: [shields.io](https://shields.io/)
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+

@@ -1,5 +1,7 @@
 'use server'
 import connection from "./connector";
+import { cookies } from "next/headers";
+import { getDataFromToken } from "@/app/lib/data/jwtToken";
 
 export async function fetchUserByEmail(email) {
   return new Promise((resolve, reject) => {
@@ -92,6 +94,56 @@ export async function fetchEmailByUserID(userID) {
   });
 }
 
+export async function fetchProfilePictureUrlByUserID(userID) {
+  const sql = `SELECT profile_picture FROM Users WHERE user_id = ?`;
+  const values = [userID];
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      const profilePictureUrl = results[0]?.profile_picture;
+      resolve(profilePictureUrl);
+    });
+  });
+}
+
+export async function updateUserByID(userID, updatedUserData) {
+  const { first_name, last_name, email, password } = updatedUserData;
+
+  const sql = `UPDATE Users
+               SET first_name = ?, last_name = ?, email = ?, password = ?
+               WHERE user_id = ?`;
+
+  const values = [first_name, last_name, email, password, userID];
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(results[0] || {});
+    });
+  });
+}
+export async function updateProfilePicture(userID, imageUrl) {
+  const sql = `UPDATE Users
+               SET profile_picture = ?
+               WHERE user_id = ?`;
+
+  const values = [imageUrl, userID];
+
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(results);
+    });
+  });
+}
 export async function fetchUserNetBalance(userId) {
   const sql = `
     SELECT
@@ -223,4 +275,15 @@ export async function deleteUserByID(userID) {
       resolve(results);
     });
   });
+}
+
+export async function getUserId() {
+  const storedCookies = cookies();
+  const token = storedCookies.get("token");
+  if (token) {
+    const userId = getDataFromToken(token.value).user_id;
+    return userId;
+  } else {
+    return null;
+  }
 }
