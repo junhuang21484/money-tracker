@@ -2,7 +2,12 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import Update from "@/app/lib/actions/user/update";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { fetchUserByID, getUserId } from "@/app/lib/data/user";
+import {
+  fetchFirstNameByUserID,
+  fetchLastNameByUserID,
+  fetchEmailByUserID,
+} from "@/app/lib/data/user";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 export default function EditProfileModal({ closeModal }) {
   const router = useRouter();
@@ -11,6 +16,7 @@ export default function EditProfileModal({ closeModal }) {
     last_name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [editingPassword, setEditingPassword] = useState(false);
@@ -22,19 +28,21 @@ export default function EditProfileModal({ closeModal }) {
 
   const fetchUserData = async () => {
     try {
-      const userID = await getUserId();
+      const userID = await getLoggedInUserID();
       if (!userID) {
         throw new Error("User ID not found");
       }
-      const userData = await fetchUserByID(userID);
-      if (!userData.length) {
-        throw new Error("No user data found");
-      }
-      setUserData(userData[0]);
-      setUserData((prevData) => ({
-        ...prevData,
-        confirmPassword: prevData.password,
-      }));
+      const firstName = await fetchFirstNameByUserID(userID);
+      const lastName = await fetchLastNameByUserID(userID);
+      const email = await fetchEmailByUserID(userID);
+
+      setUserData({
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: "",
+        confirmPassword: "",
+      });
     } catch (error) {
       console.error(error.message);
     }
@@ -55,7 +63,7 @@ export default function EditProfileModal({ closeModal }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userID = await getUserId();
+    const userID = await getLoggedInUserID();
     try {
       const response = await Update(userID, {
         first_name: userData.first_name,

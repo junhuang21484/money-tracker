@@ -1,7 +1,5 @@
-'use server'
+"use server";
 import connection from "./connector";
-import { cookies } from "next/headers";
-import { getDataFromToken } from "@/app/lib/data/jwtToken";
 
 export async function fetchUserByEmail(email) {
   return new Promise((resolve, reject) => {
@@ -19,7 +17,6 @@ export async function fetchUserByEmail(email) {
 }
 
 export async function fetchUserByID(userID) {
-
   const sql = `SELECT * FROM Users WHERE user_id=?`;
   const values = [userID];
 
@@ -34,7 +31,13 @@ export async function fetchUserByID(userID) {
   });
 }
 
-export async function insertNewUser(email, password, firstName, lastName, role) {
+export async function insertNewUser(
+  email,
+  password,
+  firstName,
+  lastName,
+  role
+) {
   const sql = `INSERT INTO Users (user_id, email, password, first_name, last_name, role) VALUES (UUID(), ?, ?, ?, ?, ?)`;
   const values = [email, password, firstName, lastName, "unverified_user"];
 
@@ -155,14 +158,16 @@ export async function fetchUserNetBalance(userId) {
     WHERE Users.user_id = ?
   `;
 
-  const { available_fund = 0, outstanding_debt = 0 } = await new Promise((resolve, reject) => {
-    connection.query(sql, [userId], (error, results) => {
-      if (error) {
-        return reject(error);
-      }
-      resolve(results[0] || {});
-    });
-  });
+  const { available_fund = 0, outstanding_debt = 0 } = await new Promise(
+    (resolve, reject) => {
+      connection.query(sql, [userId], (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results[0] || {});
+      });
+    }
+  );
 
   return available_fund - outstanding_debt;
 }
@@ -190,7 +195,7 @@ export async function getUserOverview(userId) {
   JOIN transactions TRANS
   ON ACC.account_id = TRANS.account_id
   WHERE ACC.user_id = ?
-  GROUP BY TRANS.category`
+  GROUP BY TRANS.category`;
 
   const yearlySpendingIncomeSQL = `SELECT SUM(
     CASE 
@@ -208,7 +213,7 @@ export async function getUserOverview(userId) {
   JOIN accounts ON transactions.account_id = accounts.account_id
   JOIN accountTypes ON accounts.account_type_id = accountTypes.account_type_id
   WHERE accounts.user_id = ?
-    AND abs(DATEDIFF(CURRENT_DATE, transactions.date)) <= 365;`
+    AND abs(DATEDIFF(CURRENT_DATE, transactions.date)) <= 365;`;
 
   const queries = [
     new Promise((resolve, reject) => {
@@ -242,21 +247,39 @@ export async function getUserOverview(userId) {
         }
         resolve(results[0]);
       });
-    })
+    }),
   ];
 
-  const [availableFund, outstandingDebt, spendingByCategory, yearlySpendingIncomeRaw] = await Promise.all(queries);
-  const highestIncomeData = spendingByCategory.reduce((max, current) => (current.amount > max.amount ? current : max), { amount: -Infinity, category: "" });
-  const highestSpendingData = spendingByCategory.reduce((min, current) => (current.amount < min.amount ? current : min), { amount: Infinity, category: "" });
+  const [
+    availableFund,
+    outstandingDebt,
+    spendingByCategory,
+    yearlySpendingIncomeRaw,
+  ] = await Promise.all(queries);
+  const highestIncomeData = spendingByCategory.reduce(
+    (max, current) => (current.amount > max.amount ? current : max),
+    { amount: -Infinity, category: "" }
+  );
+  const highestSpendingData = spendingByCategory.reduce(
+    (min, current) => (current.amount < min.amount ? current : min),
+    { amount: Infinity, category: "" }
+  );
 
   const yearlySpendingIncome = {
     total_income: Number(yearlySpendingIncomeRaw.total_income?.toFixed(2) || 0),
-    total_expense: Number(yearlySpendingIncomeRaw.total_expense?.toFixed(2) || 0),
+    total_expense: Number(
+      yearlySpendingIncomeRaw.total_expense?.toFixed(2) || 0
+    ),
   };
 
-  return { availableFund, outstandingDebt, highestIncomeData, highestSpendingData, yearlySpendingIncome };
+  return {
+    availableFund,
+    outstandingDebt,
+    highestIncomeData,
+    highestSpendingData,
+    yearlySpendingIncome,
+  };
 }
-
 
 export async function deleteUserByID(userID) {
   const sql = `DELETE FROM Users WHERE user_id = ?`;
@@ -275,15 +298,4 @@ export async function deleteUserByID(userID) {
       resolve(results);
     });
   });
-}
-
-export async function getUserId() {
-  const storedCookies = cookies();
-  const token = storedCookies.get("token");
-  if (token) {
-    const userId = getDataFromToken(token.value).user_id;
-    return userId;
-  } else {
-    return null;
-  }
 }

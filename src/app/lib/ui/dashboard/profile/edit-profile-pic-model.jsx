@@ -5,10 +5,10 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 
 import {
-  getUserId,
   fetchProfilePictureUrlByUserID,
   updateProfilePicture,
 } from "@/app/lib/data/user";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 export default function EditProfilePicModal({ closeModal }) {
   const [userID, setUserID] = useState("");
@@ -19,7 +19,7 @@ export default function EditProfilePicModal({ closeModal }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const fetchedUserID = await getUserId();
+        const fetchedUserID = await getLoggedInUserID();
         setUserID(fetchedUserID);
         displayImage(fetchedUserID);
       } catch (error) {
