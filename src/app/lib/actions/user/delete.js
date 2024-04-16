@@ -1,25 +1,17 @@
 "use server";
-require("dotenv").config();
-import { deleteUserByID, fetchUserByID } from "@/app/lib/data/user";
+
 import { cookies } from "next/headers";
-import { getDataFromToken } from "@/app/lib/data/jwtToken";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { deleteUserByID } from "@/app/lib/data/user";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 export default async function Delete() {
-  const storedCookies = cookies();
-  const token = storedCookies.get("token");
-  const userID = getDataFromToken(token.value).user_id;
-
   try {
-    const user = await fetchUserByID(userID);
-    console.log("userID:", userID);
-
+    const userID = await getLoggedInUserID();
     await deleteUserByID(userID);
 
+    const storedCookies = cookies();
     if (storedCookies.get("token")) {
       storedCookies.delete("token");
-      redirect("/");
     }
 
     return {
@@ -27,14 +19,12 @@ export default async function Delete() {
       errorMsg: "",
       success: true,
     };
-  } catch (e) {
-    console.error(e.message);
+  } catch (error) {
+    console.error("Error:", error.message);
     return {
       msg: "Server error",
       errorMsg: "Server error",
       success: false,
     };
-  } finally {
-    redirect("/");
   }
 }
