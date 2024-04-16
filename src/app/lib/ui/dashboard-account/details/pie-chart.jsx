@@ -151,3 +151,4 @@ export default function SpendingPieChart({ transactionData, accountData }) {
     </div>
   );
 }
+
