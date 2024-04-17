@@ -6,7 +6,7 @@ import { fetchUserNetBalance } from "@/app/lib/data/user";
 import OverviewCardWrapper from "@/app/lib/ui/dashboard-overview/overview-card-wrapper";
 import CreateGoalBtn from "@/app/lib/ui/dashboard-overview/goals/create-goal-btn";
 import GoalCard from "@/app/lib/ui/dashboard-overview/goals/goal-card";
-import OverviewGraph from "@/app/lib/ui/dashboard-overview/chart/balance-over-time";
+import BalanceOverTimeGraph from "@/app/lib/ui/chart/balance-overtime-graph";
 import ExpensesPie from "@/app/lib/ui/dashboard-overview/chart/expenses-pie";
 
 export default async function DashboardPage() {
@@ -27,7 +27,7 @@ export default async function DashboardPage() {
       <div className="rounded-lg border-2 p-12 border-gray-500">
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <OverviewGraph transactionsData={transactionsData} netBalance={netBalance}/>
+          <BalanceOverTimeGraph currentBalance={netBalance} transactionData={transactionsData} />
           <ExpensesPie transactionsData={transactionsData} />
         </div>
       </div>
