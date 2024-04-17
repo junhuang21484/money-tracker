@@ -1,5 +1,3 @@
-'use client'
-
 import Link from "next/link";
 import { UserIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";

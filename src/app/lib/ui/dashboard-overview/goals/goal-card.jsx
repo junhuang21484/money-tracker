@@ -1,7 +1,6 @@
-'use client'
-
 import { fetchGoalAccountByGoalId } from "@/app/lib/data/goals";
 import { DeleteGoalBtn } from "@/app/lib/ui/dashboard-overview/goals/delete-goal-btn";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 function calculateCurrentAmt(relatedAcc, allAccountInfo) {

@@ -5,6 +5,7 @@ import { cookies } from "next/headers"
 import { redirect } from 'next/navigation'
 
 export default async function Logout() {
+    console.log("LOgging out")
     try {
         const storedCookies = cookies()
         if (storedCookies.get("token")) {

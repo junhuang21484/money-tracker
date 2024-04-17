@@ -1,5 +1,3 @@
-'use server'
-
 import AddAccountBtn from "@/app/lib/ui/dashboard-account/add-account-btn";
 import AccountCard from "@/app/lib/ui/dashboard-account/account-card";
 import SearchBar from "@/app/lib/ui/util/searchBar";
@@ -9,7 +7,7 @@ import { fetchFilteredAccounts } from "@/app/lib/data/accounts";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 export default async function AccountPage({ searchParams }) {
-  const userID = await getLoggedInUserID();
+  const userID = await getLoggedInUserID()
   const accountTypesAvailable = await fetchAccTypeToUser(userID);
   const query = searchParams?.query || "";
   const orderBy = searchParams?.orderBy || "";
@@ -40,7 +38,7 @@ export default async function AccountPage({ searchParams }) {
         </div>
       </div>
 
-      {filteredAccounts.length && (
+      {filteredAccounts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4 px-2 justify-items-center">
           {filteredAccounts.map((account) => {
             return (
@@ -55,9 +53,7 @@ export default async function AccountPage({ searchParams }) {
             );
           })}
         </div>
-      )}
-
-      {!filteredAccounts.length && (
+      ) : (
         <div className="flex flex-1 justify-center items-center mt-10">
           <h1 className="text-white text-2xl">No accounts found</h1>
         </div>

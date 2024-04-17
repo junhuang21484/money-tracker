@@ -79,6 +79,7 @@ export default function SpendingPieChart({ transactionData, accountData }) {
   );
 
   if (dataForPieChart.every((entry) => entry.value === 0)) {
+    console.warn("All values for the pie chart are zero.");
     return <div>No data to display.</div>;
   }
 
