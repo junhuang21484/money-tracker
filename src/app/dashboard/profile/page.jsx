@@ -1,36 +1,17 @@
-"use client";
-import { useEffect, useState } from "react";
+
 import EditProfileBtn from "@/app/lib/ui/dashboard/profile/edit-profile-btn";
 import DeleteAccountBtn from "@/app/lib/ui/dashboard/profile/delete-account-btn";
 import EditProfilePicBtn from "@/app/lib/ui/dashboard/profile/edit-profile-pic-btn";
 import { fetchUserByID } from "@/app/lib/data/user";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
-const ProfilePage = () => {
-  const [userID, setUserID] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [imageSrc, setImageSrc] = useState(null);
+const ProfilePage = async () => {
+  const loggedInUser = await getLoggedInUserID();
+  const userData = await fetchUserByID(loggedInUser)
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const {first_name: firstName, last_name: lastName, email} = userData;
+  const imageSrc = userData.profile_picture ? userData.profile_picture : '/user-control/signin-left-img.png';
 
-  const fetchData = async () => {
-    try {
-      const loggedInUser = await getLoggedInUserID();
-      const userData = await fetchUserByID(loggedInUser)
-
-      setUserID(userData.user_id);
-      setFirstName(userData.first_name);
-      setLastName(userData.last_name);
-      setEmail(userData.email);
-      setImageSrc(userData.profile_picture ? userData.profile_picture : '/user-control/signin-left-img.png');
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
 
   return (
     <section className="flex w-full h-full flex-col bg-gray-950">
@@ -52,7 +33,7 @@ const ProfilePage = () => {
               )}
             </div>
             <div className="flex justify-left">
-              <EditProfilePicBtn onSuccess={fetchData} />
+              <EditProfilePicBtn />
             </div>
           </div>
           <div className="bg-gray-800 p-4 rounded-lg">
@@ -63,7 +44,7 @@ const ProfilePage = () => {
               <p className="text-white mt-2">Email: {email}</p>
             </div>
             <div className="mt-4 flex justify-left">
-              <EditProfileBtn onSuccess={fetchData} />
+              <EditProfileBtn />
             </div>
           </div>
           <div className="bg-gray-800 p-4 rounded-lg">

@@ -24,7 +24,7 @@ export default async function AccountPage({ searchParams }) {
       <div className="flex flex-col mx-2">
         <div className="flex justify-between">
           <h1 className="text-white text-3xl font-bold">Accounts</h1>
-          <AddAccountBtn userID={userID} accountTypes={accountTypesAvailable} />
+          <AddAccountBtn userID={userID} accountTypes={JSON.parse(JSON.stringify(accountTypesAvailable))} />
         </div>
 
         <div className="flex flex-col sm:flex-row w-full my-4 gap-2">

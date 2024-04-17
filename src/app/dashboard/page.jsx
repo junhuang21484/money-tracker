@@ -27,15 +27,15 @@ export default async function DashboardPage() {
       <div className="rounded-lg border-2 p-12 border-gray-500">
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <BalanceOverTimeGraph currentBalance={netBalance} transactionData={transactionsData} />
-          <ExpensesPie transactionsData={transactionsData} />
+          <BalanceOverTimeGraph currentBalance={netBalance} transactionData={JSON.parse(JSON.stringify(transactionsData))} />
+          <ExpensesPie transactionsData={JSON.parse(JSON.stringify(transactionsData))} />
         </div>
       </div>
 
       <div className="rounded-lg border-2 p-4 border-gray-500 flex flex-col gap-2">
         <div className="flex w-full justify-between items-center">
           <h1 className={sectionHeaderStyling}>Goals</h1>
-          <CreateGoalBtn userId={userId} accountData={accountData} />
+          <CreateGoalBtn userId={userId} accountData={JSON.parse(JSON.stringify(accountData))} />
         </div>
 
         {goalData.length === 0 && (
@@ -47,8 +47,8 @@ export default async function DashboardPage() {
           {goalData.map((goal) => (
             <GoalCard
               key={goal.goal_id}
-              goalData={goal}
-              allAccountInfo={accountData}
+              goalData={JSON.parse(JSON.stringify(goal))}
+              allAccountInfo={JSON.parse(JSON.stringify(accountData))}
             />
           ))}
         </div>
