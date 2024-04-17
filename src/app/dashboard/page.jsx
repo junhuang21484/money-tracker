@@ -1,3 +1,5 @@
+'use server'
+
 import { fetchAccountByUserID } from "@/app/lib/data/accounts";
 import { fetchGoalByUserID } from "@/app/lib/data/goals";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
