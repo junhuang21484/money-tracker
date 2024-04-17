@@ -3,12 +3,7 @@ import { useEffect, useState } from "react";
 import EditProfileBtn from "@/app/lib/ui/dashboard/profile/edit-profile-btn";
 import DeleteAccountBtn from "@/app/lib/ui/dashboard/profile/delete-account-btn";
 import EditProfilePicBtn from "@/app/lib/ui/dashboard/profile/edit-profile-pic-btn";
-import {
-  fetchFirstNameByUserID,
-  fetchLastNameByUserID,
-  fetchEmailByUserID,
-  fetchProfilePictureUrlByUserID,
-} from "@/app/lib/data/user";
+import { fetchUserByID } from "@/app/lib/data/user";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
 const ProfilePage = () => {
@@ -24,39 +19,21 @@ const ProfilePage = () => {
 
   const fetchData = async () => {
     try {
-      const fetchedUserID = await getLoggedInUserID();
-      const fetchedFirstName = await fetchFirstNameByUserID(fetchedUserID);
-      const fetchedLastName = await fetchLastNameByUserID(fetchedUserID);
-      const fetchedEmail = await fetchEmailByUserID(fetchedUserID);
+      const loggedInUser = await getLoggedInUserID();
+      const userData = await fetchUserByID(loggedInUser)
 
-      setUserID(fetchedUserID);
-      setFirstName(fetchedFirstName);
-      setLastName(fetchedLastName);
-      setEmail(fetchedEmail);
-      displayImage(fetchedUserID);
+      setUserID(userData.user_id);
+      setFirstName(userData.first_name);
+      setLastName(userData.last_name);
+      setEmail(userData.email);
+      setImageSrc(userData.profile_picture ? userData.profile_picture : '/user-control/signin-left-img.png');
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
-  const displayImage = (userID) => {
-    fetchProfilePictureUrlByUserID(userID)
-      .then((url) => {
-        if (url) {
-          setImageSrc(url);
-        } else {
-          console.error("Image URL is not provided for userID:", userID);
-          setImageSrc("/user-control/signin-left-img.png");
-        }
-      })
-      .catch((error) => {
-        console.error("Error retrieving image URL from database:", error);
-        setImageSrc("/user-control/signin-left-img.png");
-      });
-  };
-
   return (
-    <section className="flex min-h-screen flex-col bg-[#121212]">
+    <section className="flex w-full h-full flex-col bg-gray-950">
       <div className="px-8 py-8 max-w-lg">
         <div className="text-white mb-8">
           <h1 className="text-2xl font-semibold">Profile Settings</h1>

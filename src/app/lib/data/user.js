@@ -26,7 +26,7 @@ export async function fetchUserByID(userID) {
         return reject(error);
       }
 
-      resolve(results);
+      resolve(results[0]);
     });
   });
 }
