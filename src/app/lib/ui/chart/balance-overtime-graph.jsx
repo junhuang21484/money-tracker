@@ -45,12 +45,12 @@ export default function BalanceOverTimeGraph({ currentBalance, transactionData }
         };
       });
 
-    balanceOverTime.unshift({ date: "initial", balance: initialValue });
+    balanceOverTime.unshift({ date: "Initial", balance: initialValue });
     balanceOverTime.push({ date: "Latest", balance: currentBalance });
     setData(balanceOverTime);
   }, [transactionData, timeFrame]);
 
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const styles = {
         backgroundColor: "#10B981",
@@ -59,9 +59,11 @@ export default function BalanceOverTimeGraph({ currentBalance, transactionData }
         borderRadius: "8px",
         color: "black",
       };
+      const displayLabel = label === 'Initial' || label === 'Latest' ? label : new Date(label).toLocaleDateString();
+      const balance = payload[0]?.payload.balance
       return (
         <div className="custom-tooltip" style={styles}>
-          <p className="label">${payload[0]?.payload.balance}</p>
+          <p className="label">{`${displayLabel}: $${balance}`}</p>
         </div>
       );
     }
@@ -90,12 +92,15 @@ export default function BalanceOverTimeGraph({ currentBalance, transactionData }
       <ResponsiveContainer width="100%" height={300}>
         <h1 className="text-xl text-center">Balance Over Time</h1>
         <LineChart data={data}>
-          <CartesianGrid stroke="#e0e0e0" />
+          <CartesianGrid stroke="none" />
           <XAxis
             dataKey="date"
             axisLine={{ stroke: "#e0e0e0" }}
             tickLine={false}
             tick={{ fill: "#6b7280" }}
+            tickFormatter={(tickItem) => {
+            return '';
+            }}
           />
           <YAxis
             domain={[minDomain, maxDomain]}

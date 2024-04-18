@@ -76,12 +76,9 @@ export default function LoginPage() {
                 className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
               />
             </div>
-            <Link
-              href="/forget"
-              className="text-xs text-primary-500 hover:underline"
-            >
-              Forget Password?
-            </Link>
+            <div>
+              ""
+            </div>
             <div className="mt-2">
               <SubmitBtn />
             </div>
