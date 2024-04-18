@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 
 export default async function Update(userData, prevState, formData) {
   const loggedInUserId = await getLoggedInUserID()
-  console.log(formData)
+  console.log(userData)
   if (!loggedInUserId || loggedInUserId != userData.user_id) return {
     msg: "Unauthorized",
     errorMsg: "Unauthorized",
@@ -15,7 +15,7 @@ export default async function Update(userData, prevState, formData) {
   }
   
   try {
-    const updatedUserData = {};
+    const updatedUserData = {password: userData.password};
 
     if (formData.get("first_name") !== undefined && formData.get("first_name") !== "") {
       if (/^[a-zA-Z]+$/.test(formData.get("first_name"))) {
@@ -41,7 +41,6 @@ export default async function Update(userData, prevState, formData) {
       }
     }
 
-    console.log(formData.get('confirmPassword'))
     if (formData.get('confirmPassword') !== null && formData.get('confirmPassword') !== "") {
       const newPassword = formData.get('password');
       if (newPassword === formData.get('confirmPassword')) {
