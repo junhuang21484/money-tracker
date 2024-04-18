@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache";
 import { v4 } from "uuid";
 
 export default async function uploadProfileImage(userId, imageData) {
-    console.log(imageData)
   try {
     if (!imageData) {
       return { success: false, msg: "Please select an image." };

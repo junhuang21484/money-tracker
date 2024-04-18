@@ -68,7 +68,7 @@ export default async function AccountDetails({ params, searchParams }) {
           Back
         </Link>
 
-        <DelAccountBtn accountData={accountData} />
+        <DelAccountBtn accountData={JSON.parse(JSON.stringify(accountData))} />
       </div>
 
       <div className="rounded-lg border-2 p-4 border-gray-500">
@@ -116,8 +116,8 @@ export default async function AccountDetails({ params, searchParams }) {
       <div className="rounded-lg border-2 p-4 border-gray-500">
         <h1 className={sectionHeaderStyling}>Analytics</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <BalanceOverTimeGraph currentBalance={accountData.balance} transactionData={transactionData} />
-          <SpendingPieChart transactionData={transactionData} accountData={accountData}/>
+          <BalanceOverTimeGraph currentBalance={accountData.balance} transactionData={JSON.parse(JSON.stringify(transactionData))} />
+          <SpendingPieChart transactionData={JSON.parse(JSON.stringify(transactionData))} accountData={JSON.parse(JSON.stringify(accountData))}/>
         </div>
       </div>
 
@@ -125,9 +125,9 @@ export default async function AccountDetails({ params, searchParams }) {
         <div className="flex w-full justify-between mb-2 items-center">
           <h1 className={sectionHeaderStyling}>Transactions</h1>
           {accountData.plaid_account_id ? (
-            <SyncTransactionBtn accountData={accountData} />
+            <SyncTransactionBtn accountData={JSON.parse(JSON.stringify(accountData))} />
           ) : (
-            <AddTransactionBtn accountData={accountData} />
+            <AddTransactionBtn accountData={JSON.parse(JSON.stringify(accountData))} />
           )}
         </div>
 
@@ -147,7 +147,7 @@ export default async function AccountDetails({ params, searchParams }) {
         </div>
 
         <TransactionsTable
-          transactions={transactionData}
+          transactions={JSON.parse(JSON.stringify(transactionData))}
           accountType={accountData.plaid_account_id ? "auto" : "manual"}
         />
       </div>
