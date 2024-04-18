@@ -1,91 +1,34 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
-import { storage } from "@/app/lib/data/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
+import { useState } from "react";
+import uploadProfileImage from "@/app/lib/actions/user/update-pfp";
 
-import {
-  fetchProfilePictureUrlByUserID,
-  updateProfilePicture,
-} from "@/app/lib/data/user";
-import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
-
-export default function EditProfilePicModal({ closeModal }) {
-  const [userID, setUserID] = useState("");
+export default function EditProfilePicModal({ userData, closeModal }) {
   const [imageUpload, setImageUpload] = useState(null);
-  const [imageSrc, setImageSrc] = useState(null);
-  const [error, setError] = useState(null);
+  const [err, setErr] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const fetchedUserID = await getLoggedInUserID();
-        setUserID(fetchedUserID);
-        displayImage(fetchedUserID);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    }
+  const imageSrc = userData.profile_picture ? userData.profile_picture : "/user-control/signin-left-img.png";
 
-    fetchData();
-  }, []);
-
-  const displayImage = (userID) => {
-    fetchProfilePictureUrlByUserID(userID)
-      .then((url) => {
-        if (url) {
-          setImageSrc(url);
-        } else {
-          console.error("Image URL is not provided.");
-          setImageSrc("/user-control/signin-left-img.png");
-        }
-      })
-      .catch((error) => {
-        console.error("Error retrieving image URL from database:", error);
-        setImageSrc("/user-control/signin-left-img.png");
-      });
+  const convertFileToJSON = async (file) => {
+    return {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      lastModified: file.lastModified,
+      content: await convertToBase64(file),
+    };
   };
 
-  const uploadImage = () => {
-    if (!imageUpload) {
-      setError("Please select an image.");
-      return;
-    }
-
-    if (!imageUpload.type.startsWith("image/")) {
-      setError("Please select a valid image file.");
-      return;
-    }
-
-    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-    uploadBytes(imageRef, imageUpload)
-      .then(() => {
-        getDownloadURL(imageRef)
-          .then((url) => {
-            saveImageUrlToDatabase(url);
-          })
-          .catch((error) => {
-            console.error("Error getting download URL:", error);
-            setError("Failed to upload image. Please try again.");
-          });
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        setError("Failed to upload image. Please try again.");
-      });
-  };
-
-  const saveImageUrlToDatabase = (imageUrl) => {
-    updateProfilePicture(userID, imageUrl)
-      .then(() => {
-        console.log("Image URL saved to the database.");
-        displayImage(userID);
-      })
-      .catch((error) => {
-        displayImage(userID);
-        console.error("Error saving image URL to database:", error);
-        //setError("Failed to save image URL to database.");
-      });
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
   };
 
   return (
@@ -95,30 +38,27 @@ export default function EditProfilePicModal({ closeModal }) {
           <button onClick={closeModal} className="absolute top-2 right-2">
             <XMarkIcon className="w-6 h-6 text-red-500" />
           </button>
-          <h3 className="font-bold text-4xl text-white mb-4">
-            Edit Profile Picture
-          </h3>
+          <h3 className="font-bold text-4xl text-white mb-4">Edit Profile Picture</h3>
           <div className="flex flex-col items-center space-y-4">
             <div className="rounded-full overflow-hidden border-4 border-gray-700 w-80 h-80">
               {imageSrc && (
-                <img
-                  className="w-full h-full object-cover"
-                  id="uploadedImage"
-                  alt="Profile image"
-                  src={imageSrc}
-                />
+                <img className="w-full h-full object-cover" id="uploadedImage" alt="Profile image" src={imageSrc} />
               )}
             </div>
             <input
               type="file"
               className="w-full px-4 py-2 text-white "
               onChange={(event) => {
-                setImageUpload(event.target.files[0]);
+                setImageUpload(event.target.files[0])
               }}
             />
-            {error && <p className="text-red-500">{error}</p>}
+            {err && <p className="text-red-500">{err}</p>}
             <button
-              onClick={uploadImage}
+              onClick={async () => {
+                const imageJSON = await convertFileToJSON(imageUpload);
+                const data = await uploadProfileImage(userData.user_id, imageJSON);
+                if (!data.success) setErr(data.msg);
+              }}
               className="w-full px-4 py-2 text-white bg-primary-500 rounded-md hover:bg-primary-600"
             >
               Update

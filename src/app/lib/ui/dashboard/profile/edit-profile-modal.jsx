@@ -1,90 +1,16 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Update from "@/app/lib/actions/user/update";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  fetchFirstNameByUserID,
-  fetchLastNameByUserID,
-  fetchEmailByUserID,
-} from "@/app/lib/data/user";
-import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
+import { useState } from "react";
+import { useFormState } from "react-dom";
+import clsx from "clsx";
 
-export default function EditProfileModal({ closeModal }) {
-  const router = useRouter();
-  const [userData, setUserData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
+export default function EditProfileModal({ userData, closeModal }) {
   const [editingPassword, setEditingPassword] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(null);
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
-    try {
-      const userID = await getLoggedInUserID();
-      if (!userID) {
-        throw new Error("User ID not found");
-      }
-      const firstName = await fetchFirstNameByUserID(userID);
-      const lastName = await fetchLastNameByUserID(userID);
-      const email = await fetchEmailByUserID(userID);
-
-      setUserData({
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: "",
-        confirmPassword: "",
-      });
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handlePasswordInputChange = (e) => {
-    handleInputChange(e);
-    setEditingPassword(true);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const userID = await getLoggedInUserID();
-    try {
-      const response = await Update(userID, {
-        first_name: userData.first_name,
-        last_name: userData.last_name,
-        email: userData.email,
-        password: userData.password,
-        confirmPassword: userData.confirmPassword,
-      });
-
-      if (response.success) {
-        setStatusMessage("User information updated");
-        await fetchUserData();
-      } else {
-        setStatusMessage(response.errorMsg);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setStatusMessage("Server error occurred");
-    }
-  };
-
+  const [state, formAction] = useFormState(Update.bind(null, userData), {
+    msg: "",
+    errMsg: "",
+    success: false,
+  });
   return (
     <dialog className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-50 z-50 overflow-auto backdrop-blur flex justify-center items-center">
       <div className="bg-black m-auto p-8 rounded-lg relative">
@@ -96,7 +22,7 @@ export default function EditProfileModal({ closeModal }) {
             Edit Account Details
           </h3>
           <div className="flex w-full ">
-            <form onSubmit={handleSubmit} className="mt-6">
+            <form action={formAction} className="mt-6">
               <div className="flex w-full gap-4">
                 <div className="mb-4">
                   <label
@@ -110,8 +36,7 @@ export default function EditProfileModal({ closeModal }) {
                     name="first_name"
                     id="firs_name"
                     required
-                    value={userData.first_name}
-                    onChange={handleInputChange}
+                    defaultValue={userData.first_name}
                     className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                   />
                 </div>
@@ -128,8 +53,7 @@ export default function EditProfileModal({ closeModal }) {
                     name="last_name"
                     id="last_name"
                     required
-                    value={userData.last_name}
-                    onChange={handleInputChange}
+                    defaultValue={userData.last_name}
                     className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                   />
                 </div>
@@ -146,10 +70,9 @@ export default function EditProfileModal({ closeModal }) {
                   type="email"
                   name="email"
                   id="email"
-                  required
                   value={userData.email}
-                  onChange={handleInputChange}
-                  className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+                  disabled
+                  className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed"
                 />
               </div>
 
@@ -164,9 +87,7 @@ export default function EditProfileModal({ closeModal }) {
                   type="password"
                   name="password"
                   id="password"
-                  required
-                  value={userData.password || ""}
-                  onChange={handlePasswordInputChange}
+                  onChange={() => setEditingPassword(true)}
                   className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                 />
               </div>
@@ -183,21 +104,13 @@ export default function EditProfileModal({ closeModal }) {
                     type="password"
                     name="confirmPassword"
                     id="confirmPassword"
-                    value={userData.confirmPassword}
-                    onChange={handleInputChange}
                     className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                   />
                 </div>
               )}
               <div>
-                {statusMessage && (
-                  <p
-                    className={`text-center text-${
-                      statusMessage.includes("updated") ? "green" : "red"
-                    }-500 mb-2`}
-                  >
-                    {statusMessage}
-                  </p>
+                {state.msg && (
+                  <p className={clsx({ "text-red-500": !state.success, "text-emerald-500": state.success })}>{state.msg}</p>
                 )}
               </div>
               <div className="mt-2">

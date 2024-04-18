@@ -113,13 +113,13 @@ export async function fetchProfilePictureUrlByUserID(userID) {
 }
 
 export async function updateUserByID(userID, updatedUserData) {
-  const { first_name, last_name, email, password } = updatedUserData;
+  const { first_name, last_name, password } = updatedUserData;
 
   const sql = `UPDATE Users
-               SET first_name = ?, last_name = ?, email = ?, password = ?
+               SET first_name = ?, last_name = ?, password = ?
                WHERE user_id = ?`;
 
-  const values = [first_name, last_name, email, password, userID];
+  const values = [first_name, last_name, password, userID];
 
   return new Promise((resolve, reject) => {
     connection.query(sql, values, (error, results) => {

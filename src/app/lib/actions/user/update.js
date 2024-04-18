@@ -1,16 +1,25 @@
 "use server";
 require("dotenv").config();
 import { updateUserByID } from "@/app/lib/data/user";
+import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 import bcrypt from "bcrypt";
+import { revalidatePath } from "next/cache";
 
-export default async function Update(userID, userData) {
-  console.log("userID:", userID);
+export default async function Update(userData, prevState, formData) {
+  const loggedInUserId = await getLoggedInUserID()
+  console.log(formData)
+  if (!loggedInUserId || loggedInUserId != userData.user_id) return {
+    msg: "Unauthorized",
+    errorMsg: "Unauthorized",
+    success: false,
+  }
+  
   try {
     const updatedUserData = {};
 
-    if (userData.first_name !== undefined && userData.first_name !== "") {
-      if (/^[a-zA-Z]+$/.test(userData.first_name)) {
-        updatedUserData.first_name = userData.first_name;
+    if (formData.get("first_name") !== undefined && formData.get("first_name") !== "") {
+      if (/^[a-zA-Z]+$/.test(formData.get("first_name"))) {
+        updatedUserData.first_name = formData.get("first_name")
       } else {
         return {
           msg: "Invalid first name",
@@ -20,9 +29,9 @@ export default async function Update(userID, userData) {
       }
     }
 
-    if (userData.last_name !== undefined && userData.last_name !== "") {
-      if (/^[a-zA-Z]+$/.test(userData.last_name)) {
-        updatedUserData.last_name = userData.last_name;
+    if (formData.get("last_name") !== undefined && formData.get("last_name") !== "") {
+      if (/^[a-zA-Z]+$/.test(formData.get("last_name"))) {
+        updatedUserData.last_name = formData.get("last_name");
       } else {
         return {
           msg: "Invalid last name",
@@ -32,21 +41,10 @@ export default async function Update(userID, userData) {
       }
     }
 
-    if (userData.email !== undefined && userData.email !== "") {
-      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
-        updatedUserData.email = userData.email;
-      } else {
-        return {
-          msg: "Invalid email",
-          errorMsg: "Invalid email",
-          success: false,
-        };
-      }
-    }
-
-    if (userData.password !== undefined && userData.password !== "") {
-      const newPassword = userData.password;
-      if (newPassword === userData.confirmPassword) {
+    console.log(formData.get('confirmPassword'))
+    if (formData.get('confirmPassword') !== null && formData.get('confirmPassword') !== "") {
+      const newPassword = formData.get('password');
+      if (newPassword === formData.get('confirmPassword')) {
         if (newPassword.length >= 8) {
           const numberRegex = /\d/;
           const letterRegex = /[a-zA-Z]/;
@@ -83,16 +81,17 @@ export default async function Update(userID, userData) {
     }
 
     if (Object.keys(updatedUserData).length > 0) {
-      await updateUserByID(userID, updatedUserData);
+      await updateUserByID(userData.user_id, updatedUserData);
     }
 
+    revalidatePath('dashboard/profile')
     return {
       msg: "User information updated",
       errorMsg: "User information updated",
       success: true,
     };
   } catch (e) {
-    console.error(e.message);
+    console.error(e);
     return {
       msg: "Server error",
       errorMsg: "Server error",

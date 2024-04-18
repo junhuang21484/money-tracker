@@ -1,17 +1,14 @@
-
+export const dynamic = 'force-dynamic'
 import EditProfileBtn from "@/app/lib/ui/dashboard/profile/edit-profile-btn";
 import DeleteAccountBtn from "@/app/lib/ui/dashboard/profile/delete-account-btn";
 import EditProfilePicBtn from "@/app/lib/ui/dashboard/profile/edit-profile-pic-btn";
 import { fetchUserByID } from "@/app/lib/data/user";
 import { getLoggedInUserID } from "@/app/lib/data/jwtToken";
 
-const ProfilePage = async () => {
+export default async function ProfilePage() {
   const loggedInUser = await getLoggedInUserID();
   const userData = await fetchUserByID(loggedInUser)
-
-  const {first_name: firstName, last_name: lastName, email} = userData;
   const imageSrc = userData.profile_picture ? userData.profile_picture : '/user-control/signin-left-img.png';
-
 
   return (
     <section className="flex w-full h-full flex-col bg-gray-950">
@@ -33,18 +30,18 @@ const ProfilePage = async () => {
               )}
             </div>
             <div className="flex justify-left">
-              <EditProfilePicBtn />
+              <EditProfilePicBtn userData={JSON.parse(JSON.stringify(userData))}/>
             </div>
           </div>
           <div className="bg-gray-800 p-4 rounded-lg">
             <h1 className="text-xl text-white mb-4">DETAILS</h1>
             <div>
-              <p className="text-white mt-2">First Name: {firstName}</p>
-              <p className="text-white mt-2">Last Name: {lastName}</p>
-              <p className="text-white mt-2">Email: {email}</p>
+              <p className="text-white mt-2">First Name: {userData.first_name}</p>
+              <p className="text-white mt-2">Last Name: {userData.last_name}</p>
+              <p className="text-white mt-2">Email: {userData.email}</p>
             </div>
             <div className="mt-4 flex justify-left">
-              <EditProfileBtn />
+              <EditProfileBtn userData={JSON.parse(JSON.stringify(userData))}/>
             </div>
           </div>
           <div className="bg-gray-800 p-4 rounded-lg">
@@ -57,6 +54,4 @@ const ProfilePage = async () => {
       </div>
     </section>
   );
-};
-
-export default ProfilePage;
+}
