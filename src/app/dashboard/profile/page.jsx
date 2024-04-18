@@ -11,47 +11,39 @@ export default async function ProfilePage() {
   const imageSrc = userData.profile_picture ? userData.profile_picture : '/user-control/signin-left-img.png';
 
   return (
-    <section className="flex w-full h-full flex-col bg-gray-950">
-      <div className="px-8 py-8 max-w-lg">
-        <div className="text-white mb-8">
-          <h1 className="text-2xl font-semibold">Profile Settings</h1>
+    <section className="flex flex-col items-center w-full h-full bg-gray-950 pt-8">
+      <h1 className="text-4xl text-white font-bold mb-8">Profile Settings</h1>
+      <div className="space-y-8">
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+          <h2 className="text-2xl text-white mb-4">Profile Picture</h2>
+          <div className="flex justify-center mb-4">
+            <img
+              className="rounded-full border-4 border-gray-700 w-40 h-40"
+              alt="Profile"
+              src={imageSrc}
+            />
+          </div>
+          <div className="flex justify-center">
+            <EditProfilePicBtn userData={JSON.parse(JSON.stringify(userData))} />
+          </div>
         </div>
-        <div className="grid grid-cols-1 gap-6">
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <h1 className="text-xl text-white mb-4">PROFILE PICTURE</h1>
-            <div className="flex justify-left items-center mb-4">
-              {imageSrc && (
-                <img
-                  className="rounded-full overflow-hidden border-4 border-gray-700 w-40 h-40"
-                  id="uploadedImage"
-                  alt="Profile image"
-                  src={imageSrc}
-                />
-              )}
-            </div>
-            <div className="flex justify-left">
-              <EditProfilePicBtn userData={JSON.parse(JSON.stringify(userData))}/>
-            </div>
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-96"> 
+          <h2 className="text-2xl text-white mb-4">Account Details</h2>
+          <p className="text-white">First Name: {userData.first_name}</p>
+          <p className="text-white">Last Name: {userData.last_name}</p>
+          <p className="text-white">Email: {userData.email}</p>
+          <div className="flex justify-center mt-3">
+            <EditProfileBtn userData={JSON.parse(JSON.stringify(userData))} />
           </div>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <h1 className="text-xl text-white mb-4">DETAILS</h1>
-            <div>
-              <p className="text-white mt-2">First Name: {userData.first_name}</p>
-              <p className="text-white mt-2">Last Name: {userData.last_name}</p>
-              <p className="text-white mt-2">Email: {userData.email}</p>
-            </div>
-            <div className="mt-4 flex justify-left">
-              <EditProfileBtn userData={JSON.parse(JSON.stringify(userData))}/>
-            </div>
-          </div>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <h1 className="text-xl text-white mb-4">MANAGE ACCOUNT</h1>
-            <div className="flex justify-left">
-              <DeleteAccountBtn />
-            </div>
+        </div>
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-96"> 
+          <h2 className="text-2xl text-white mb-4">Account Deletion</h2>
+          <div className="flex justify-center">
+            <DeleteAccountBtn />
           </div>
         </div>
       </div>
     </section>
   );
+  
 }
