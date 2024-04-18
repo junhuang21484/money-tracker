@@ -34,8 +34,8 @@ export function HamburgerMenu() {
                 <Link href="/dashboard/accounts" className="text-white font-bold text-lg md:text-xl px-2 py-1 hover:bg-gray-800 rounded-md md:mx-2" onClick={closeMenu}>
                 Accounts
                 </Link>
-                <Link href="/dashboard/budgets" className="text-white font-bold text-lg md:text-xl px-2 py-1 hover:bg-gray-800 rounded-md md:mx-2" onClick={closeMenu}>
-                Budgets
+                <Link href="/dashboard/profile" className="text-white font-bold text-lg md:text-xl px-2 py-1 hover:bg-gray-800 rounded-md md:mx-2" onClick={closeMenu}>
+                Profile
                 </Link>
                 <button onClick={async () => {Logout()}} className="text-white font-bold text-lg md:text-xl px-4 py-2 hover:bg-red-700 bg-red-600 rounded-md transition duration-300 ease-in-out">
                 Logout

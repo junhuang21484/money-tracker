@@ -27,7 +27,7 @@ export default async function GoalCard({ goalData, allAccountInfo }) {
     <section
       className={clsx(
         "max-w-96 shadow-md rounded-md p-4 flex items-center justify-center",
-        { "bg-emerald-600": progress === 100, "bg-gray-800": progress < 100 }
+        { "bg-teal-800": progress === 100, "bg-gray-800": progress < 100 }
       )}
     >
       {/* Circular progress bar */}
