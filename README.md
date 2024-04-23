@@ -1,9 +1,14 @@
 
 # MoneyMinder
 
-A web application that allows users to track their financial status by integrating with the Plaid API. The application will provide users with insights into their spending habits, income, and overall financial standing, using visual graphs, and a user-friendly 
-interface.
+A web application that allows users to track their financial status by integrating with the Plaid API. The application will provide users with insights into their spending habits, income, and overall financial standing, using visual graphs, and a user-friendly interface.
 
+You can access the hosted website here: https://money-tracker-kappa-dun.vercel.app/ 
+
+**Please note all Plaid related features run on sandbox mode**
+- Username: `user_good`
+- Password: `pass_good`
+- 2FA Code: `1234`
 
 ## Features
 
@@ -56,8 +61,21 @@ Open http://localhost:3000 with your browser to see the result.
 To run this project, you will need to add the following environment variables to your .env file
 
 `DATABASE_URL`
-
 `JWT_SECRET`
+
+If you want to use the Plaid API you will also need the following environment variables
+
+`PLAID_CLIENT_ID`
+`PLAID_SECRET`
+`PLAID_ENV`
+`PLAID_PRODUCTS=auth,transactions`
+`PLAID_COUNTRY_CODES`
+`PLAID_REDIRECT_URI`
+
+
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](https://github.com/junhuang21484/money-tracker/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 
 ## Deployment
@@ -65,7 +83,7 @@ To run this project, you will need to add the following environment variables to
 To deploy this project run
 
 ```bash
-  npm run deploy
+  npm run dev
 ```
 
 
