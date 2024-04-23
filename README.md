@@ -72,21 +72,6 @@ If you want to use the Plaid API you will also need the following environment va
 `PLAID_COUNTRY_CODES`
 `PLAID_REDIRECT_URI`
 
-
-## Contributing
-
-Contributions are welcome! Please read [CONTRIBUTING.md](https://github.com/junhuang21484/money-tracker/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-
-## Deployment
-
-To deploy this project run
-
-```bash
-  npm run dev
-```
-
-
 ## Authors
 
 - [@junhuang21484](https://github.com/junhuang21484)
